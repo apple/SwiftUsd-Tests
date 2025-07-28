@@ -1,0 +1,1 @@
+[pxr.UsdPrim(</refSphere>), pxr.UsdPrim(</refSphere/world>)]

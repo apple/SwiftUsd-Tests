@@ -1,0 +1,115 @@
+#usda 1.0
+(
+    defaultPrim = "Camera"
+    doc = "unknown"
+    endTimeCode = 1
+    startTimeCode = 0
+    upAxis = "Y"
+)
+
+def Camera "Camera"
+{
+    float2 clippingRange.timeSamples = {
+        1: (0.1, 100),
+    }
+    float focalLength.timeSamples = {
+        1: 50,
+    }
+    float horizontalAperture.timeSamples = {
+        1: 36,
+    }
+    float horizontalApertureOffset.timeSamples = {
+        1: 0,
+    }
+    custom float userProperties:eyeSeparation
+    float userProperties:eyeSeparation.timeSamples = {
+        1: 0.065,
+    }
+    custom float userProperties:resx
+    float userProperties:resx.timeSamples = {
+        0: 1920,
+    }
+    custom float userProperties:resy
+    float userProperties:resy.timeSamples = {
+        0: 1080,
+    }
+    custom float userProperties:stereoDistance
+    float userProperties:stereoDistance.timeSamples = {
+        1: 1.9499999,
+    }
+    float verticalAperture.timeSamples = {
+        1: 24,
+    }
+    float verticalApertureOffset.timeSamples = {
+        1: 0,
+    }
+    token visibility.timeSamples = {
+        1: "inherited",
+    }
+    matrix4d xformOp:transform.timeSamples = {
+        1: ( (0.6859206557273865, 0, -0.7276763319969177, 0), (-0.32401350140571594, 0.8953956365585327, -0.3054208755493164, 0), (0.6515582203865051, 0.44527143239974976, 0.6141703724861145, 0), (7.358891487121582, 4.958309173583984, 6.925790786743164, 1) ),
+    }
+    uniform token[] xformOpOrder = ["xformOp:transform"]
+}
+
+def Xform "Light"
+{
+    token visibility.timeSamples = {
+        1: "inherited",
+    }
+    matrix4d xformOp:transform.timeSamples = {
+        1: ( (-0.29086461663246155, -0.05518905445933342, -0.9551711678504944, 0), (0.566393256187439, 0.7946722507476807, -0.21839118003845215, 0), (0.7711008191108704, -0.6045246124267578, -0.1998833417892456, 0), (4.076245307922363, 5.903861999511719, -1.0054539442062378, 1) ),
+    }
+    uniform token[] xformOpOrder = ["xformOp:transform"]
+}
+
+def Mesh "Cube"
+{
+    float3[] extent.timeSamples = {
+        1: [(-1, -1, -1), (1, 1, 1)],
+    }
+    int[] faceVertexCounts.timeSamples = {
+        1: [4, 4, 4, 4, 4, 4],
+    }
+    int[] faceVertexIndices.timeSamples = {
+        1: [2, 6, 4, 0, 7, 6, 2, 3, 5, 4, 6, 7, 7, 3, 1, 5, 3, 2, 0, 1, 1, 0, 4, 5],
+    }
+    normal3f[] normals (
+        interpolation = "faceVarying"
+    )
+    normal3f[] normals.timeSamples = {
+        1: [(0, 1, -0), (0, 1, -0), (0, 1, -0), (0, 1, -0), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1), (-1, 0, -0), (-1, 0, -0), (-1, 0, -0), (-1, 0, -0), (0, -1, -0), (0, -1, -0), (0, -1, -0), (0, -1, -0), (1, 0, -0), (1, 0, -0), (1, 0, -0), (1, 0, -0), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1)],
+    }
+    uniform token orientation = "leftHanded"
+    point3f[] points (
+        interpolation = "vertex"
+    )
+    point3f[] points.timeSamples = {
+        1: [(1, 1, -1), (1, -1, -1), (1, 1, 1), (1, -1, 1), (-1, 1, -1), (-1, -1, -1), (-1, 1, 1), (-1, -1, 1)],
+    }
+    texCoord2f[] primvars:st (
+        interpolation = "faceVarying"
+    )
+    texCoord2f[] primvars:st.timeSamples = {
+        1: [(0.625, 0.75), (0.875, 0.75), (0.875, 0.5), (0.625, 0.5), (0.375, 1), (0.625, 1), (0.375, 0.75), (0.375, 0.25), (0.625, 0.25), (0.625, 0), (0.375, 0), (0.125, 0.75), (0.375, 0.5), (0.125, 0.5)],
+    }
+    int[] primvars:st:indices (
+        interpolation = "faceVarying"
+    )
+    int[] primvars:st:indices.timeSamples = {
+        1: [0, 1, 2, 3, 4, 5, 0, 6, 7, 8, 9, 10, 11, 6, 12, 13, 6, 0, 3, 12, 12, 3, 8, 7],
+    }
+    uniform token subdivisionScheme = "none"
+    custom bool userProperties:meshtype
+    bool userProperties:meshtype.timeSamples = {
+        0: 1,
+    }
+    token visibility.timeSamples = {
+        1: "inherited",
+    }
+    matrix4d xformOp:transform.timeSamples = {
+        1: ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) ),
+    }
+    uniform token[] xformOpOrder = ["xformOp:transform"]
+}
+

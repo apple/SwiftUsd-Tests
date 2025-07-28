@@ -1,0 +1,25 @@
+#usda 1.0
+(
+    "Step 5: Adding precession and offset"
+    endTimeCode = 192
+    startTimeCode = 0
+    upAxis = "Z"
+)
+
+def Xform "Top" (
+    prepend references = @./top.geom.usd@
+)
+{
+    float xformOp:rotateX:tilt = 12
+    float xformOp:rotateZ:precess.timeSamples = {
+        0: 0,
+        192: 360,
+    }
+    float xformOp:rotateZ:spin.timeSamples = {
+        0: 0,
+        192: 1440,
+    }
+    double3 xformOp:translate:offset = (0, 0.1, 0)
+    uniform token[] xformOpOrder = ["xformOp:rotateZ:precess", "xformOp:translate:offset", "xformOp:rotateX:tilt", "xformOp:rotateZ:spin"]
+}
+

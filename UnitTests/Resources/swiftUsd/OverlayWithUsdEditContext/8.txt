@@ -1,0 +1,46 @@
+#usda 1.0
+
+def Sphere "foo" (
+    variants = {
+        string shadingVariant = "red"
+    }
+    prepend variantSets = "shadingVariant"
+)
+{
+    def Cube "bar" (
+        prepend variantSets = "shadingVariant"
+    )
+    {
+        variantSet "shadingVariant" = {
+            "green" {
+
+            }
+        }
+    }
+    variantSet "shadingVariant" = {
+        "red" {
+            color3f[] primvars:displayColor = [(1, 0, 0)]
+
+            over "bar" (
+                variants = {
+                    string shadingVariant = "green"
+                }
+                prepend variantSets = "shadingVariant"
+            )
+            {
+                variantSet "shadingVariant" = {
+                    "green" {
+                        color3f[] primvars:displayColor = [(0, 1, 0)]
+
+                    }
+                }
+            }
+
+            def Cube "conditional"
+            {
+            }
+
+        }
+    }
+}
+

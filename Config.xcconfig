@@ -1,0 +1,16 @@
+//
+//  Config.xcconfig
+//  SwiftUsdTests
+//
+//  Created by Maddy Adams on 12/6/23.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+CLANG_CXX_LANGUAGE_STANDARD=gnu++17
+SWIFT_OBJC_INTEROP_MODE=objcxx
+
+SWIFT_OBJC_BRIDGING_HEADER=BridgingHeader.h
+
+

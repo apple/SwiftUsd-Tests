@@ -1,0 +1,12 @@
+#usda 1.0
+(
+    subLayers = [
+        @${FooBar.usda}@,
+        @${HiThere.usda}@
+    ]
+)
+
+def Sphere "global"
+{
+}
+

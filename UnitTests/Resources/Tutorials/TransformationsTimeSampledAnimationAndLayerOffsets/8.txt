@@ -1,0 +1,41 @@
+#usda 1.0
+(
+    "Step 6: Layer offsets and animation"
+    endTimeCode = 192
+    startTimeCode = 0
+    upAxis = "Z"
+)
+
+def Xform "Left"
+{
+    def Xform "Top" (
+        prepend references = @./Step5.usda@</Top>
+    )
+    {
+    }
+}
+
+def Xform "Middle"
+{
+    double3 xformOp:translate = (2, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate"]
+
+    def Xform "Top" (
+        prepend references = @./Step5.usda@</Top> (offset = 96)
+    )
+    {
+    }
+}
+
+def Xform "Right"
+{
+    double3 xformOp:translate = (4, 0, 0)
+    uniform token[] xformOpOrder = ["xformOp:translate"]
+
+    def Xform "Top" (
+        prepend references = @./Step5.usda@</Top> (scale = 0.25)
+    )
+    {
+    }
+}
+

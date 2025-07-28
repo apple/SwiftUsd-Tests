@@ -1,0 +1,10 @@
+pxr.UsdPrim(</>), false
+pxr.UsdPrim(</refSphere>), false
+pxr.UsdPrim(</refSphere/world>), false
+pxr.UsdPrim(</refSphere/world>), true
+pxr.UsdPrim(</refSphere>), true
+pxr.UsdPrim(</refSphere2>), false
+pxr.UsdPrim(</refSphere2/world>), false
+pxr.UsdPrim(</refSphere2/world>), true
+pxr.UsdPrim(</refSphere2>), true
+pxr.UsdPrim(</>), true

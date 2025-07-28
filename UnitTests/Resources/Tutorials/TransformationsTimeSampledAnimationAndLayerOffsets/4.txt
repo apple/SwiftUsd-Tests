@@ -1,0 +1,19 @@
+#usda 1.0
+(
+    "Step 3: Adding spin animation"
+    endTimeCode = 192
+    startTimeCode = 0
+    upAxis = "Z"
+)
+
+def Xform "Top" (
+    prepend references = @./top.geom.usd@
+)
+{
+    float xformOp:rotateZ:spin.timeSamples = {
+        0: 0,
+        192: 1440,
+    }
+    uniform token[] xformOpOrder = ["xformOp:rotateZ:spin"]
+}
+

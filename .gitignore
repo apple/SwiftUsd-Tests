@@ -1,0 +1,12 @@
+.DS_Store
+
+# Xcode user settings
+xcuserdata/
+
+# Create a symlink from your local SwiftUsd to SwiftUsdTests/SwiftUsd to use your local package instead of the remote
+/SwiftUsd
+
+# Created when using a local package dependency
+/SwiftUsdTests.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
+
+/SPM-Tests

@@ -1,0 +1,13 @@
+#usda 1.0
+(
+    doc = """Generated from Composed Stage of root layer 
+"""
+)
+
+def Cube "hello"
+{
+    def Sphere "world"
+    {
+    }
+}
+

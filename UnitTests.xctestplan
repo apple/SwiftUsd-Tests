@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "6F0BB987-3861-4788-B92B-4939722E9D52",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:SwiftUsdTests.xcodeproj",
+        "identifier" : "8E33E7022B21398A00630CB4",
+        "name" : "UnitTests"
+      }
+    }
+  ],
+  "version" : 1
+}
