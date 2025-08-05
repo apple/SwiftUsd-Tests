@@ -58,7 +58,7 @@ struct RenderConfig {
         var driver = pxr.HdDriver()
         driver.name = .HgiTokens.renderDriver
         driver.driver = hgi.VtValueWrappingHgiRawPtr()
-        var engine: Overlay.UsdImagingGLEngineWrapper! = Overlay.UsdImagingGLEngineWrapper("/", [], [], "/", driver, "", true, false, false)
+        var engine: Overlay.UsdImagingGLEngineWrapper! = Overlay.UsdImagingGLEngineWrapper("/", [], [], "/", driver, "", true, false, false, true)
         engine.SetEnablePresentation(false)
         engine.SetRendererAov(.HdAovTokens.color)
         
@@ -567,7 +567,7 @@ final class RenderingTests: HydraHelper {
     }
     #endif // #if canImport(SwiftUsd_PXR_ENABLE_OPENVDB_SUPPORT)
     
-    #if canImport(SwiftUsd_PXR_ENABLE_OPENIMAGEIO_SUPPORT)
+    #if canImport(SwiftUsd_PXR_ENABLE_OPENIMAGEIO_SUPPORT) || canImport(SwiftUsd_PXR_ENABLE_IMAGEIO_SUPPORT)
     @MainActor func test_rendering_openimageio_simpleShading() {
         // `SwiftUsdTests/UnitTests/Resources/OpenImageIO/simpleShading.usda` is a modified version of
         // https://github.com/PixarAnimationStudios/OpenUSD/tree/v25.05.01/extras/usd/tutorials/simpleShading/simpleShading.usda
@@ -579,7 +579,7 @@ final class RenderingTests: HydraHelper {
                                   projMatrix: ( (1.7320507843521864, 0, 0, 0), (0, 1.7320507843521864, 0, 0), (0, 0, -1.000002000002, -1), (0, 0, -2.000002000002, 0) ))
         assertRendersEqual(subPath: "OpenImageIO/expected.png", config: config)
     }
-    #endif // #if canImport(SwiftUsd_PXR_ENABLE_OPENIMAGEIO_SUPPORT)
+    #endif // #if canImport(SwiftUsd_PXR_ENABLE_OPENIMAGEIO_SUPPORT) || canImport(SwiftUsd_PXR_ENABLE_IMAGEIO_SUPPORT)
 }
 
 #endif // #if canImport(SwiftUsd_PXR_ENABLE_USD_IMAGING_SUPPORT)

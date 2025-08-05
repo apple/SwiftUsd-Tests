@@ -118,7 +118,7 @@ final class Observation_MutateUsdStage_ReadUsdObject: ObservationHelper {
         let model = Overlay.Dereference(pxr.UsdStage.CreateNew(pathForStage(named: "Model.usda"), Overlay.UsdStage.LoadAll))
         Overlay.Dereference(main.GetRootLayer()).InsertSubLayerPath(pathForStage(named: "Model.usda"), 0)
         
-        let spherePrim = main.DefinePrim("/hi", "Sphere")
+        let spherePrim = main.DefinePrim("/hi", "")
         
         let modelEditTarget = pxr.UsdEditTarget(model.GetRootLayer(), pxr.SdfLayerOffset(0, 1))
         Overlay.withUsdEditContext(main, modelEditTarget) {

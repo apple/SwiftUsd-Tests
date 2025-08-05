@@ -564,14 +564,6 @@ final class FRTProtocolsTests: TemporaryDirectoryHelper {
         assertTfRefBaseProtocol(pxr.SdfTextFileFormat.self)
         assertTfWeakBaseProtocol(pxr.SdfTextFileFormat.self)
     }
-    func test_NdrDiscoveryPluginContext() {
-        assertTfRefBaseProtocol(pxr.NdrDiscoveryPluginContext.self)
-        assertTfWeakBaseProtocol(pxr.NdrDiscoveryPluginContext.self)
-    }
-    func test_NdrDiscoveryPlugin() {
-        assertTfRefBaseProtocol(pxr.NdrDiscoveryPlugin.self)
-        assertTfWeakBaseProtocol(pxr.NdrDiscoveryPlugin.self)
-    }
     func test_PcpLayerStack() {
         assertTfRefBaseProtocol(pxr.PcpLayerStack.self)
         assertTfWeakBaseProtocol(pxr.PcpLayerStack.self)

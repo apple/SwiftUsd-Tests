@@ -116,7 +116,8 @@ fileprivate class Renderer {
                                                    pxr.TfToken(),
                                                    true,
                                                    false,
-                                                   false)
+                                                   false,
+                                                   true)
         
         if USE_EMBREE {
             engine.SetRendererPlugin("HdEmbreeRendererPlugin")

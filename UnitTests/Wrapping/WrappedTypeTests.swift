@@ -530,7 +530,7 @@ final class WrappedTypeTests: HydraHelper {
                 XCTAssertTrue(String(err.GetSourceFileName()).hasSuffix("/pxr/usd/sdf/layer.cpp"))
                 XCTAssertEqual(err.GetSourceLineNumber(), 600)
                 XCTAssertEqual(String(err.GetCommentary()), "A layer already exists with identifier '\(pathForStage(named: "HelloWorld.usda"))'")
-                XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_25_5__pxrReserved__::SdfLayer::_CreateNew")
+                XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_25_8__pxrReserved__::SdfLayer::_CreateNew")
                 XCTAssertEqual(err.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
                 XCTAssertTrue(err.IsCodingError())
             }
@@ -556,14 +556,14 @@ final class WrappedTypeTests: HydraHelper {
                     XCTAssertTrue(String(err.GetSourceFileName()).hasSuffix("/pxr/usd/sdf/layer.cpp"))
                     XCTAssertEqual(err.GetSourceLineNumber(), 600)
                     XCTAssertEqual(String(err.GetCommentary()), "A layer already exists with identifier '\(pathForStage(named: "HelloWorld.usda"))'")
-                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_25_5__pxrReserved__::SdfLayer::_CreateNew")
+                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_25_8__pxrReserved__::SdfLayer::_CreateNew")
                     XCTAssertEqual(err.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
                     XCTAssertTrue(err.IsCodingError())
                 } else {
                     XCTAssertTrue(String(err.GetSourceFileName()).hasSuffix("/pxr/usd/usd/stage.cpp"))
-                    XCTAssertEqual(err.GetSourceLineNumber(), 7077)
+                    XCTAssertEqual(err.GetSourceLineNumber(), 7061)
                     XCTAssertEqual(err.GetCommentary(), "Type mismatch for </hello.radius>: expected 'double', got 'VtArray<int>'")
-                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_25_5__pxrReserved__::UsdStage::_SetValueImpl")
+                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_25_8__pxrReserved__::UsdStage::_SetValueImpl")
                     XCTAssertEqual(err.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
                     XCTAssertTrue(err.IsCodingError())
                 }
@@ -603,7 +603,7 @@ final class WrappedTypeTests: HydraHelper {
                     XCTAssertTrue(String(err.GetSourceFileName()).hasSuffix("/pxr/usd/sdf/layer.cpp"))
                     XCTAssertEqual(err.GetSourceLineNumber(), 600)
                     XCTAssertEqual(String(err.GetCommentary()), "A layer already exists with identifier '\(pathForStage(named: "HelloWorld.usda"))'")
-                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_25_5__pxrReserved__::SdfLayer::_CreateNew")
+                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_25_8__pxrReserved__::SdfLayer::_CreateNew")
                     XCTAssertEqual(err.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
                     XCTAssertTrue(err.IsCodingError())
                 }
@@ -615,7 +615,7 @@ final class WrappedTypeTests: HydraHelper {
                     XCTAssertTrue(String(err.GetSourceFileName()).hasSuffix("/pxr/usd/sdf/layer.cpp"))
                     XCTAssertEqual(err.GetSourceLineNumber(), 600)
                     XCTAssertEqual(String(err.GetCommentary()), "A layer already exists with identifier '\(pathForStage(named: "HelloWorld.usda"))'")
-                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_25_5__pxrReserved__::SdfLayer::_CreateNew")
+                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_25_8__pxrReserved__::SdfLayer::_CreateNew")
                     XCTAssertEqual(err.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
                     XCTAssertTrue(err.IsCodingError())
                 }
@@ -628,7 +628,7 @@ final class WrappedTypeTests: HydraHelper {
                 XCTAssertTrue(String(err.GetSourceFileName()).hasSuffix("/pxr/usd/sdf/layer.cpp"))
                 XCTAssertEqual(err.GetSourceLineNumber(), 600)
                 XCTAssertEqual(String(err.GetCommentary()), "A layer already exists with identifier '\(pathForStage(named: "HelloWorld.usda"))'")
-                XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_25_5__pxrReserved__::SdfLayer::_CreateNew")
+                XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_25_8__pxrReserved__::SdfLayer::_CreateNew")
                 XCTAssertEqual(err.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
                 XCTAssertTrue(err.IsCodingError())
             }
@@ -654,7 +654,7 @@ final class WrappedTypeTests: HydraHelper {
                     XCTAssertTrue(String(err.GetSourceFileName()).hasSuffix("/pxr/usd/sdf/layer.cpp"))
                     XCTAssertEqual(err.GetSourceLineNumber(), 600)
                     XCTAssertEqual(String(err.GetCommentary()), "A layer already exists with identifier '\(pathForStage(named: "HelloWorld.usda"))'")
-                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_25_5__pxrReserved__::SdfLayer::_CreateNew")
+                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_25_8__pxrReserved__::SdfLayer::_CreateNew")
                     XCTAssertEqual(err.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
                     XCTAssertTrue(err.IsCodingError())
                 }
@@ -666,7 +666,7 @@ final class WrappedTypeTests: HydraHelper {
                     XCTAssertTrue(String(err.GetSourceFileName()).hasSuffix("/pxr/usd/sdf/layer.cpp"))
                     XCTAssertEqual(err.GetSourceLineNumber(), 600)
                     XCTAssertEqual(String(err.GetCommentary()), "A layer already exists with identifier '\(pathForStage(named: "HelloWorld.usda"))'")
-                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_25_5__pxrReserved__::SdfLayer::_CreateNew")
+                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_25_8__pxrReserved__::SdfLayer::_CreateNew")
                     XCTAssertEqual(err.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
                     XCTAssertTrue(err.IsCodingError())
                 }
@@ -799,7 +799,7 @@ final class WrappedTypeTests: HydraHelper {
         let modelUrl = urlForResource(subPath: "Wrapping/UsdAppUtilsFrameRecorderWrapper/test.usda")
         let stage = Overlay.Dereference(pxr.UsdStage.Open(std.string(modelUrl.path(percentEncoded: false))))
         
-        var recorder = Overlay.UsdAppUtilsFrameRecorderWrapper("", true)
+        var recorder = Overlay.UsdAppUtilsFrameRecorderWrapper("", true, true)
         recorder.SetDomeLightVisibility(true)
         recorder.SetColorCorrectionMode("sRGB")
         recorder.Record(Overlay.TfWeakPtr(stage), pxr.UsdGeomCamera(pxr.UsdPrim()),

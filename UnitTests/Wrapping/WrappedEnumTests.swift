@@ -617,28 +617,6 @@ final class WrappedEnumTests: TemporaryDirectoryHelper {
         let y: pxr.SdfAuthoringError = .SdfAuthoringErrorUnrecognizedSpecType
         XCTAssertEqual(x, y)
     }
-
-    // MARK: Ndr
-    
-    // MARK: NdrVersionFilter
-    func test_NdrVersionFilterDefaultOnly() {
-        let x: pxr.NdrVersionFilter = Overlay.NdrVersionFilterDefaultOnly
-        XCTAssertEqual(x.rawValue, 0)
-        let y: pxr.NdrVersionFilter = .NdrVersionFilterDefaultOnly
-        XCTAssertEqual(x, y)
-    }
-    func test_NdrVersionFilterAllVersions() {
-        let x: pxr.NdrVersionFilter = Overlay.NdrVersionFilterAllVersions
-        XCTAssertEqual(x.rawValue, 1)
-        let y: pxr.NdrVersionFilter = .NdrVersionFilterAllVersions
-        XCTAssertEqual(x, y)
-    }
-    func test_NdrNumVersionFilters() {
-        let x: pxr.NdrVersionFilter = Overlay.NdrNumVersionFilters
-        XCTAssertEqual(x.rawValue, 2)
-        let y: pxr.NdrVersionFilter = .NdrNumVersionFilters
-        XCTAssertEqual(x, y)
-    }
     
     // MARK: Pcp
     

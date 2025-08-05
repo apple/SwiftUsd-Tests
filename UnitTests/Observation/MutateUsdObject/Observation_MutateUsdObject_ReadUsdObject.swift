@@ -132,26 +132,14 @@ final class Observation_MutateUsdObject_ReadUsdObject: ObservationHelper {
         
         
         let (token, value) = registerNotification(p.GetAllMetadata())
-        XCTAssertEqual(value.size(), 3)
-        XCTAssertEqual(value["documentation"], pxr.VtValue("""
-        Defines a primitive sphere centered at the origin.
-            
-            The fallback values for Cube, Sphere, Cone, and Cylinder are set so that
-            they all pack into the same volume/bounds.
-        """ as std.string))
+        XCTAssertEqual(value.size(), 2)
         XCTAssertEqual(value["specifier"], pxr.VtValue(Overlay.SdfSpecifierDef))
         XCTAssertEqual(value["typeName"], pxr.VtValue("Sphere" as pxr.TfToken))
 
         expectingSomeNotifications([token], p.SetMetadataByDictKey("assetInfo", "name", pxr.VtValue("fizzy" as std.string)))
         let newValue = p.GetAllMetadata()
-        XCTAssertEqual(newValue.size(), 4)
+        XCTAssertEqual(newValue.size(), 3)
         XCTAssertEqual(newValue["assetInfo"], pxr.VtValue(["name" : pxr.VtValue("fizzy" as std.string)] as pxr.VtDictionary))
-        XCTAssertEqual(newValue["documentation"], pxr.VtValue("""
-        Defines a primitive sphere centered at the origin.
-            
-            The fallback values for Cube, Sphere, Cone, and Cylinder are set so that
-            they all pack into the same volume/bounds.
-        """ as std.string))
         XCTAssertEqual(newValue["specifier"], pxr.VtValue(Overlay.SdfSpecifierDef))
         XCTAssertEqual(newValue["typeName"], pxr.VtValue("Sphere" as pxr.TfToken))
     }
@@ -220,26 +208,14 @@ final class Observation_MutateUsdObject_ReadUsdObject: ObservationHelper {
         p.SetMetadataByDictKey("assetInfo", "name", pxr.VtValue("fizzy" as std.string))
         
         let (token, value) = registerNotification(p.GetAllMetadata())
-        XCTAssertEqual(value.size(), 4)
+        XCTAssertEqual(value.size(), 3)
         XCTAssertEqual(value["assetInfo"], pxr.VtValue(["name" : pxr.VtValue("fizzy" as std.string)] as pxr.VtDictionary))
-        XCTAssertEqual(value["documentation"], pxr.VtValue("""
-        Defines a primitive sphere centered at the origin.
-            
-            The fallback values for Cube, Sphere, Cone, and Cylinder are set so that
-            they all pack into the same volume/bounds.
-        """ as std.string))
         XCTAssertEqual(value["specifier"], pxr.VtValue(Overlay.SdfSpecifierDef))
         XCTAssertEqual(value["typeName"], pxr.VtValue("Sphere" as pxr.TfToken))
 
         expectingSomeNotifications([token], p.ClearMetadataByDictKey("assetInfo", "name"))
         let newValue = p.GetAllMetadata()
-        XCTAssertEqual(newValue.size(), 3)
-        XCTAssertEqual(newValue["documentation"], pxr.VtValue("""
-        Defines a primitive sphere centered at the origin.
-            
-            The fallback values for Cube, Sphere, Cone, and Cylinder are set so that
-            they all pack into the same volume/bounds.
-        """ as std.string))
+        XCTAssertEqual(newValue.size(), 2)
         XCTAssertEqual(newValue["specifier"], pxr.VtValue(Overlay.SdfSpecifierDef))
         XCTAssertEqual(newValue["typeName"], pxr.VtValue("Sphere" as pxr.TfToken))
     }
@@ -319,15 +295,16 @@ final class Observation_MutateUsdObject_ReadUsdObject: ObservationHelper {
         let p = main.DefinePrim("/foo", "Sphere")
         
         let (token, value) = registerNotification(p.GetCustomData())
-        XCTAssertEqual(value, [:])
+        XCTAssertEqual(value, ["userDocBrief" : pxr.VtValue("Defines a primitive sphere centered at the origin." as std.string)])
         
         expectingSomeNotifications([token], p.SetCustomData(["fizz" : pxr.VtValue("buzz" as pxr.TfToken)]))
-        XCTAssertEqual(p.GetCustomData(), ["fizz" : pxr.VtValue("buzz" as pxr.TfToken)])
+        XCTAssertEqual(p.GetCustomData(), ["fizz" : pxr.VtValue("buzz" as pxr.TfToken),
+                                           "userDocBrief" : pxr.VtValue("Defines a primitive sphere centered at the origin." as std.string)])
     }
     
     func test_SetCustomData_HasCustomData() {
         let main = Overlay.Dereference(pxr.UsdStage.CreateNew(pathForStage(named: "Main.usda"), Overlay.UsdStage.LoadAll))
-        let p = main.DefinePrim("/foo", "Sphere")
+        let p = main.DefinePrim("/foo", "")
         
         let (token, value) = registerNotification(p.HasCustomData())
         XCTAssertFalse(value)
@@ -364,7 +341,7 @@ final class Observation_MutateUsdObject_ReadUsdObject: ObservationHelper {
     
     func test_ClearCustomData_GetCustomData() {
         let main = Overlay.Dereference(pxr.UsdStage.CreateNew(pathForStage(named: "Main.usda"), Overlay.UsdStage.LoadAll))
-        let p = main.DefinePrim("/foo", "Sphere")
+        let p = main.DefinePrim("/foo", "")
         p.SetCustomData(["fizz" : pxr.VtValue("buzz" as pxr.TfToken)])
         
         let (token, value) = registerNotification(p.GetCustomData())
@@ -376,7 +353,7 @@ final class Observation_MutateUsdObject_ReadUsdObject: ObservationHelper {
     
     func test_ClearCustomData_HasCustomData() {
         let main = Overlay.Dereference(pxr.UsdStage.CreateNew(pathForStage(named: "Main.usda"), Overlay.UsdStage.LoadAll))
-        let p = main.DefinePrim("/foo", "Sphere")
+        let p = main.DefinePrim("/foo", "")
         p.SetCustomData(["fizz" : pxr.VtValue("buzz" as pxr.TfToken)])
         
         let (token, value) = registerNotification(p.HasCustomData())
@@ -519,12 +496,7 @@ final class Observation_MutateUsdObject_ReadUsdObject: ObservationHelper {
         let p = main.DefinePrim("/foo", "Sphere")
         
         let (token, value) = registerNotification(p.GetDocumentation())
-        XCTAssertEqual(value, """
-        Defines a primitive sphere centered at the origin.
-            
-            The fallback values for Cube, Sphere, Cone, and Cylinder are set so that
-            they all pack into the same volume/bounds.
-        """)
+        XCTAssertEqual(value, "")
         
         expectingSomeNotifications([token], p.SetDocumentation("my documentation string"))
         XCTAssertEqual(p.GetDocumentation(), "my documentation string")
@@ -552,12 +524,7 @@ final class Observation_MutateUsdObject_ReadUsdObject: ObservationHelper {
         XCTAssertEqual(value, "my documentation string")
         
         expectingSomeNotifications([token], p.ClearDocumentation())
-        XCTAssertEqual(p.GetDocumentation(), """
-        Defines a primitive sphere centered at the origin.
-            
-            The fallback values for Cube, Sphere, Cone, and Cylinder are set so that
-            they all pack into the same volume/bounds.
-        """)
+        XCTAssertEqual(p.GetDocumentation(), "")
     }
     
     func test_ClearDocumentation_HasAuthoredDocumentation() {

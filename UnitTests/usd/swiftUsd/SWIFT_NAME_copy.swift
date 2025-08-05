@@ -532,14 +532,6 @@ final class SWIFT_NAME_copy: TemporaryDirectoryHelper {
         XCTAssertEqual(x, p)
     }
     
-    func test_NdrNode_GetInputNames() {
-        #warning("added: const class std::vector<class PXR_NS::TfToken> & PXR_NS::NdrNode::GetInputNames() const; replaceConstRefFunctionWithCopyingWrapper;")
-        func inner(_ x: pxr.NdrNode) {
-            let y: pxr.TfTokenVector = x.GetInputNames()
-            withExtendedLifetime(y) {}
-        }
-    }
-
     func test_UsdShadeInput_GetAttr() {
         #warning("added: const class PXR_NS::UsdAttribute & PXR_NS::UsdShadeInput::GetAttr() const; replaceConstRefFunctionWithCopyingWrapper;")
         func inner(_ x: pxr.UsdShadeInput) {
