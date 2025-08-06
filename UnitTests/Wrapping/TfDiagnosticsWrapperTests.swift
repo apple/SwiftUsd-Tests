@@ -1,9 +1,21 @@
+// ===-------------------------------------------------------------------===//
+// This source file is part of github.com/apple/SwiftUsd-Tests
 //
-//  TfDiagnosticsWrapperTests.swift
-//  UnitTests
+// Copyright © 2025 Apple Inc. and the SwiftUsd-Tests authors. All Rights Reserved. 
 //
-//  Created by Maddy Adams on 3/18/25.
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at: 
+// https://www.apache.org/licenses/LICENSE-2.0
 //
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.     
+// 
+// SPDX-License-Identifier: Apache-2.0
+// ===-------------------------------------------------------------------===//
 
 import XCTest
 import OpenUSD
@@ -18,7 +30,7 @@ final class TfDiagnosticsWrapperTests: TemporaryDirectoryHelper {
             let error = Array($0.errors).first!
 
             XCTAssertTrue(String(error.GetSourceFileName()).hasSuffix("Tests/UnitTests/Wrapping/TfDiagnosticsWrapperTests.swift"))
-            XCTAssertEqual(error.GetSourceLineNumber(), 15)
+            XCTAssertEqual(error.GetSourceLineNumber(), 27)
             XCTAssertEqual(String(error.GetCommentary()), "TF_ERROR_1")
             XCTAssertEqual(error.GetSourceFunction(), "test_TF_ERROR_1()")
             XCTAssertEqual(error.GetDiagnosticCode().GetValue(), 0 as CInt)
@@ -35,7 +47,7 @@ final class TfDiagnosticsWrapperTests: TemporaryDirectoryHelper {
             let error = Array($0.errors).first!
             
             XCTAssertTrue(String(error.GetSourceFileName()).hasSuffix("Tests/UnitTests/Wrapping/TfDiagnosticsWrapperTests.swift"))
-            XCTAssertEqual(error.GetSourceLineNumber(), 32)
+            XCTAssertEqual(error.GetSourceLineNumber(), 44)
             XCTAssertEqual(String(error.GetCommentary()), "TF_ERROR_2")
             XCTAssertEqual(error.GetSourceFunction(), "test_TF_ERROR_2()")
             XCTAssertEqual(error.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_RUNTIME_ERROR_TYPE)
@@ -53,7 +65,7 @@ final class TfDiagnosticsWrapperTests: TemporaryDirectoryHelper {
             let error = Array($0.errors).first!
             
             XCTAssertTrue(String(error.GetSourceFileName()).hasSuffix("Tests/UnitTests/Wrapping/TfDiagnosticsWrapperTests.swift"))
-            XCTAssertEqual(error.GetSourceLineNumber(), 50)
+            XCTAssertEqual(error.GetSourceLineNumber(), 62)
             XCTAssertEqual(String(error.GetCommentary()), "TF_ERROR_3")
             XCTAssertEqual(error.GetSourceFunction(), "test_TF_ERROR_3()")
             XCTAssertEqual(error.GetDiagnosticCode().GetValue(), 0 as CInt)
@@ -70,7 +82,7 @@ final class TfDiagnosticsWrapperTests: TemporaryDirectoryHelper {
             let error = Array($0.errors).first!
             
             XCTAssertTrue(String(error.GetSourceFileName()).hasSuffix("Tests/UnitTests/Wrapping/TfDiagnosticsWrapperTests.swift"))
-            XCTAssertEqual(error.GetSourceLineNumber(), 67)
+            XCTAssertEqual(error.GetSourceLineNumber(), 79)
             XCTAssertEqual(String(error.GetCommentary()), "my tf runtime error")
             XCTAssertEqual(error.GetSourceFunction(), "test_TF_RUNTIME_ERROR()")
             XCTAssertEqual(error.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_RUNTIME_ERROR_TYPE)
@@ -87,7 +99,7 @@ final class TfDiagnosticsWrapperTests: TemporaryDirectoryHelper {
             let error = Array($0.errors).first!
             
             XCTAssertTrue(String(error.GetSourceFileName()).hasSuffix("Tests/UnitTests/Wrapping/TfDiagnosticsWrapperTests.swift"))
-            XCTAssertEqual(error.GetSourceLineNumber(), 84)
+            XCTAssertEqual(error.GetSourceLineNumber(), 96)
             XCTAssertEqual(String(error.GetCommentary()), "my tf coding error")
             XCTAssertEqual(error.GetSourceFunction(), "test_TF_CODING_ERROR()")
             XCTAssertEqual(error.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
@@ -133,7 +145,7 @@ final class TfDiagnosticsWrapperTests: TemporaryDirectoryHelper {
             let error = Array($0.errors).first!
             
             XCTAssertTrue(String(error.GetSourceFileName()).hasSuffix("Tests/UnitTests/Wrapping/TfDiagnosticsWrapperTests.swift"))
-            XCTAssertEqual(error.GetSourceLineNumber(), 130)
+            XCTAssertEqual(error.GetSourceLineNumber(), 142)
             XCTAssertEqual(String(error.GetCommentary()), "tf quiet error 1")
             XCTAssertEqual(error.GetSourceFunction(), "test_TF_QUIET_ERROR_1()")
             XCTAssertEqual(error.GetDiagnosticCode().GetValue(), 0 as CInt)
@@ -150,7 +162,7 @@ final class TfDiagnosticsWrapperTests: TemporaryDirectoryHelper {
             let error = Array($0.errors).first!
             
             XCTAssertTrue(String(error.GetSourceFileName()).hasSuffix("Tests/UnitTests/Wrapping/TfDiagnosticsWrapperTests.swift"))
-            XCTAssertEqual(error.GetSourceLineNumber(), 147)
+            XCTAssertEqual(error.GetSourceLineNumber(), 159)
             XCTAssertEqual(String(error.GetCommentary()), "tf quiet error 2")
             XCTAssertEqual(error.GetSourceFunction(), "test_TF_QUIET_ERROR_2()")
             XCTAssertEqual(error.GetDiagnosticCode().GetValue(), 0 as CInt)
@@ -202,7 +214,7 @@ final class TfDiagnosticsWrapperTests: TemporaryDirectoryHelper {
             let error = Array($0.errors).first!
             
             XCTAssertTrue(String(error.GetSourceFileName()).hasSuffix("Tests/UnitTests/Wrapping/TfDiagnosticsWrapperTests.swift"))
-            XCTAssertEqual(error.GetSourceLineNumber(), 198)
+            XCTAssertEqual(error.GetSourceLineNumber(), 210)
             XCTAssertEqual(String(error.GetCommentary()), "Failed verification: ' false '")
             XCTAssertEqual(error.GetSourceFunction(), "test_TF_VERIFY_2()")
             XCTAssertEqual(error.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
@@ -224,7 +236,7 @@ final class TfDiagnosticsWrapperTests: TemporaryDirectoryHelper {
             let error = Array($0.errors).first!
             
             XCTAssertTrue(String(error.GetSourceFileName()).hasSuffix("Tests/UnitTests/Wrapping/TfDiagnosticsWrapperTests.swift"))
-            XCTAssertEqual(error.GetSourceLineNumber(), 220)
+            XCTAssertEqual(error.GetSourceLineNumber(), 232)
             XCTAssertEqual(String(error.GetCommentary()), "Failed verification: ' 1 > 2 ' -- \"my message\"")
             XCTAssertEqual(error.GetSourceFunction(), "test_TF_VERIFY_4()")
             XCTAssertEqual(error.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
