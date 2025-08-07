@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8E046E002E4542E10051CF91 /* OpenUSD in Frameworks */ = {isa = PBXBuildFile; productRef = 8E046DFF2E4542E10051CF91 /* OpenUSD */; };
 		8E0BC2E72D8B7E7A00F665E1 /* OpenUSD in Frameworks */ = {isa = PBXBuildFile; productRef = 8E0BC2E62D8B7E7A00F665E1 /* OpenUSD */; };
 		8E19215F2DEE0F6C00AE46B9 /* TypedefTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E19215E2DEE0F6C00AE46B9 /* TypedefTests.swift */; };
 		8E1921802DEF79C500AE46B9 /* SdfSpecHandleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E19217F2DEF79C500AE46B9 /* SdfSpecHandleTests.swift */; };
@@ -107,6 +108,7 @@
 		8E6D42BA2B5F0B4000509859 /* Observation_MutateUsdRelationship_ReadSdfLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E6D42B92B5F0B4000509859 /* Observation_MutateUsdRelationship_ReadSdfLayer.swift */; };
 		8E6D42BC2B5F0C3400509859 /* Observation_MutateUsdRelationship_ReadUsdObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E6D42BB2B5F0C3400509859 /* Observation_MutateUsdRelationship_ReadUsdObject.swift */; };
 		8E6D42BE2B5F0E8100509859 /* Observation_MutateUsdRelationship_ReadUsdRelationship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E6D42BD2B5F0E8100509859 /* Observation_MutateUsdRelationship_ReadUsdRelationship.swift */; };
+		8E7C8A0B2E45282A00CA1DF7 /* OpenUSD in Frameworks */ = {isa = PBXBuildFile; productRef = 8E7C8A0A2E45282A00CA1DF7 /* OpenUSD */; };
 		8E7FD4F62B6461720004B86B /* ComparableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7FD4F52B6461720004B86B /* ComparableTests.swift */; };
 		8E7FD4F82B6462A30004B86B /* ExpressibleByDictionaryLiteralTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7FD4F72B6462A30004B86B /* ExpressibleByDictionaryLiteralTests.swift */; };
 		8E7FD4FA2B646ED70004B86B /* CxxDictionaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E7FD4F92B646ED70004B86B /* CxxDictionaryTests.swift */; };
@@ -291,9 +293,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E046E002E4542E10051CF91 /* OpenUSD in Frameworks */,
 				8E2295912E42A7C900725E59 /* OpenUSD in Frameworks */,
 				8EAA850E2D949C3C0000C781 /* OpenUSD in Frameworks */,
 				8E9910572E0E02A6008009EF /* OpenUSD in Frameworks */,
+				8E7C8A0B2E45282A00CA1DF7 /* OpenUSD in Frameworks */,
 				8E0BC2E72D8B7E7A00F665E1 /* OpenUSD in Frameworks */,
 				8E811C8B2D8B804700F1A741 /* OpenUSD in Frameworks */,
 			);
@@ -679,7 +683,7 @@
 			);
 			mainGroup = 8E33E6E12B2138D600630CB4;
 			packageReferences = (
-				8E22958F2E42A7C900725E59 /* XCRemoteSwiftPackageReference "SwiftUsd" */,
+				8E046DFE2E4542E10051CF91 /* XCRemoteSwiftPackageReference "SwiftUsd" */,
 			);
 			productRefGroup = 8E33E6EB2B2138D600630CB4 /* Products */;
 			projectDirPath = "";
@@ -1049,12 +1053,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8E046DFE2E4542E10051CF91 /* XCRemoteSwiftPackageReference "SwiftUsd" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/SwiftUsd";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
 		8E22958F2E42A7C900725E59 /* XCRemoteSwiftPackageReference "SwiftUsd" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/SwiftUsd";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
+				minimumVersion = 5.0.1;
 			};
 		};
 		8E811C892D8B804700F1A741 /* XCRemoteSwiftPackageReference "SwiftUsd" */ = {
@@ -1062,12 +1074,17 @@
 			repositoryURL = "https://github.com/apple/SwiftUsd";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
+				minimumVersion = 5.0.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8E046DFF2E4542E10051CF91 /* OpenUSD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8E046DFE2E4542E10051CF91 /* XCRemoteSwiftPackageReference "SwiftUsd" */;
+			productName = OpenUSD;
+		};
 		8E0BC2E62D8B7E7A00F665E1 /* OpenUSD */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OpenUSD;
@@ -1075,6 +1092,10 @@
 		8E2295902E42A7C900725E59 /* OpenUSD */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8E22958F2E42A7C900725E59 /* XCRemoteSwiftPackageReference "SwiftUsd" */;
+			productName = OpenUSD;
+		};
+		8E7C8A0A2E45282A00CA1DF7 /* OpenUSD */ = {
+			isa = XCSwiftPackageProductDependency;
 			productName = OpenUSD;
 		};
 		8E811C8A2D8B804700F1A741 /* OpenUSD */ = {

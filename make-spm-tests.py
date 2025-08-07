@@ -22,7 +22,7 @@ import argparse
 import shutil
 import os
 
-DEFAULT_SWIFTUSD_VERSION = "5.0.0"
+DEFAULT_SWIFTUSD_VERSION = "5.0.1"
 
 def package_manifest_contents(args):
     version_dependency_line = f"        .package(url: \"https://github.com/apple/SwiftUsd\", from: \"{args.version}\"),\n"
