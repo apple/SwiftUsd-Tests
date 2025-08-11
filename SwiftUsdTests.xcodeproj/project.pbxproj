@@ -11,10 +11,12 @@
 		8E0BC2E72D8B7E7A00F665E1 /* OpenUSD in Frameworks */ = {isa = PBXBuildFile; productRef = 8E0BC2E62D8B7E7A00F665E1 /* OpenUSD */; };
 		8E19215F2DEE0F6C00AE46B9 /* TypedefTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E19215E2DEE0F6C00AE46B9 /* TypedefTests.swift */; };
 		8E1921802DEF79C500AE46B9 /* SdfSpecHandleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E19217F2DEF79C500AE46B9 /* SdfSpecHandleTests.swift */; };
+		8E1CC7842E4A55AB00586320 /* OpenUSD in Frameworks */ = {isa = PBXBuildFile; productRef = 8E1CC7832E4A55AB00586320 /* OpenUSD */; };
 		8E1EC8A42C7CF6EA0073B4B6 /* SendableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1EC8A32C7CF6EA0073B4B6 /* SendableTests.swift */; };
 		8E1FC8352CC6CBCC0050BC20 /* NonCopyableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E1FC8342CC6CBCC0050BC20 /* NonCopyableTests.swift */; };
 		8E2295912E42A7C900725E59 /* OpenUSD in Frameworks */ = {isa = PBXBuildFile; productRef = 8E2295902E42A7C900725E59 /* OpenUSD */; };
 		8E2725092D89FAE200BA8290 /* TfDiagnosticsWrapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2725082D89FAE200BA8290 /* TfDiagnosticsWrapperTests.swift */; };
+		8E2A96B02E46CDEA001DFFE1 /* OpenUSD in Frameworks */ = {isa = PBXBuildFile; productRef = 8E2A96AF2E46CDEA001DFFE1 /* OpenUSD */; };
 		8E2D7DA42D023BBF00B11495 /* FRTProtocolsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E2D7DA32D023BBF00B11495 /* FRTProtocolsTests.swift */; };
 		8E33E6EE2B2138D600630CB4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E33E6ED2B2138D600630CB4 /* main.swift */; };
 		8E33E70A2B21398F00630CB4 /* TemporaryDirectoryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E33E6F82B21391200630CB4 /* TemporaryDirectoryHelper.swift */; };
@@ -296,8 +298,10 @@
 				8E046E002E4542E10051CF91 /* OpenUSD in Frameworks */,
 				8E2295912E42A7C900725E59 /* OpenUSD in Frameworks */,
 				8EAA850E2D949C3C0000C781 /* OpenUSD in Frameworks */,
+				8E1CC7842E4A55AB00586320 /* OpenUSD in Frameworks */,
 				8E9910572E0E02A6008009EF /* OpenUSD in Frameworks */,
 				8E7C8A0B2E45282A00CA1DF7 /* OpenUSD in Frameworks */,
+				8E2A96B02E46CDEA001DFFE1 /* OpenUSD in Frameworks */,
 				8E0BC2E72D8B7E7A00F665E1 /* OpenUSD in Frameworks */,
 				8E811C8B2D8B804700F1A741 /* OpenUSD in Frameworks */,
 			);
@@ -683,7 +687,7 @@
 			);
 			mainGroup = 8E33E6E12B2138D600630CB4;
 			packageReferences = (
-				8E046DFE2E4542E10051CF91 /* XCRemoteSwiftPackageReference "SwiftUsd" */,
+				8E1CC7822E4A55AB00586320 /* XCRemoteSwiftPackageReference "SwiftUsd" */,
 			);
 			productRefGroup = 8E33E6EB2B2138D600630CB4 /* Products */;
 			projectDirPath = "";
@@ -1058,7 +1062,15 @@
 			repositoryURL = "https://github.com/apple/SwiftUsd";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.1;
+				minimumVersion = 5.0.2;
+			};
+		};
+		8E1CC7822E4A55AB00586320 /* XCRemoteSwiftPackageReference "SwiftUsd" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/SwiftUsd";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.2;
 			};
 		};
 		8E22958F2E42A7C900725E59 /* XCRemoteSwiftPackageReference "SwiftUsd" */ = {
@@ -1066,7 +1078,7 @@
 			repositoryURL = "https://github.com/apple/SwiftUsd";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.1;
+				minimumVersion = 5.0.2;
 			};
 		};
 		8E811C892D8B804700F1A741 /* XCRemoteSwiftPackageReference "SwiftUsd" */ = {
@@ -1074,7 +1086,7 @@
 			repositoryURL = "https://github.com/apple/SwiftUsd";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.1;
+				minimumVersion = 5.0.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1089,9 +1101,18 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = OpenUSD;
 		};
+		8E1CC7832E4A55AB00586320 /* OpenUSD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8E1CC7822E4A55AB00586320 /* XCRemoteSwiftPackageReference "SwiftUsd" */;
+			productName = OpenUSD;
+		};
 		8E2295902E42A7C900725E59 /* OpenUSD */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8E22958F2E42A7C900725E59 /* XCRemoteSwiftPackageReference "SwiftUsd" */;
+			productName = OpenUSD;
+		};
+		8E2A96AF2E46CDEA001DFFE1 /* OpenUSD */ = {
+			isa = XCSwiftPackageProductDependency;
 			productName = OpenUSD;
 		};
 		8E7C8A0A2E45282A00CA1DF7 /* OpenUSD */ = {
