@@ -196,4 +196,21 @@ final class RegressionTests: TemporaryDirectoryHelper {
         XCTAssertEqual(x[3][2], 15)
         XCTAssertEqual(x[3][3], 16)
     }
+    
+    // SwiftUsd 5.0.x didn't include the OpenEXR dylibs despite building them,
+    // which caused linker errors for some users. In OpenUSD v25.08,
+    // OpenEXR is a dependency of OpenImageIO, Alembic, OpenVDB
+    #if canImport(SwiftUsd_PXR_ENABLE_OPENIMAGEIO_SUPPORT) || canImport(SwiftUsd_PXR_ENABLE_ALEMBIC_SUPPORT) || canImport(SwiftUsd_PXR_ENABLE_OPENVDB_SUPPORT)
+    func test_OpenEXRUsage() {
+        let path = std.string(urlForResource(subPath: "OpenEXR/USDLogoLrg.exr").path(percentEncoded: false))
+        let expectedWidth: Int32 = 860
+        let expectedHeight: Int32 = 289
+        let rowBytes = expectedWidth * 8
+        
+        let readOpenEXRResult = readOpenEXR(path, rowBytes)
+        XCTAssertTrue(readOpenEXRResult.success)
+        XCTAssertEqual(readOpenEXRResult.width, expectedWidth)
+        XCTAssertEqual(readOpenEXRResult.height, expectedHeight)
+    }
+    #endif // #if canImport(SwiftUsd_PXR_ENABLE_OPENIMAGEIO_SUPPORT) || canImport(SwiftUsd_PXR_ENABLE_ALEMBIC_SUPPORT) || canImport(SwiftUsd_PXR_ENABLE_OPENVDB_SUPPORT)
 }

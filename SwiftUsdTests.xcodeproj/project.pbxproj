@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		8E046E002E4542E10051CF91 /* OpenUSD in Frameworks */ = {isa = PBXBuildFile; productRef = 8E046DFF2E4542E10051CF91 /* OpenUSD */; };
+		8E06558F2E5F6D8400689847 /* OpenEXRUsage.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8E06558E2E5F6D8400689847 /* OpenEXRUsage.mm */; };
+		8E0655922E5F847400689847 /* OpenUSD in Frameworks */ = {isa = PBXBuildFile; productRef = 8E0655912E5F847400689847 /* OpenUSD */; };
 		8E0BC2E72D8B7E7A00F665E1 /* OpenUSD in Frameworks */ = {isa = PBXBuildFile; productRef = 8E0BC2E62D8B7E7A00F665E1 /* OpenUSD */; };
 		8E19215F2DEE0F6C00AE46B9 /* TypedefTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E19215E2DEE0F6C00AE46B9 /* TypedefTests.swift */; };
 		8E1921802DEF79C500AE46B9 /* SdfSpecHandleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E19217F2DEF79C500AE46B9 /* SdfSpecHandleTests.swift */; };
@@ -124,6 +126,10 @@
 		8EA833B42D2F4AD0003BF6AD /* TfNoticeTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 8EA833B32D2F4AD0003BF6AD /* TfNoticeTests.mm */; };
 		8EA944412BB4D46B006D45BB /* DeprecatedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EA944402BB4D46B006D45BB /* DeprecatedTests.swift */; };
 		8EAA850E2D949C3C0000C781 /* OpenUSD in Frameworks */ = {isa = PBXBuildFile; productRef = 8EAA850D2D949C3C0000C781 /* OpenUSD */; };
+		8EAA8C592E56369300F87233 /* OpenUSD in Frameworks */ = {isa = PBXBuildFile; productRef = 8EAA8C582E56369300F87233 /* OpenUSD */; };
+		8EAA8CB72E579ACF00F87233 /* InternalUtilTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8EAA8CB62E579ACF00F87233 /* InternalUtilTests.cpp */; };
+		8EAA8CB92E579ADF00F87233 /* InternalUtilTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAA8CB82E579ADF00F87233 /* InternalUtilTests.swift */; };
+		8EAA8CBB2E57A4B500F87233 /* LibWorkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAA8CBA2E57A4B500F87233 /* LibWorkTests.swift */; };
 		8EC9F5CB2D9C9650001279E0 /* EmbreeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC9F5CA2D9C9650001279E0 /* EmbreeTests.swift */; };
 		8EE59C522B9942F200307737 /* RegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE59C512B9942F200307737 /* RegressionTests.swift */; };
 		8EFA28122B3258BB000BC024 /* TestingObservationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EFA28112B3258BB000BC024 /* TestingObservationTests.swift */; };
@@ -162,6 +168,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8E06558D2E5F6D8400689847 /* OpenEXRUsage.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = OpenEXRUsage.hpp; sourceTree = "<group>"; };
+		8E06558E2E5F6D8400689847 /* OpenEXRUsage.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenEXRUsage.mm; sourceTree = "<group>"; };
 		8E19215E2DEE0F6C00AE46B9 /* TypedefTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypedefTests.swift; sourceTree = "<group>"; };
 		8E19217F2DEF79C500AE46B9 /* SdfSpecHandleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SdfSpecHandleTests.swift; sourceTree = "<group>"; };
 		8E1EC8A32C7CF6EA0073B4B6 /* SendableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendableTests.swift; sourceTree = "<group>"; };
@@ -278,6 +286,10 @@
 		8EA833B22D2F4AD0003BF6AD /* TfNoticeTests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TfNoticeTests.hpp; sourceTree = "<group>"; };
 		8EA833B32D2F4AD0003BF6AD /* TfNoticeTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = TfNoticeTests.mm; sourceTree = "<group>"; };
 		8EA944402BB4D46B006D45BB /* DeprecatedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeprecatedTests.swift; sourceTree = "<group>"; };
+		8EAA8CB52E579ACF00F87233 /* InternalUtilTests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = InternalUtilTests.hpp; sourceTree = "<group>"; };
+		8EAA8CB62E579ACF00F87233 /* InternalUtilTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = InternalUtilTests.cpp; sourceTree = "<group>"; };
+		8EAA8CB82E579ADF00F87233 /* InternalUtilTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalUtilTests.swift; sourceTree = "<group>"; };
+		8EAA8CBA2E57A4B500F87233 /* LibWorkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibWorkTests.swift; sourceTree = "<group>"; };
 		8EC9F5CA2D9C9650001279E0 /* EmbreeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmbreeTests.swift; sourceTree = "<group>"; };
 		8EE59C512B9942F200307737 /* RegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegressionTests.swift; sourceTree = "<group>"; };
 		8EFA28112B3258BB000BC024 /* TestingObservationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingObservationTests.swift; sourceTree = "<group>"; };
@@ -300,9 +312,11 @@
 				8EAA850E2D949C3C0000C781 /* OpenUSD in Frameworks */,
 				8E1CC7842E4A55AB00586320 /* OpenUSD in Frameworks */,
 				8E9910572E0E02A6008009EF /* OpenUSD in Frameworks */,
+				8EAA8C592E56369300F87233 /* OpenUSD in Frameworks */,
 				8E7C8A0B2E45282A00CA1DF7 /* OpenUSD in Frameworks */,
 				8E2A96B02E46CDEA001DFFE1 /* OpenUSD in Frameworks */,
 				8E0BC2E72D8B7E7A00F665E1 /* OpenUSD in Frameworks */,
+				8E0655922E5F847400689847 /* OpenUSD in Frameworks */,
 				8E811C8B2D8B804700F1A741 /* OpenUSD in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -484,6 +498,12 @@
 				8E19215E2DEE0F6C00AE46B9 /* TypedefTests.swift */,
 				8E19217F2DEF79C500AE46B9 /* SdfSpecHandleTests.swift */,
 				8E859DA42E21B3E6004C2B09 /* AlembicTests.swift */,
+				8EAA8CB82E579ADF00F87233 /* InternalUtilTests.swift */,
+				8EAA8CBA2E57A4B500F87233 /* LibWorkTests.swift */,
+				8EAA8CB52E579ACF00F87233 /* InternalUtilTests.hpp */,
+				8E06558D2E5F6D8400689847 /* OpenEXRUsage.hpp */,
+				8E06558E2E5F6D8400689847 /* OpenEXRUsage.mm */,
+				8EAA8CB62E579ACF00F87233 /* InternalUtilTests.cpp */,
 			);
 			path = Misc;
 			sourceTree = "<group>";
@@ -687,7 +707,7 @@
 			);
 			mainGroup = 8E33E6E12B2138D600630CB4;
 			packageReferences = (
-				8E1CC7822E4A55AB00586320 /* XCRemoteSwiftPackageReference "SwiftUsd" */,
+				8E0655902E5F847400689847 /* XCRemoteSwiftPackageReference "SwiftUsd" */,
 			);
 			productRefGroup = 8E33E6EB2B2138D600630CB4 /* Products */;
 			projectDirPath = "";
@@ -744,11 +764,14 @@
 				8E6D42732B48CFBA00509859 /* Observation_MutateSdfLayer_ReadUsdProperty.swift in Sources */,
 				8E33E77E2B2A305A00630CB4 /* IdentifiableTests.swift in Sources */,
 				8E6D42912B56F7D400509859 /* Observation_MutateUsdObject_ReadSdfLayer.swift in Sources */,
+				8EAA8CB92E579ADF00F87233 /* InternalUtilTests.swift in Sources */,
 				8E33E72D2B22861900630CB4 /* XLanguageARC_Cpp.mm in Sources */,
 				8E45849A2B30E6930048D0C8 /* TemporaryImplementations_Swift.swift in Sources */,
 				8E6D42A42B59BCEE00509859 /* Observation_MutateUsdProperty_ReadUsdObject.swift in Sources */,
 				8E33E78D2B2B77E800630CB4 /* WrappedFunctionTests.swift in Sources */,
+				8EAA8CBB2E57A4B500F87233 /* LibWorkTests.swift in Sources */,
 				8E33E71C2B21477C00630CB4 /* SimpleShadingInUsd.swift in Sources */,
+				8EAA8CB72E579ACF00F87233 /* InternalUtilTests.cpp in Sources */,
 				8E9C82872E01D49600F7B724 /* CodableTests.swift in Sources */,
 				8E6D42882B509DD500509859 /* Observation_MutateUsdPrim_ReadUsdAttribute.swift in Sources */,
 				8E6D42932B56F87500509859 /* Observation_MutateUsdObject_ReadUsdPrim.swift in Sources */,
@@ -801,6 +824,7 @@
 				8E33E71E2B21482100630CB4 /* TutorialsHelper.swift in Sources */,
 				8E33E81A2B2BC7D000630CB4 /* MathOperatorUtilitiesTests.swift in Sources */,
 				8E6D42952B56F8DA00509859 /* Observation_MutateUsdObject_ReadUsdObject.swift in Sources */,
+				8E06558F2E5F6D8400689847 /* OpenEXRUsage.mm in Sources */,
 				8E33E7862B2A5BA900630CB4 /* SequenceTests.swift in Sources */,
 				8E6D42A62B59BF3A00509859 /* Observation_MutateUsdProperty_ReadUsdProperty.swift in Sources */,
 				8EA45DEF2CD3F51A00CFE70D /* SwiftNonmutatingTests.swift in Sources */,
@@ -1065,6 +1089,14 @@
 				minimumVersion = 5.0.2;
 			};
 		};
+		8E0655902E5F847400689847 /* XCRemoteSwiftPackageReference "SwiftUsd" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/SwiftUsd";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.2;
+			};
+		};
 		8E1CC7822E4A55AB00586320 /* XCRemoteSwiftPackageReference "SwiftUsd" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/SwiftUsd";
@@ -1095,6 +1127,11 @@
 		8E046DFF2E4542E10051CF91 /* OpenUSD */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8E046DFE2E4542E10051CF91 /* XCRemoteSwiftPackageReference "SwiftUsd" */;
+			productName = OpenUSD;
+		};
+		8E0655912E5F847400689847 /* OpenUSD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8E0655902E5F847400689847 /* XCRemoteSwiftPackageReference "SwiftUsd" */;
 			productName = OpenUSD;
 		};
 		8E0BC2E62D8B7E7A00F665E1 /* OpenUSD */ = {
@@ -1129,6 +1166,10 @@
 			productName = OpenUSD;
 		};
 		8EAA850D2D949C3C0000C781 /* OpenUSD */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OpenUSD;
+		};
+		8EAA8C582E56369300F87233 /* OpenUSD */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OpenUSD;
 		};

@@ -18,13 +18,25 @@
 // SPDX-License-Identifier: Apache-2.0
 //===----------------------------------------------------------------------===//
 
-#ifndef BridgingHeader_h
-#define BridgingHeader_h
+#ifndef SwiftUsdTests_OpenEXRUsage_hpp
+#define SwiftUsdTests_OpenEXRUsage_hpp
 
-#include "UnitTests/XLanguage/ARC/XLanguageARC_Cpp.hpp"
-#include "UnitTests/TemporaryImplementations/TemporaryImplementations_Cpp.hpp"
-#include "UnitTests/Wrapping/TfNoticeTests.hpp"
-#include "UnitTests/Misc/InternalUtilTests.hpp"
-#include "UnitTests/Misc/OpenEXRUsage.hpp"
+#include <stdio.h>
+#include <string>
+#include "swiftUsd/swiftUsd.h"
 
-#endif /* BridgingHeader_h */
+// SwiftUsd 5.0.x didn't include the OpenEXR dylibs despite building them,
+// which caused linker errors for some users. In OpenUSD v25.08,
+// OpenEXR is a dependency of OpenImageIO, Alembic, and OpenVDB
+#if defined(SwiftUsd_PXR_ENABLE_OPENIMAGEIO_SUPPORT) || defined(SwiftUsd_PXR_ENABLE_ALEMBIC_SUPPORT) || defined(SwiftUsd_PXR_ENABLE_OPENVDB_SUPPORT)
+struct ReadOpenEXRResult {
+    bool success;
+    int width;
+    int height;
+};
+
+ReadOpenEXRResult readOpenEXR(std::string path, int rowBytes);
+#endif // #if defined(SwiftUsd_PXR_ENABLE_OPENIMAGEIO_SUPPORT) || defined(SwiftUsd_PXR_ENABLE_ALEMBIC_SUPPORT) || defined(SwiftUsd_PXR_ENABLE_OPENVDB_SUPPORT)
+
+
+#endif /* SwiftUsdTests_OpenEXRUsage_hpp */

@@ -26,4 +26,10 @@ SWIFT_OBJC_INTEROP_MODE=objcxx
 
 SWIFT_OBJC_BRIDGING_HEADER=BridgingHeader.h
 
-
+// OpenEXR assumes that "Imath" will be part of the header search path.
+// We want to support both local dependencies on SwiftUsd and
+// remote dependencies, which put the include directories for C++ headers
+// in different places
+IMATH_PATH_SUFFIX=SwiftUsd/swift-package/Sources/_OpenUSD_SwiftBindingHelpers/include/Imath
+// Local, then remote
+HEADER_SEARCH_PATHS=$(IMATH_PATH_SUFFIX) $(SYMROOT)/../../SourcePackages/checkouts/$(IMATH_PATH_SUFFIX)
