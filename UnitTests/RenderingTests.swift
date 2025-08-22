@@ -593,6 +593,23 @@ final class RenderingTests: HydraHelper {
         assertRendersEqual(subPath: "OpenImageIO/expected.png", config: config)
     }
     #endif // #if canImport(SwiftUsd_PXR_ENABLE_OPENIMAGEIO_SUPPORT) || canImport(SwiftUsd_PXR_ENABLE_IMAGEIO_SUPPORT)
+    
+    // SwiftUsd 5.0.x didn't include the OpenEXR dylibs despite building them,
+    // which caused linker errors for some users. In OpenUSD v25.08,
+    // OpenEXR is a dependency of OpenImageIO, Alembic, and OpenVDB
+    #if canImport(SwiftUsd_PXR_ENABLE_OPENIMAGEIO_SUPPORT) || canImport(SwiftUsd_PXR_ENABLE_ALEMBIC_SUPPORT) || canImport(SwiftUsd_PXR_ENABLE_OPENVDB_SUPPORT)
+    @MainActor func test_rendering_openexr_simpleShading() {
+        // `SwiftUsdTests/UnitTests/Resources/OpenEXR/simpleShading.usda` is a modified version of
+        // https://github.com/PixarAnimationStudios/OpenUSD/tree/v25.05.01/extras/usd/tutorials/simpleShading/simpleShading.usda
+        // `SwiftUsdTests/UnitTests/Resources/OpenEXR/USDLogoLrg.exr` is a modified version of
+        // https://github.com/PixarAnimationStudios/OpenUSD/tree/v25.05.01/extras/usd/tutorials/simpleShading/USDLogoLrg.png
+        let config = RenderConfig(model: urlForResource(subPath: "OpenEXR/simpleShading.usda"), frame: .EarliestTime(), drawMode: .DRAW_SHADED_SMOOTH,
+                                  lights: [(false, (-300, 0, 400, 1), ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )), (true, (0, 0, 0, 1), ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) ))],
+                                  modelViewMatrix: ( (0.7071067811865475, 0, -0.7071067811865476, 0), (0, 1, 0, 0), (0.7071067811865476, 0, 0.7071067811865475, 0), (-70.71067811865478, 0, -494.97474683058323, 1) ),
+                                  projMatrix: ( (1.7320507843521864, 0, 0, 0), (0, 1.7320507843521864, 0, 0), (0, 0, -1.000002000002, -1), (0, 0, -2.000002000002, 0) ))
+        assertRendersEqual(subPath: "OpenEXR/expected.png", config: config)
+    }
+    #endif // #if canImport(SwiftUsd_PXR_ENABLE_OPENIMAGEIO_SUPPORT) || canImport(SwiftUsd_PXR_ENABLE_ALEMBIC_SUPPORT) || canImport(SwiftUsd_PXR_ENABLE_OPENVDB_SUPPORT)
 }
 
 #endif // #if canImport(SwiftUsd_PXR_ENABLE_USD_IMAGING_SUPPORT)

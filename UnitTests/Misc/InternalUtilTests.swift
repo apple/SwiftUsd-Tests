@@ -18,13 +18,15 @@
 // SPDX-License-Identifier: Apache-2.0
 //===----------------------------------------------------------------------===//
 
-#ifndef BridgingHeader_h
-#define BridgingHeader_h
+import XCTest
 
-#include "UnitTests/XLanguage/ARC/XLanguageARC_Cpp.hpp"
-#include "UnitTests/TemporaryImplementations/TemporaryImplementations_Cpp.hpp"
-#include "UnitTests/Wrapping/TfNoticeTests.hpp"
-#include "UnitTests/Misc/InternalUtilTests.hpp"
-#include "UnitTests/Misc/OpenEXRUsage.hpp"
+extension __vector_pair_string_bool: CxxSequence {}
 
-#endif /* BridgingHeader_h */
+final class InternalUtilTests: TemporaryDirectoryHelper {
+    func test_replace_all_t() {
+        let results = Array(testReplaceAllResults())
+        for msgSuccessPair in results {
+            XCTAssertTrue(msgSuccessPair.second, String(msgSuccessPair.first))
+        }
+    }
+}
