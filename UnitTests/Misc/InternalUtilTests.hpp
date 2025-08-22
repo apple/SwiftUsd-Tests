@@ -18,13 +18,15 @@
 // SPDX-License-Identifier: Apache-2.0
 //===----------------------------------------------------------------------===//
 
-#ifndef BridgingHeader_h
-#define BridgingHeader_h
+#ifndef InternalUtilTests_hpp
+#define InternalUtilTests_hpp
 
-#include "UnitTests/XLanguage/ARC/XLanguageARC_Cpp.hpp"
-#include "UnitTests/TemporaryImplementations/TemporaryImplementations_Cpp.hpp"
-#include "UnitTests/Wrapping/TfNoticeTests.hpp"
-#include "UnitTests/Misc/InternalUtilTests.hpp"
-#include "UnitTests/Misc/OpenEXRUsage.hpp"
+#include <stdio.h>
+#include <string>
+#include <vector>
+#include <utility>
 
-#endif /* BridgingHeader_h */
+std::vector<std::pair<std::string, bool>> testReplaceAllResults();
+typedef std::vector<std::pair<std::string, bool>> __vector_pair_string_bool;
+
+#endif /* InternalUtilTests_hpp */
