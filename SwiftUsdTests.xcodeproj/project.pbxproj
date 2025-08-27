@@ -1086,7 +1086,7 @@
 			repositoryURL = "https://github.com/apple/SwiftUsd";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.2;
+				minimumVersion = 5.1.0;
 			};
 		};
 		8E0655902E5F847400689847 /* XCRemoteSwiftPackageReference "SwiftUsd" */ = {
@@ -1094,7 +1094,7 @@
 			repositoryURL = "https://github.com/apple/SwiftUsd";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.2;
+				minimumVersion = 5.1.0;
 			};
 		};
 		8E1CC7822E4A55AB00586320 /* XCRemoteSwiftPackageReference "SwiftUsd" */ = {
@@ -1102,7 +1102,7 @@
 			repositoryURL = "https://github.com/apple/SwiftUsd";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.2;
+				minimumVersion = 5.1.0;
 			};
 		};
 		8E22958F2E42A7C900725E59 /* XCRemoteSwiftPackageReference "SwiftUsd" */ = {
@@ -1110,7 +1110,7 @@
 			repositoryURL = "https://github.com/apple/SwiftUsd";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.2;
+				minimumVersion = 5.1.0;
 			};
 		};
 		8E811C892D8B804700F1A741 /* XCRemoteSwiftPackageReference "SwiftUsd" */ = {
@@ -1118,7 +1118,7 @@
 			repositoryURL = "https://github.com/apple/SwiftUsd";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.2;
+				minimumVersion = 5.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

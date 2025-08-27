@@ -19,6 +19,9 @@
 //===----------------------------------------------------------------------===//
 
 import XCTest
+#if canImport(XLangTestingUtil)
+import XLangTestingUtil
+#endif
 
 extension __vector_pair_string_bool: CxxSequence {}
 
