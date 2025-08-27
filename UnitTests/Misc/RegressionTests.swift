@@ -20,6 +20,9 @@
 
 import XCTest
 import OpenUSD
+#if canImport(XLangTestingUtil)
+import XLangTestingUtil
+#endif
 
 // For any regressions in Swift/Swift-Cxx interop that weren't caught by anything else in this test suite,
 // and for radars that were verified.

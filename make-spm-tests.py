@@ -23,7 +23,7 @@ import argparse
 import shutil
 import os
 
-DEFAULT_SWIFTUSD_VERSION = "5.0.2"
+DEFAULT_SWIFTUSD_VERSION = "5.1.0"
 
 def package_manifest_contents(args):
     version_dependency_line = f"        .package(url: \"https://github.com/apple/SwiftUsd\", from: \"{args.version}\"),\n"
@@ -78,7 +78,10 @@ let package = Package(
         .target(name: "XLangTestingUtil",
                 dependencies: [
                     .product(name: "OpenUSD", package: "SwiftUsd")
-                ]),        
+                ],
+                cxxSettings: [
+                    .headerSearchPath("../../SwiftUsd/swift-package/Sources/_OpenUSD_SwiftBindingHelpers/include/Imath")
+                ]),
         
         .testTarget(name: "UnitTests",
                     dependencies: [
