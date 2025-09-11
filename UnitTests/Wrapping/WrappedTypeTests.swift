@@ -805,7 +805,8 @@ final class WrappedTypeTests: HydraHelper {
     
     // MARK: UsdAppUtilsFrameRecorderWrapper
     
-    func test_UsdAppUtilsFrameRecorderWrapper() {
+    #if canImport(SwiftUsd_PXR_ENABLE_USD_IMAGING_SUPPORT) && !targetEnvironment(simulator)
+    @MainActor func test_UsdAppUtilsFrameRecorderWrapper() {
         let renderUrl = tempDirectory.appending(path: UUID().uuidString + ".png")
         let renderPath = std.string(renderUrl.path(percentEncoded: false))
         
@@ -817,7 +818,8 @@ final class WrappedTypeTests: HydraHelper {
         recorder.SetColorCorrectionMode("sRGB")
         recorder.Record(Overlay.TfWeakPtr(stage), pxr.UsdGeomCamera(pxr.UsdPrim()),
                         .Default(), renderPath)
-        assertImagesEqual(urlForResource(subPath: "Wrapping/UsdAppUtilsFrameRecorderWrapper/expected-out.png"), renderUrl, file: #file, line: #line)
+        try? assertImagesEqual(urlForResource(subPath: "Wrapping/UsdAppUtilsFrameRecorderWrapper/expected-out.png"), renderUrl, file: #file, line: #line)
     }
+    #endif // #if canImport(SwiftUsd_PXR_ENABLE_USD_IMAGING_SUPPORT) && !targetEnvironment(simulator)
 }
 

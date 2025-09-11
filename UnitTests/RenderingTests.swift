@@ -22,7 +22,7 @@ import XCTest
 import Foundation
 import OpenUSD
 
-#if canImport(SwiftUsd_PXR_ENABLE_USD_IMAGING_SUPPORT)
+#if canImport(SwiftUsd_PXR_ENABLE_USD_IMAGING_SUPPORT) && !targetEnvironment(simulator)
 
 struct RenderConfig {
     typealias TupleVector = (Double, Double, Double, Double)
@@ -236,123 +236,32 @@ struct RenderConfig {
     }
 }
 
-class HydraHelper: TemporaryDirectoryHelper {
-    @discardableResult
-    @MainActor func assertRendersEqual(subPath: String, config: RenderConfig, file: StaticString = #filePath, line: UInt = #line) -> URL {
+class HydraHelper: TemporaryDirectoryHelper, ImageDiffTestHelpers {
+    @MainActor func assertRendersEqual(subPath: String, config: RenderConfig, options: ImageDiff.ComparisonOptions = .somewhatStrict, file: StaticString = #filePath, line: UInt = #line) {
         print("----New render----")
         print("subPath: \(subPath)")
         
-        let otherUrl = tempDirectory.appending(path: UUID().uuidString + ".png")
-        config.render(to: otherUrl)
+        let expectedUrl = urlForResource(subPath: subPath)
+        let actualUrl = tempDirectory.appending(path: UUID().uuidString + ".png")
         
-        assertImagesEqual(urlForResource(subPath: subPath), otherUrl, file: file, line: line)
-        return otherUrl
+        config.render(to: actualUrl)
+        assertImagesEqual(expectedUrl, actualUrl, options: options, file: file, line: line)
     }
-    
-    func assertImagesEqual(_ lhs: URL, _ rhs: URL, isEmbreeRender: Bool = false, file: StaticString, line: UInt) {
-        // Make sure the files exist...
-        guard FileManager.default.fileExists(atPath: lhs.path(percentEncoded: false)) else {
-            XCTFail("No data at lhs url: \(lhs)", file: file, line: line)
-            print(rhs)
+        
+    @MainActor func assertImagesEqual(_ expectedUrl: URL, _ actualUrl: URL, options: ImageDiff.ComparisonOptions = .somewhatStrict, file: StaticString, line: UInt) {
+        addImageAttachment(expectedUrl, name: "Lhs", keepAlways: true)
+        addImageAttachment(actualUrl, name: "Rhs", keepAlways: true)
+        var options = options
+        options.differenceImageFileExtension = "jpg"
+        let comparisonResult = ImageDiff.compareImages(expectedUrl, actualUrl, options: options, file: file, line: line)
+        if let diffImage = comparisonResult.differenceImage {
+            addImageAttachment(diffImage, name: "Diff", keepAlways: true)
+        }
+        
+        if comparisonResult.kind != .pass {
+            XCTAssertEqual(comparisonResult.kind, .warn)
+            print(comparisonResult)
             print("")
-            return
-        }
-        
-        guard FileManager.default.fileExists(atPath: rhs.path(percentEncoded: false)) else {
-            XCTFail("No data at rhs url: \(rhs)", file: file, line: line)
-            print(rhs)
-            print("")
-            return
-        }
-        
-        guard let lhsImage = NSImage(contentsOf: lhs) else {
-            XCTFail("Couldn't create lhs image: \(lhs)", file: file, line: line)
-            print("")
-            return
-        }
-        
-        guard let rhsImage = NSImage(contentsOf: rhs) else {
-            XCTFail("Couldn't create rhs image: \(rhs)", file: file, line: line)
-            print("")
-            return
-        }
-        
-        // Make sure the files have the same dimensions
-        let lhsCgImage = lhsImage.cgImage(forProposedRect: nil, context: nil, hints: nil)!
-        let rhsCgImage = rhsImage.cgImage(forProposedRect: nil, context: nil, hints: nil)!
-        
-        if lhsCgImage.width != rhsCgImage.width || lhsCgImage.height != rhsCgImage.height {
-            XCTFail("Image sizes differ: (\(lhsCgImage.width), \(lhsCgImage.height)) vs (\(rhsCgImage.width), \(rhsCgImage.height))", file: file, line: line)
-        }
-        
-        // Create the difference image...
-        var context = CGContext(data: nil, width: lhsCgImage.width, height: lhsCgImage.height,
-                                bitsPerComponent: lhsCgImage.bitsPerComponent, bytesPerRow: lhsCgImage.bytesPerRow,
-                                space: lhsCgImage.colorSpace ?? CGColorSpaceCreateDeviceRGB(), bitmapInfo: lhsCgImage.bitmapInfo.rawValue)
-        if context == nil {
-            // Embree images have no bitmapInfo, so the first CGContext init fails
-            context = CGContext(data: nil, width: lhsCgImage.width, height: lhsCgImage.height,
-                                bitsPerComponent: lhsCgImage.bitsPerComponent, bytesPerRow: lhsCgImage.bytesPerRow,
-                                space: lhsCgImage.colorSpace ?? CGColorSpaceCreateDeviceRGB(), bitmapInfo: CGBitmapInfo(rawValue: CGBitmapInfo.byteOrder32Little.rawValue | CGImageAlphaInfo.noneSkipFirst.rawValue).rawValue)
-            
-        }
-        guard let context else { fatalError() }
-        
-
-        context.setBlendMode(.copy)
-        context.draw(lhsCgImage, in: CGRect(origin: .zero, size: CGSize(width: lhsCgImage.width, height: lhsCgImage.height)), byTiling: false)
-        context.setBlendMode(.difference)
-        context.draw(rhsCgImage, in: CGRect(origin: .zero, size: CGSize(width: lhsCgImage.width, height: lhsCgImage.height)), byTiling: false)
-        
-        // Save the difference image to disk...
-        let differenceImage = context.makeImage()!
-        let differenceUrl = tempDirectory.appending(path: UUID().uuidString + ".png")
-        
-        let imageRep = NSBitmapImageRep(cgImage: differenceImage)
-        imageRep.size = CGSize(width: lhsCgImage.width, height: lhsCgImage.height)
-        let differencePngData = imageRep.representation(using: .png, properties: [:])!
-        try! differencePngData.write(to: differenceUrl)
-
-        
-        let differencePixelData: UnsafeMutableRawPointer = context.data!
-        
-        var badPixelCount = 0
-        var maxBadComponent: UInt8 = 0
-        for x in 0..<lhsCgImage.width {
-            for y in 0..<lhsCgImage.height {
-                let pixelAddress = differencePixelData.advanced(by: y * lhsCgImage.bytesPerRow + 4 * x * lhsCgImage.bitsPerPixel / 8).assumingMemoryBound(to: UInt8.self)
-                let r = pixelAddress.pointee
-                let g = pixelAddress.advanced(by: 1).pointee
-                let b = pixelAddress.advanced(by: 2).pointee
-                let a = pixelAddress.advanced(by: 3).pointee
-                
-                let badPixel = if a != 255 && a != 0 { true }
-                               else if r >= 8 || g >= 8 || b >= 8 { true }
-                               else { false }
-                
-                if badPixel {
-                    badPixelCount += 1
-                    maxBadComponent = max(maxBadComponent, r, g, b)
-                    if !isEmbreeRender {
-                        XCTFail("Found bad pixel at (\(x), \(y)): (\(r), \(g), \(b), \(a))", file: file, line: line)
-                        print(differenceUrl)
-                        print(lhs)
-                        print(rhs)
-                        print("")
-                        return
-                    }
-                }
-            }
-        }
-        
-        if isEmbreeRender {
-            let fractionBadPixels = Double(badPixelCount) / (Double(lhsCgImage.width) * Double(lhsCgImage.height))
-            if fractionBadPixels > 0.01 {
-                XCTFail("\(fractionBadPixels * 100)% Embree render pixels were bad")
-            }
-            if maxBadComponent > 108 {
-                XCTFail("Embree had maximum bad color component \(maxBadComponent)")
-            }
         }
     }
 }
@@ -570,6 +479,26 @@ final class RenderingTests: HydraHelper {
         assertRendersEqual(subPath: "Rendering/mxmetallic.png", config: config)
     }
     
+    @MainActor func test_rendering_mxmetallic_closeup() {
+        // `SwiftUsdTests/UnitTests/Resources/Rendering/mxmetallic.usdz` is a usdzip'd version of
+        // https://github.com/PixarAnimationStudios/OpenUSD/tree/v25.05.01/pxr/usdImaging/usdImagingGL/testenv/testUsdImagingGLMaterialXvsNative/materialXmetallic.usda.
+        let config = RenderConfig(model: urlForResource(subPath: "Rendering/mxmetallic.usdz"), frame: .EarliestTime(), drawMode: .DRAW_SHADED_SMOOTH,
+                                  lights: [(false, (0, -103.80751, -37, 1), ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )), (true, (0, 0, 0, 1), ( (1, 0, 0, 0), (0, 2.220446049250313e-16, 1, 0), (0, -1, 2.220446049250313e-16, 0), (0, 0, 0, 1) ))],
+                                  modelViewMatrix: ( (1, 0, 0, 0), (0, 2.220446049250313e-16, -1, 0), (0, 1, 2.220446049250313e-16, 0), (0, 0, -13.80751417888784, 1) ),
+                                  projMatrix: ( (1.7320507843521864, 0, 0, 0), (0, 1.7320507843521864, 0, 0), (0, 0, -1.000002000002, -1), (0, 0, -2.000002000002, 0) ))
+        assertRendersEqual(subPath: "Rendering/mxmetallic_closeup.png", config: config, options: .veryStrict)
+    }
+    
+    @MainActor func test_rendering_udims() {
+        // Files at `SwiftUsdTests/UnitTests/Resources/Rendering/udims` are taken from
+        // https://github.com/PixarAnimationStudios/OpenUSD/tree/v25.11/pxr/usdImaging/usdImagingGL/testenv/testUsdImagingGLUsdUdims
+        let config = RenderConfig(model: urlForResource(subPath: "Rendering/udims/usdUdims.usda"), frame: .EarliestTime(), drawMode: .DRAW_SHADED_SMOOTH,
+                                  lights: [(false, (0, -103.80751, -37, 1), ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )), (true, (0, 0, 0, 1), ( (1, 0, 0, 0), (0, 2.220446049250313e-16, 1, 0), (0, -1, 2.220446049250313e-16, 0), (0, 0, 0, 1) ))],
+                                  modelViewMatrix: ( (1, 0, 0, 0), (0, 0, -1, 0), (0, 1, 0, 0), (0, 9, -25, 1) ),
+                                  projMatrix: ( (1.7320507843521864, 0, 0, 0), (0, 1.7320507843521864, 0, 0), (0, 0, -1.000002000002, -1), (0, 0, -2.000002000002, 0) ))
+        assertRendersEqual(subPath: "Rendering/udims/expected-out.png", config: config, options: .veryStrict)
+    }
+    
     #if canImport(SwiftUsd_PXR_ENABLE_OPENVDB_SUPPORT)
     @MainActor func test_rendering_openvdb_smoke() {
         let config = RenderConfig(model: urlForResource(subPath: "Rendering/smoke.usdz"), frame: .EarliestTime(), drawMode: .DRAW_SHADED_SMOOTH,
@@ -610,6 +539,9 @@ final class RenderingTests: HydraHelper {
         assertRendersEqual(subPath: "OpenEXR/expected.png", config: config)
     }
     #endif // #if canImport(SwiftUsd_PXR_ENABLE_OPENIMAGEIO_SUPPORT) || canImport(SwiftUsd_PXR_ENABLE_ALEMBIC_SUPPORT) || canImport(SwiftUsd_PXR_ENABLE_OPENVDB_SUPPORT)
+    
+    
 }
-
-#endif // #if canImport(SwiftUsd_PXR_ENABLE_USD_IMAGING_SUPPORT)
+#else
+class HydraHelper: TemporaryDirectoryHelper {}
+#endif // #if canImport(SwiftUsd_PXR_ENABLE_USD_IMAGING_SUPPORT) && !targetEnvironment(simulator)

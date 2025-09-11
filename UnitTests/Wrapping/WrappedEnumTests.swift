@@ -21,9 +21,10 @@
 import XCTest
 import OpenUSD
 
-#if DEBUG
+#if DEBUG && compiler(<6.2)
 // https://github.com/swiftlang/swift/pull/79791 (Runtime crash using `==` on two instances of C++ enum `pxr.HdCamera.Projection`)
-#warning("Disabling wrapped enum tests in debug")
+// Fixed in Swift 6.2
+#warning("Disabling wrapped enum tests in debug before Swift 6.2")
 #else
 final class WrappedEnumTests: TemporaryDirectoryHelper {
     // MARK: Arch

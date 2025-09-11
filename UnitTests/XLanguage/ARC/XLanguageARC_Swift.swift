@@ -708,7 +708,7 @@ final class UsdStage_XLanguageARCTests: TemporaryDirectoryHelper {
     }
     func test_smartLayer_cppReturn_noTemporary_cppPass_strong_swiftEntry() {
         do {
-            xlarcf_cpp.smartLayer_passStrong(xlarcf_cpp.smartLayer_return("HelloWorld.usda"))
+            xlarcf_cpp.smartLayer_passStrong(xlarcf_cpp.smartLayer_return(pathForStage(named: "HelloWorld.usda")))
         }
         assertClosed("HelloWorld.usda")
     }

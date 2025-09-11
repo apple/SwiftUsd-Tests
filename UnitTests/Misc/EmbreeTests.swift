@@ -281,14 +281,14 @@ fileprivate class Renderer {
 
 #if canImport(SwiftUsd_PXR_ENABLE_EMBREE_SUPPORT)
 final class EmbreeTests: HydraHelper {
-    func testBiplane() {
+    @MainActor func testBiplane() {
         let modelUrl = urlForResource(subPath: "Embree/toy_biplane_idle.usdz")
         let renderer = Renderer(path: modelUrl.path(percentEncoded: false))
         
         let renderUrl = tempDirectory.appending(path: UUID().uuidString + ".png")
         renderer.renderToFile(filepath: renderUrl.path(percentEncoded: false), viewSize: pxr.GfVec2i(512, 512))
         
-        assertImagesEqual(urlForResource(subPath: "Embree/toy_biplane_idle.png"), renderUrl, isEmbreeRender: true, file: #file, line: #line)
+        try? assertImagesEqual(urlForResource(subPath: "Embree/toy_biplane_idle.png"), renderUrl, file: #file, line: #line)
     }
 }
 #endif // #if canImport(SwiftUsd_PXR_ENABLE_EMBREE_SUPPORT)

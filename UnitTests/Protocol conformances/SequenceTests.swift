@@ -577,9 +577,9 @@ final class SequenceTests: TemporaryDirectoryHelper {
         XCTAssertEqual(defaultStride, decodedDefaultStride)
         
         let customStride = pxr.UsdUtilsTimeCodeRange(3, 7, 2)
-        #if !DEBUG
+        #if !DEBUG || compiler(>=6.2)
         XCTAssertEqual(Array(customStride), [3, 5, 7])
-        #endif // #if !DEBUG
+        #endif // #if !DEBUG || compiler(>=6.2)
         let customStrideData = try! JSONEncoder().encode(customStride)
         let decodedCustomStride = try! JSONDecoder().decode(pxr.UsdUtilsTimeCodeRange.self, from: customStrideData)
         XCTAssertEqual(customStride, decodedCustomStride)
