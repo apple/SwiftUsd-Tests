@@ -25,7 +25,29 @@ import Synchronization
 final class SequenceTests: TemporaryDirectoryHelper {
     
     func assertConforms<T>(_ t: T.Type) {
-        XCTAssertTrue(T.self is any Sequence.Type)
+        // rdar://165150073 (Runtime crash during `T.self is any Protocol.Type` with C++ type (Regression))
+        //
+        // When using Swift 6.2, cross-compiling, targeting an *OS 26.x platform, in Debug, `T` is a `VtArray<U>` specialization
+        // and `Protocol` is a standard library protocol (not all standard library protocols cause this issue),
+        // then `T.self is any Protocol.Type` crashes at runtime.
+        // So, avoid the `is` check in that case.
+
+        var shouldDoIsCheck = true
+        #if compiler(>=6.2) && compiler(<6.3)
+        #if !os(macOS)
+        if #available(iOS 26, visionOS 26, *) {
+            #if DEBUG
+            if T.self is any __Overlay.VtArray_WithoutCodableProtocol.Type {
+                shouldDoIsCheck = false
+            }
+            #endif // #if DEBUG
+        }
+        #endif // #if !os(macOS)
+        #endif // #if compiler(>=6.2) && compiler(<6.3)
+
+        if shouldDoIsCheck {
+            XCTAssertTrue(T.self is any Sequence.Type)
+        }
     }
     
     private func _descriptionForPrim(_ p: pxr.UsdPrim) -> String {
