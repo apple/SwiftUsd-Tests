@@ -70,7 +70,7 @@ import PackageDescription
 
 let package = Package(
     name: "SPM-Tests",
-    platforms: [.macOS(.v15)],
+    platforms: [.macOS(.v15), .iOS(.v18), .visionOS(.v2)],
     dependencies: [
 {dependency_lines}
     ],
@@ -89,11 +89,11 @@ let package = Package(
                         "XLangTestingUtil"
                     ],
                     resources: [
-                        .copy("Resources")
+                        .copy("TestResources")
                     ],
                     swiftSettings: [.interoperabilityMode(.Cxx)])
     ],
-    swiftLanguageVersions: [.v5],
+    swiftLanguageModes: [.v5],
     cxxLanguageStandard: .gnucxx17
 )"""
 
@@ -161,12 +161,17 @@ if __name__ == "__main__":
 
         if "Resources" in [x.stem for x in list(dirpath.parents) + [dirpath]]:
             # Copy resources instead of symlinking, because runtime copying
-            # of symlinked files not in the resources bundle doesn't work
+            # of symlinked files not in the resources bundle doesn't work.
+            # 
+            # Copy to TestResources instead of Resources, because
+            # xcodebuild of SPM-Tests from CLI runs into code-signing issues
+            # on SPM_Tests-UnitTests.bundle, because bundles shouldn't
+            # have top-level directories named `Resources`
             if dirpath.stem == "Resources":
-                # shutil.copy_tree(x, unittests_dir / dirpath)
                 copy_from = xcodeproj_unit_tests_dir / dirpath
                 copy_to = unittests_dir / dirpath
                 copy_to.rmdir()
+                copy_to = copy_to.parent / "TestResources"
                 shutil.copytree(copy_from, copy_to)
             
             continue

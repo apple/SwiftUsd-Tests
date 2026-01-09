@@ -98,12 +98,18 @@ class TemporaryDirectoryHelper: XCTestCase {
         #else
         let bundleUrl = Bundle(for: type(of: self)).bundleURL
         #endif // #if canImport(XLangTestingUtil)
-
-        #if OPENUSD_SWIFT_BUILD_FROM_CLI || !os(macOS)
-        return bundleUrl.appending(path: "Resources")
+        
+        #if os(macOS) && !OPENUSD_SWIFT_BUILD_FROM_CLI
+        let intermediaryUrl = bundleUrl.appending(path: "Contents/Resources")
         #else
-        return bundleUrl.appending(path: "Contents/Resources/Resources")
-        #endif // #if OPENUSD_SWIFT_BUILD_FROM_CLI
+        let intermediaryUrl = bundleUrl
+        #endif
+        
+        #if canImport(XLangTestingUtil)
+        return intermediaryUrl.appending(path: "TestResources")
+        #else
+        return intermediaryUrl.appending(path: "Resources")
+        #endif
     }
 
 }

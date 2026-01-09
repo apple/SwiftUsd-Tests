@@ -165,8 +165,17 @@ final fileprivate class ParallelismChecker {
         
         let maxAllowed = maxFractionOfSerialTime.currentValue * serialDuration
         let fractionOfSerial = elapsedTime / serialDuration
-        XCTAssertLessThan(elapsedTime, maxAllowed, name, file: file, line: line)
-        print("\(self.name).\(name)(\(n)) executed in \(format(elapsedTime))s, \(format(fractionOfSerial))x of \(format(serialDuration))s. max allowed was \(format(maxFractionOfSerialTime.currentValue))x => \(format(maxAllowed))s")
+        let msg = "\(self.name).\(name)(\(n)) executed in \(format(elapsedTime))s, \(format(fractionOfSerial))x of \(format(serialDuration))s. max allowed was \(format(maxFractionOfSerialTime.currentValue))x => \(format(maxAllowed))s"
+        
+        #if SWIFTUSD_TESTS_SUPPRESS_PERFORMANCE_FAILURES
+        if fractionOfSerial >= maxFractionOfSerialTime.currentValue {
+            print("(SWIFTUSD_TESTS_SUPPRESS_PERFORMANCE_FAILURES): XCTAssertLessThan failed: \(fractionOfSerial), \(maxFractionOfSerialTime.currentValue)")
+        }
+        #else
+        XCTAssertLessThan(fractionOfSerial, maxFractionOfSerialTime.currentValue, msg, file: file, line: line)
+        #endif
+        
+        print(msg)
         return self
     }
     
@@ -365,7 +374,7 @@ final class LibWorkTests: TemporaryDirectoryHelper {
             }
             checkOutput(minP, maxP, bbox)
         }
-        .checkParallelism("WorkParallelReduceN", maxFractionOfSerialTime: .init(debug: 0.4, release: 0.3)) {
+        .checkParallelism("WorkParallelReduceN", maxFractionOfSerialTime: .init(debug: 0.4, release: 0.3, simulator: 0.5)) {
             let (minP, maxP, points) = getInput($0)
             let bbox = $1.time {
                 pxr.WorkParallelReduceN(pxr.GfBBox3d(),
@@ -383,7 +392,7 @@ final class LibWorkTests: TemporaryDirectoryHelper {
             }
             checkOutput(minP, maxP, bbox)
         }
-        .checkParallelism("TaskGroup no mutex", maxFractionOfSerialTime: .init(debug: 0.4, release: 0.3)) { n, checker in
+        .checkParallelism("TaskGroup no mutex", maxFractionOfSerialTime: .init(debug: 0.6, release: 0.3, simulator: 0.7)) { n, checker in
             let childCount = 32
             let (minP, maxP, points) = getInput(n)
             

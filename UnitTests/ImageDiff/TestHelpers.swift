@@ -93,7 +93,7 @@ extension ImageDiffTestHelpers {
     }
 }
 
-@MainActor internal func addImageAttachment(_ image: URL, name: String, keepAlways: Bool) {
+@MainActor internal func addImageAttachment(_ image: URL, name: String, keepAlways: Bool, file: StaticString = #file, line: UInt = #line, function: String = #function) {
     let attachment = XCTAttachment(contentsOfFile: image)
     attachment.name = name
     attachment.lifetime = keepAlways ? .keepAlways : .deleteOnSuccess
@@ -101,4 +101,49 @@ extension ImageDiffTestHelpers {
     XCTContext.runActivity(named: name) {
         $0.add(attachment)
     }
+    
+    addSwiftBuildAttachmentIfNeeded(attachment: image, name: name + "." + image.pathExtension, file: file, line: line, function: function)
+}
+
+internal func addComparisonResultAttachment(_ comparisonResult: ImageDiff.ComparisonResult, file: StaticString = #file, line: UInt = #line, function: String = #function) {
+    let data = comparisonResult.description.data(using: .utf8)!
+    let tmpFile = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString + ".imagecomparison.txt")
+    try! data.write(to: tmpFile)
+    addSwiftBuildAttachmentIfNeeded(attachment: tmpFile, name: "imagecomparison.txt", file: file, line: line, function: function)
+}
+
+fileprivate func addSwiftBuildAttachmentIfNeeded(attachment: URL, name: String, file: StaticString = #file, line: UInt = #line, function: String = #function) {
+    #if OPENUSD_SWIFT_BUILD_FROM_CLI
+    guard let resultBundlePath = ProcessInfo.processInfo.environment["RESULT_BUNDLE_PATH"] else {
+        print("RESULT_BUNDLE_PATH is unset")
+        return
+    }
+    
+    let fm = FileManager.default
+    var isDirectory: ObjCBool = false
+    if fm.fileExists(atPath: resultBundlePath, isDirectory: &isDirectory) {
+        if !isDirectory.boolValue {
+            print("$RESULT_BUNDLE_PATH is not a directory")
+            return
+        }
+    } else {
+        do {
+            try fm.createDirectory(atPath: resultBundlePath, withIntermediateDirectories: true)
+        } catch {
+            print("Error creating $RESULT_BUNDLE_PATH: \(error)")
+            return
+        }
+    }
+    
+    let basename = "\(function)__\(file)__\(line)__\(name)"
+        .replacingOccurrences(of: "/", with: "_")
+        .replacingOccurrences(of: "(", with: "")
+        .replacingOccurrences(of: ")", with: "")
+    let destDir = URL(fileURLWithPath: resultBundlePath).appending(path: basename)
+    do {
+        try fm.copyItem(at: attachment, to: destDir)
+    } catch {
+        print("Error copying \(attachment) to \(destDir): \(error)")
+    }
+    #endif
 }
