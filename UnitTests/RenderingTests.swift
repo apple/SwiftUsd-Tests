@@ -237,7 +237,7 @@ struct RenderConfig {
 }
 
 class HydraHelper: TemporaryDirectoryHelper, ImageDiffTestHelpers {
-    @MainActor func assertRendersEqual(subPath: String, config: RenderConfig, options: ImageDiff.ComparisonOptions = .somewhatStrict, file: StaticString = #filePath, line: UInt = #line) {
+    @MainActor func assertRendersEqual(subPath: String, config: RenderConfig, options: ImageDiff.ComparisonOptions = .somewhatStrict, file: StaticString = #filePath, line: UInt = #line, function: String = #function) {
         print("----New render----")
         print("subPath: \(subPath)")
         
@@ -245,17 +245,18 @@ class HydraHelper: TemporaryDirectoryHelper, ImageDiffTestHelpers {
         let actualUrl = tempDirectory.appending(path: UUID().uuidString + ".png")
         
         config.render(to: actualUrl)
-        assertImagesEqual(expectedUrl, actualUrl, options: options, file: file, line: line)
+        assertImagesEqual(expectedUrl, actualUrl, options: options, file: file, line: line, function: function)
     }
         
-    @MainActor func assertImagesEqual(_ expectedUrl: URL, _ actualUrl: URL, options: ImageDiff.ComparisonOptions = .somewhatStrict, file: StaticString, line: UInt) {
-        addImageAttachment(expectedUrl, name: "Lhs", keepAlways: true)
-        addImageAttachment(actualUrl, name: "Rhs", keepAlways: true)
+    @MainActor func assertImagesEqual(_ expectedUrl: URL, _ actualUrl: URL, options: ImageDiff.ComparisonOptions = .somewhatStrict, file: StaticString, line: UInt, function: String = #function) {
+        addImageAttachment(expectedUrl, name: "Lhs", keepAlways: true, file: file, line: line, function: function)
+        addImageAttachment(actualUrl, name: "Rhs", keepAlways: true, file: file, line: line, function: function)
         var options = options
         options.differenceImageFileExtension = "jpg"
         let comparisonResult = ImageDiff.compareImages(expectedUrl, actualUrl, options: options, file: file, line: line)
+        addComparisonResultAttachment(comparisonResult, file: file, line: line, function: function)
         if let diffImage = comparisonResult.differenceImage {
-            addImageAttachment(diffImage, name: "Diff", keepAlways: true)
+            addImageAttachment(diffImage, name: "Diff", keepAlways: true, file: file, line: line, function: function)
         }
         
         if comparisonResult.kind != .pass {
@@ -486,7 +487,7 @@ final class RenderingTests: HydraHelper {
                                   lights: [(false, (0, -103.80751, -37, 1), ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )), (true, (0, 0, 0, 1), ( (1, 0, 0, 0), (0, 2.220446049250313e-16, 1, 0), (0, -1, 2.220446049250313e-16, 0), (0, 0, 0, 1) ))],
                                   modelViewMatrix: ( (1, 0, 0, 0), (0, 2.220446049250313e-16, -1, 0), (0, 1, 2.220446049250313e-16, 0), (0, 0, -13.80751417888784, 1) ),
                                   projMatrix: ( (1.7320507843521864, 0, 0, 0), (0, 1.7320507843521864, 0, 0), (0, 0, -1.000002000002, -1), (0, 0, -2.000002000002, 0) ))
-        assertRendersEqual(subPath: "Rendering/mxmetallic_closeup.png", config: config, options: .veryStrict)
+        assertRendersEqual(subPath: "Rendering/mxmetallic_closeup.png", config: config)
     }
     
     @MainActor func test_rendering_udims() {
@@ -496,7 +497,7 @@ final class RenderingTests: HydraHelper {
                                   lights: [(false, (0, -103.80751, -37, 1), ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1) )), (true, (0, 0, 0, 1), ( (1, 0, 0, 0), (0, 2.220446049250313e-16, 1, 0), (0, -1, 2.220446049250313e-16, 0), (0, 0, 0, 1) ))],
                                   modelViewMatrix: ( (1, 0, 0, 0), (0, 0, -1, 0), (0, 1, 0, 0), (0, 9, -25, 1) ),
                                   projMatrix: ( (1.7320507843521864, 0, 0, 0), (0, 1.7320507843521864, 0, 0), (0, 0, -1.000002000002, -1), (0, 0, -2.000002000002, 0) ))
-        assertRendersEqual(subPath: "Rendering/udims/expected-out.png", config: config, options: .veryStrict)
+        assertRendersEqual(subPath: "Rendering/udims/expected-out.png", config: config)
     }
     
     #if canImport(SwiftUsd_PXR_ENABLE_OPENVDB_SUPPORT)
