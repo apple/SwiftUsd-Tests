@@ -1226,33 +1226,39 @@ final class WrappedEnumTests: TemporaryDirectoryHelper {
         let y: pxr.UsdPrimCompositionQuery.ArcTypeFilter = .Variant
         XCTAssertEqual(x, y)
     }
+    func test_UsdPrimCompositionQuery_ArcTypeFilter_Relocate() {
+        let x: pxr.UsdPrimCompositionQuery.ArcTypeFilter = Overlay.UsdPrimCompositionQuery.ArcTypeFilter.Relocate
+        XCTAssertEqual(x.rawValue, 6)
+        let y: pxr.UsdPrimCompositionQuery.ArcTypeFilter = .Relocate
+        XCTAssertEqual(x, y)
+    }
     func test_UsdPrimCompositionQuery_ArcTypeFilter_ReferenceOrPayload() {
         let x: pxr.UsdPrimCompositionQuery.ArcTypeFilter = Overlay.UsdPrimCompositionQuery.ArcTypeFilter.ReferenceOrPayload
-        XCTAssertEqual(x.rawValue, 6)
+        XCTAssertEqual(x.rawValue, 7)
         let y: pxr.UsdPrimCompositionQuery.ArcTypeFilter = .ReferenceOrPayload
         XCTAssertEqual(x, y)
     }
     func test_UsdPrimCompositionQuery_ArcTypeFilter_InheritOrSpecialize() {
         let x: pxr.UsdPrimCompositionQuery.ArcTypeFilter = Overlay.UsdPrimCompositionQuery.ArcTypeFilter.InheritOrSpecialize
-        XCTAssertEqual(x.rawValue, 7)
+        XCTAssertEqual(x.rawValue, 8)
         let y: pxr.UsdPrimCompositionQuery.ArcTypeFilter = .InheritOrSpecialize
         XCTAssertEqual(x, y)
     }
     func test_UsdPrimCompositionQuery_ArcTypeFilter_NotReferenceOrPayload() {
         let x: pxr.UsdPrimCompositionQuery.ArcTypeFilter = Overlay.UsdPrimCompositionQuery.ArcTypeFilter.NotReferenceOrPayload
-        XCTAssertEqual(x.rawValue, 8)
+        XCTAssertEqual(x.rawValue, 9)
         let y: pxr.UsdPrimCompositionQuery.ArcTypeFilter = .NotReferenceOrPayload
         XCTAssertEqual(x, y)
     }
     func test_UsdPrimCompositionQuery_ArcTypeFilter_NotInheritOrSpecialize() {
         let x: pxr.UsdPrimCompositionQuery.ArcTypeFilter = Overlay.UsdPrimCompositionQuery.ArcTypeFilter.NotInheritOrSpecialize
-        XCTAssertEqual(x.rawValue, 9)
+        XCTAssertEqual(x.rawValue, 10)
         let y: pxr.UsdPrimCompositionQuery.ArcTypeFilter = .NotInheritOrSpecialize
         XCTAssertEqual(x, y)
     }
     func test_UsdPrimCompositionQuery_ArcTypeFilter_NotVariant() {
         let x: pxr.UsdPrimCompositionQuery.ArcTypeFilter = Overlay.UsdPrimCompositionQuery.ArcTypeFilter.NotVariant
-        XCTAssertEqual(x.rawValue, 10)
+        XCTAssertEqual(x.rawValue, 11)
         let y: pxr.UsdPrimCompositionQuery.ArcTypeFilter = .NotVariant
         XCTAssertEqual(x, y)
     }
@@ -3124,21 +3130,27 @@ final class WrappedEnumTests: TemporaryDirectoryHelper {
         let y: pxr.HgiTextureType = .HgiTextureType3D
         XCTAssertEqual(x, y)
     }
+    func test_HgiTextureTypeCubemap() {
+        let x: pxr.HgiTextureType = Overlay.HgiTextureTypeCubemap
+        XCTAssertEqual(x.rawValue, 3)
+        let y: pxr.HgiTextureType = .HgiTextureTypeCubemap
+        XCTAssertEqual(x, y)
+    }
     func test_HgiTextureType1DArray() {
         let x: pxr.HgiTextureType = Overlay.HgiTextureType1DArray
-        XCTAssertEqual(x.rawValue, 3)
+        XCTAssertEqual(x.rawValue, 4)
         let y: pxr.HgiTextureType = .HgiTextureType1DArray
         XCTAssertEqual(x, y)
     }
     func test_HgiTextureType2DArray() {
         let x: pxr.HgiTextureType = Overlay.HgiTextureType2DArray
-        XCTAssertEqual(x.rawValue, 4)
+        XCTAssertEqual(x.rawValue, 5)
         let y: pxr.HgiTextureType = .HgiTextureType2DArray
         XCTAssertEqual(x, y)
     }
     func test_HgiTextureTypeCount() {
         let x: pxr.HgiTextureType = Overlay.HgiTextureTypeCount
-        XCTAssertEqual(x.rawValue, 5)
+        XCTAssertEqual(x.rawValue, 6)
         let y: pxr.HgiTextureType = .HgiTextureTypeCount
         XCTAssertEqual(x, y)
     }
@@ -3397,9 +3409,15 @@ final class WrappedEnumTests: TemporaryDirectoryHelper {
         let y: pxr.HgiBufferUsageBits = .HgiBufferUsageIndirect
         XCTAssertEqual(x, y)
     }
+    func test_HgiBufferUsageUpload() {
+        let x: pxr.HgiBufferUsageBits = Overlay.HgiBufferUsageUpload
+        XCTAssertEqual(x.rawValue, 32)
+        let y: pxr.HgiBufferUsageBits = .HgiBufferUsageUpload
+        XCTAssertEqual(x, y)
+    }
     func test_HgiBufferUsageCustomBitsBegin() {
         let x: pxr.HgiBufferUsageBits = Overlay.HgiBufferUsageCustomBitsBegin
-        XCTAssertEqual(x.rawValue, 32)
+        XCTAssertEqual(x.rawValue, 64)
         let y: pxr.HgiBufferUsageBits = .HgiBufferUsageCustomBitsBegin
         XCTAssertEqual(x, y)
     }

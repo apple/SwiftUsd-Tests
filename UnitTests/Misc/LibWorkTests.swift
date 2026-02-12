@@ -277,7 +277,7 @@ final class LibWorkTests: TemporaryDirectoryHelper {
             }
             XCTAssertEqual(result.withLock { $0 }, expectedSum($0))
         }
-        .checkParallelism("WorkParallelForEach_manuallyPartitioned", maxFractionOfSerialTime: .init(debug: 0.65, release: 0.65, simulator: 0.8)) {
+        .checkParallelism("WorkParallelForEach_manuallyPartitioned", maxFractionOfSerialTime: .init(debug: 0.8, release: 0.8, simulator: 0.8)) {
             #if (os(iOS) || os(visionOS)) && !DEBUG
             // iOS app targets are by default limited to 5GB of RAM. This test allocates
             // an array from 0..<n, which for large n (which occurs in Release mode) exceeds

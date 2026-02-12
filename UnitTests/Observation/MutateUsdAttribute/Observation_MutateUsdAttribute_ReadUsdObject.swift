@@ -83,13 +83,13 @@ final class Observation_MutateUsdAttribute_ReadUsdObject: ObservationHelper {
         let (token, value) = registerNotification(attr.GetMetadata("connectionPaths", &vtValue))
         XCTAssertTrue(value)
         var listOp = pxr.SdfPathListOp()
-        listOp.SetPrependedItems(["/foo.displayColor"], nil)
+        listOp.SetExplicitItems(["/foo.displayColor"], nil)
         XCTAssertEqual(vtValue, pxr.VtValue(listOp))
         
         expectingSomeNotifications([token], attr.RemoveConnection("/foo.displayColor"))
         XCTAssertTrue(attr.GetMetadata("connectionPaths", &vtValue))
         listOp.Clear()
-        listOp.SetDeletedItems(["/foo.displayColor"], nil)
+        listOp.SetExplicitItems([], nil)
         XCTAssertEqual(vtValue, pxr.VtValue(listOp))
     }
     

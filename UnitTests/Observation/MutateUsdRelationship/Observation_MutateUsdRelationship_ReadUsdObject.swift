@@ -46,11 +46,11 @@ final class Observation_MutateUsdRelationship_ReadUsdObject: ObservationHelper {
         var vtValue = pxr.VtValue()
         let (token, value) = registerNotification(Overlay.GetMetadata(rel, "targetPaths", &vtValue))
         XCTAssertTrue(value)
-        XCTAssertEqual(vtValue, pxr.VtValue(pxr.SdfPathListOp.Create(["/foo.radius"], [], [])))
+        XCTAssertEqual(vtValue, pxr.VtValue(pxr.SdfPathListOp.CreateExplicit(["/foo.radius"])))
         
         expectingSomeNotifications([token], rel.RemoveTarget(".radius"))
         XCTAssertTrue(Overlay.GetMetadata(rel, "targetPaths", &vtValue))
-        XCTAssertEqual(vtValue, pxr.VtValue(pxr.SdfPathListOp.Create([], [], ["/foo.radius"])))
+        XCTAssertEqual(vtValue, pxr.VtValue(pxr.SdfPathListOp.CreateExplicit([])))
     }
 
     // MARK: SetTargets

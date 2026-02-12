@@ -41,7 +41,7 @@ final class TransformationsTimeSampledAnimationAndLayerOffsets: TutorialsHelper 
         
         func Step1() {
             let stage = MakeInitialStage(path: "Step1.usda")
-            stage.SetMetadata("comment", "Step 1: Start and end time codes" as std.string)
+            stage.SetMetadata("comment", pxr.VtValue("Step 1: Start and end time codes" as std.string))
             stage.Save()
             XCTAssertEqual(try contentsOfStage(named: "Step1.usda"), try expected(2))
         }
@@ -55,7 +55,7 @@ final class TransformationsTimeSampledAnimationAndLayerOffsets: TutorialsHelper 
         
         func Step2() {
             let stage = MakeInitialStage(path: "Step2.usda")
-            stage.SetMetadata("comment", "Step 2: Geometry reference" as std.string)
+            stage.SetMetadata("comment", pxr.VtValue("Step 2: Geometry reference" as std.string))
             let _ = AddReferenceToGeometry(stage: stage, path: "/Top")
             stage.Save()
             XCTAssertEqual(try contentsOfStage(named: "Step2.usda"), try expected(3))
@@ -69,7 +69,7 @@ final class TransformationsTimeSampledAnimationAndLayerOffsets: TutorialsHelper 
         
         func Step3() {
             let stage = MakeInitialStage(path: "Step3.usda")
-            stage.SetMetadata("comment", "Step 3: Adding spin animation" as std.string)
+            stage.SetMetadata("comment", pxr.VtValue("Step 3: Adding spin animation" as std.string))
             let top = AddReferenceToGeometry(stage: stage, path: "/Top")
             AddSpin(top: top)
             stage.Save()
@@ -83,7 +83,7 @@ final class TransformationsTimeSampledAnimationAndLayerOffsets: TutorialsHelper 
         
         func Step4() {
             let stage = MakeInitialStage(path: "Step4.usda")
-            stage.SetMetadata("comment", "Step 4: Adding tilt" as std.string)
+            stage.SetMetadata("comment", pxr.VtValue("Step 4: Adding tilt" as std.string))
             let top = AddReferenceToGeometry(stage: stage, path: "/Top")
             AddTilt(top: top)
             AddSpin(top: top)
@@ -93,7 +93,7 @@ final class TransformationsTimeSampledAnimationAndLayerOffsets: TutorialsHelper 
         
         func Step4a() {
             let stage = MakeInitialStage(path: "Step4a.usda")
-            stage.SetMetadata("comment", "Step 4a: Adding spin, then tilt" as std.string)
+            stage.SetMetadata("comment", pxr.VtValue("Step 4a: Adding spin, then tilt" as std.string))
             let top = AddReferenceToGeometry(stage: stage, path: "/Top")
             AddSpin(top: top)
             AddTilt(top: top)
@@ -113,7 +113,7 @@ final class TransformationsTimeSampledAnimationAndLayerOffsets: TutorialsHelper 
         
         func Step5() {
             let stage = MakeInitialStage(path: "Step5.usda")
-            stage.SetMetadata("comment", "Step 5: Adding precession and offset" as std.string)
+            stage.SetMetadata("comment", pxr.VtValue("Step 5: Adding precession and offset" as std.string))
             let top = AddReferenceToGeometry(stage: stage, path: "/Top")
             AddPrecession(top: top)
             AddOffset(top: top)
@@ -127,7 +127,7 @@ final class TransformationsTimeSampledAnimationAndLayerOffsets: TutorialsHelper 
             let anim_layer_path: std.string = "./Step5.usda"
             
             let stage = MakeInitialStage(path: "Step6.usda")
-            stage.SetMetadata("comment", "Step 6: Layer offsets and animation" as std.string)
+            stage.SetMetadata("comment", pxr.VtValue("Step 6: Layer offsets and animation" as std.string))
             
             let _ = pxr.UsdGeomXform.Define(Overlay.TfWeakPtr(stage), "/Left")
             let left_top = pxr.UsdGeomXform.Define(Overlay.TfWeakPtr(stage), "/Left/Top")

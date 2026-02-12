@@ -204,10 +204,10 @@ final class BoolInitTests: TemporaryDirectoryHelper {
         XCTAssertTrue(Bool(pxr.ArResolvedPath(pathForStage(named: "Main.usda"))))
     }
     
-    func test_UsdZipFile() {
-        XCTAssertFalse(Bool(pxr.UsdZipFile()))
-        XCTAssertTrue(Bool(pxr.UsdZipFile.Open(std.string(urlForResource(subPath: "Wrapping/usdzipfileiteratorwrapper.usdz").relativePath))))
-        XCTAssertFalse(Bool(pxr.UsdZipFile.Open("/this/path/doesnt/exist.usdz")))
+    func test_SdfZipFile() {
+        XCTAssertFalse(Bool(pxr.SdfZipFile()))
+        XCTAssertTrue(Bool(pxr.SdfZipFile.Open(std.string(urlForResource(subPath: "Wrapping/usdzipfileiteratorwrapper.usdz").relativePath))))
+        XCTAssertFalse(Bool(pxr.SdfZipFile.Open("/this/path/doesnt/exist.usdz")))
     }
     
     // MARK: Schemas

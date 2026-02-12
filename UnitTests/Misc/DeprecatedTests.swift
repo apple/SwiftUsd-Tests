@@ -28,8 +28,8 @@ final class DeprecatedTests_Deprecated_Swift_6_1: TemporaryDirectoryHelper {
     }
     
     func test_UsdZipFileWriterWrapper() {
-        let _: pxr.UsdZipFileWriter.Type = Overlay.UsdZipFileWriterWrapper.self
-        let _: Overlay.UsdZipFileWriterWrapper.Type = pxr.UsdZipFileWriter.self
+        let _: pxr.SdfZipFileWriter.Type = Overlay.UsdZipFileWriterWrapper.self
+        let _: Overlay.UsdZipFileWriterWrapper.Type = pxr.SdfZipFileWriter.self
     }
     
     func test_VtValue_Bool() {

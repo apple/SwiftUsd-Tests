@@ -573,10 +573,6 @@ final class FRTProtocolsTests: TemporaryDirectoryHelper {
         assertImmortalReferenceTypeProtocol(pxr.SdfSchema.self)
         assertTfWeakBaseProtocol(pxr.SdfSchema.self)
     }
-    func test_SdfTextFileFormat() {
-        assertTfRefBaseProtocol(pxr.SdfTextFileFormat.self)
-        assertTfWeakBaseProtocol(pxr.SdfTextFileFormat.self)
-    }
     func test_PcpLayerStack() {
         assertTfRefBaseProtocol(pxr.PcpLayerStack.self)
         assertTfWeakBaseProtocol(pxr.PcpLayerStack.self)
@@ -588,22 +584,6 @@ final class FRTProtocolsTests: TemporaryDirectoryHelper {
     func test_UsdStage() {
         assertTfRefBaseProtocol(pxr.UsdStage.self)
         assertTfWeakBaseProtocol(pxr.UsdStage.self)
-    }
-    func test_UsdUsdFileFormat() {
-        assertTfRefBaseProtocol(pxr.UsdUsdFileFormat.self)
-        assertTfWeakBaseProtocol(pxr.UsdUsdFileFormat.self)
-    }
-    func test_UsdUsdaFileFormat() {
-        assertTfRefBaseProtocol(pxr.UsdUsdaFileFormat.self)
-        assertTfWeakBaseProtocol(pxr.UsdUsdaFileFormat.self)
-    }
-    func test_UsdUsdcFileFormat() {
-        assertTfRefBaseProtocol(pxr.UsdUsdcFileFormat.self)
-        assertTfWeakBaseProtocol(pxr.UsdUsdcFileFormat.self)
-    }
-    func test_UsdUsdzFileFormat() {
-        assertTfRefBaseProtocol(pxr.UsdUsdzFileFormat.self)
-        assertTfWeakBaseProtocol(pxr.UsdUsdzFileFormat.self)
     }
     func test_UsdHydraDiscoveryPlugin() {
         assertTfRefBaseProtocol(pxr.UsdHydraDiscoveryPlugin.self)
