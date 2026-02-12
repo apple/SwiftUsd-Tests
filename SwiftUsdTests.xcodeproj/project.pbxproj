@@ -141,6 +141,7 @@
 		8EE5A88D2EB95D9D00C84A93 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE5A88C2EB95D9D00C84A93 /* Types.swift */; };
 		8EE5A8902EBA807700C84A93 /* OpenUSD in Frameworks */ = {isa = PBXBuildFile; productRef = 8EE5A88F2EBA807700C84A93 /* OpenUSD */; };
 		8EE5A9B32ECCFFB200C84A93 /* OpenUSD in Frameworks */ = {isa = PBXBuildFile; productRef = 8EE5A9B22ECCFFB200C84A93 /* OpenUSD */; };
+		8EF209AB2F3E61D00087B979 /* VtValueRefTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF209AA2F3E61CF0087B979 /* VtValueRefTests.swift */; };
 		8EFA28122B3258BB000BC024 /* TestingObservationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EFA28112B3258BB000BC024 /* TestingObservationTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -316,6 +317,7 @@
 		8EE5A8882EB95D6200C84A93 /* IO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IO.swift; sourceTree = "<group>"; };
 		8EE5A88A2EB95D8C00C84A93 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		8EE5A88C2EB95D9D00C84A93 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		8EF209AA2F3E61CF0087B979 /* VtValueRefTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VtValueRefTests.swift; sourceTree = "<group>"; };
 		8EFA28112B3258BB000BC024 /* TestingObservationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingObservationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -533,6 +535,7 @@
 			isa = PBXGroup;
 			children = (
 				8E45849B2B30F48C0048D0C8 /* HelloSwiftUsdTests.swift */,
+				8EF209AA2F3E61CF0087B979 /* VtValueRefTests.swift */,
 				8E33E8672B2CFFBF00630CB4 /* TypeConversionTests.swift */,
 				8EE59C512B9942F200307737 /* RegressionTests.swift */,
 				8EA944402BB4D46B006D45BB /* DeprecatedTests.swift */,
@@ -890,6 +893,7 @@
 				8E6D428C2B509FD100509859 /* Observation_MutateUsdPrim_ReadUsdSchemaBase.swift in Sources */,
 				8E6D41B72B460DB000509859 /* Observation_MutateUsdStage_ReadUsdObject.swift in Sources */,
 				8E45849C2B30F48C0048D0C8 /* HelloSwiftUsdTests.swift in Sources */,
+				8EF209AB2F3E61D00087B979 /* VtValueRefTests.swift in Sources */,
 				8E33E71A2B21467F00630CB4 /* TransformationsTimeSampledAnimationAndLayerOffsets.swift in Sources */,
 				8EE5A88D2EB95D9D00C84A93 /* Types.swift in Sources */,
 				8E9626E42B34F96E00E3233B /* Observation_MutateUsdStage_ReadUsdStage.swift in Sources */,
@@ -1311,7 +1315,7 @@
 			repositoryURL = "https://github.com/apple/SwiftUsd";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.2.0;
+				minimumVersion = 6.0.0;
 			};
 		};
 		8E1CC7822E4A55AB00586320 /* XCRemoteSwiftPackageReference "SwiftUsd" */ = {
@@ -1319,7 +1323,7 @@
 			repositoryURL = "https://github.com/apple/SwiftUsd";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.2.0;
+				minimumVersion = 6.0.0;
 			};
 		};
 		8E22958F2E42A7C900725E59 /* XCRemoteSwiftPackageReference "SwiftUsd" */ = {
@@ -1327,7 +1331,7 @@
 			repositoryURL = "https://github.com/apple/SwiftUsd";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.2.0;
+				minimumVersion = 6.0.0;
 			};
 		};
 		8E811C892D8B804700F1A741 /* XCRemoteSwiftPackageReference "SwiftUsd" */ = {
@@ -1335,7 +1339,7 @@
 			repositoryURL = "https://github.com/apple/SwiftUsd";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.2.0;
+				minimumVersion = 6.0.0;
 			};
 		};
 		8EE5A6C02EB2CC1C00C84A93 /* XCRemoteSwiftPackageReference "SwiftUsd" */ = {
@@ -1343,7 +1347,7 @@
 			repositoryURL = "https://github.com/apple/SwiftUsd";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.2.0;
+				minimumVersion = 6.0.0;
 			};
 		};
 		8EE5A9B12ECCFFB200C84A93 /* XCRemoteSwiftPackageReference "SwiftUsd" */ = {
@@ -1351,7 +1355,7 @@
 			repositoryURL = "https://github.com/apple/SwiftUsd";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 5.2.0;
+				minimumVersion = 6.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

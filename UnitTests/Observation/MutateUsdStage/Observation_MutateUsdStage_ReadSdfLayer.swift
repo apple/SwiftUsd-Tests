@@ -59,7 +59,7 @@ final class Observation_MutateUsdStage_ReadSdfLayer: ObservationHelper {
         let (token, value) = registerNotification(layer.IsDirty())
         XCTAssertFalse(value)
         
-        expectingSomeNotifications([token], main.SetMetadata("startTimeCode", 4.0))
+        expectingSomeNotifications([token], main.SetMetadata("startTimeCode", pxr.VtValue(4.0)))
         XCTAssertTrue(layer.IsDirty())
     }
     
@@ -86,7 +86,7 @@ final class Observation_MutateUsdStage_ReadSdfLayer: ObservationHelper {
         let (token, value) = registerNotification(layer.GetFieldDictValueByKey("/", "expressionVariables", "VARIANT_CHOICE"))
         XCTAssertTrue(value.IsEmpty())
         
-        XCTAssertTrue(expectingSomeNotifications([token], main.SetMetadataByDictKey("expressionVariables", "VARIANT_CHOICE", "variantA" as std.string)))
+        XCTAssertTrue(expectingSomeNotifications([token], main.SetMetadataByDictKey("expressionVariables", "VARIANT_CHOICE", pxr.VtValue("variantA" as std.string))))
         
         var choice = layer.GetFieldDictValueByKey("/", "expressionVariables", "VARIANT_CHOICE")
         XCTAssertTrue(choice.IsHolding(T: std.string.self))
@@ -97,7 +97,7 @@ final class Observation_MutateUsdStage_ReadSdfLayer: ObservationHelper {
     
     func test_ClearMetadataByDictKey_GetFieldDictValueByKey() {
         let main = Overlay.Dereference(pxr.UsdStage.CreateNew(pathForStage(named: "Main.usda"), Overlay.UsdStage.LoadAll))
-        main.SetMetadataByDictKey("expressionVariables", "VARIANT_CHOICE", "variantA" as std.string)
+        main.SetMetadataByDictKey("expressionVariables", "VARIANT_CHOICE", pxr.VtValue("variantA" as std.string))
         let layer = Overlay.Dereference(main.GetRootLayer())
         
         var (token, value) = registerNotification(layer.GetFieldDictValueByKey("/", "expressionVariables", "VARIANT_CHOICE"))

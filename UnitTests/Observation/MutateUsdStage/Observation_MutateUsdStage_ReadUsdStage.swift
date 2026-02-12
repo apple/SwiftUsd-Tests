@@ -383,7 +383,7 @@ final class Observation_MutateUsdStage_ReadUsdStage: ObservationHelper {
         XCTAssertTrue(value)
         XCTAssertEqual(startTimeCode, 0)
         
-        expectingSomeNotifications([token], main.SetMetadata("startTimeCode", 4.0))
+        expectingSomeNotifications([token], main.SetMetadata("startTimeCode", pxr.VtValue(4.0)))
         XCTAssertTrue(main.GetMetadata("startTimeCode", &startTimeCode))
         XCTAssertEqual(startTimeCode, 4)
     }
@@ -410,7 +410,7 @@ final class Observation_MutateUsdStage_ReadUsdStage: ObservationHelper {
         let (token, value) = registerNotification(main.GetMetadataByDictKey("expressionVariables", "VARIANT_CHOICE", &choice))
         XCTAssertFalse(value)
         
-        XCTAssertTrue(expectingSomeNotifications([token], main.SetMetadataByDictKey("expressionVariables", "VARIANT_CHOICE", "variantA" as std.string)))
+        XCTAssertTrue(expectingSomeNotifications([token], main.SetMetadataByDictKey("expressionVariables", "VARIANT_CHOICE", pxr.VtValue("variantA" as std.string))))
         
         XCTAssertTrue(main.GetMetadataByDictKey("expressionVariables", "VARIANT_CHOICE", &choice))
         XCTAssertEqual(choice, "variantA")
@@ -420,7 +420,7 @@ final class Observation_MutateUsdStage_ReadUsdStage: ObservationHelper {
     
     func test_ClearMetadataByDictKey_HasMetadataByDictKey() {
         let main = Overlay.Dereference(pxr.UsdStage.CreateNew(pathForStage(named: "Main.usda"), Overlay.UsdStage.LoadAll))
-        main.SetMetadataByDictKey("expressionVariables", "VARIANT_CHOICE", "variantA" as std.string)
+        main.SetMetadataByDictKey("expressionVariables", "VARIANT_CHOICE", pxr.VtValue("variantA" as std.string))
         
         let (token, value) = registerNotification(main.HasMetadataDictKey("expressionVariables", "VARIANT_CHOICE"))
         XCTAssertTrue(value)

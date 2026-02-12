@@ -36,16 +36,16 @@ final class NonCopyableTests: TemporaryDirectoryHelper {
     private func _isSendable<T: ~Copyable>(_ x: T.Type) -> Bool { false }
     private func _isSendable<T: Sendable & ~Copyable>(_ x: T.Type) -> Bool { true }
     
-    func test_UsdZipFileWriter_IsSendable() {
-        XCTAssertFalse(_isSendable(pxr.UsdZipFileWriter.self))
+    func test_SdfZipFileWriter_IsSendable() {
+        XCTAssertFalse(_isSendable(pxr.SdfZipFileWriter.self))
     }
     
     func assertExists(_ path: std.string, _ exists: Bool) {
         XCTAssertEqual(FileManager.default.fileExists(atPath: String(path)), exists)
     }
     
-    func test_UsdZipFileWriter_Save() {
-        var wrapper = pxr.UsdZipFileWriter.CreateNew(pathForStage(named: "HelloWorld.usdz"))
+    func test_SdfZipFileWriter_Save() {
+        var wrapper = pxr.SdfZipFileWriter.CreateNew(pathForStage(named: "HelloWorld.usdz"))
         assertExists(pathForStage(named: "HelloWorld.usdz"), false)
         
         let modelStage = Overlay.Dereference(pxr.UsdStage.CreateNew(pathForStage(named: "Model.usda"), .LoadAll))
@@ -71,8 +71,8 @@ final class NonCopyableTests: TemporaryDirectoryHelper {
         XCTAssertEqual(readDisplayColor, [pxr.GfVec3f(1, 0, 1)])
     }
     
-    func test_UsdZipFileWriter_Discard() {
-        var wrapper = pxr.UsdZipFileWriter.CreateNew(pathForStage(named: "HelloWorld.usdz"))
+    func test_SdfZipFileWriter_Discard() {
+        var wrapper = pxr.SdfZipFileWriter.CreateNew(pathForStage(named: "HelloWorld.usdz"))
         assertExists(pathForStage(named: "HelloWorld.usdz"), false)
         
         let modelStage = Overlay.Dereference(pxr.UsdStage.CreateNew(pathForStage(named: "Model.usda"), .LoadAll))

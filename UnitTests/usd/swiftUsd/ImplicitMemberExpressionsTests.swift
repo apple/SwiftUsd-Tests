@@ -156,13 +156,7 @@ final class ImplicitMemberExpressionsTests: TemporaryDirectoryHelper {
         let b: pxr.TfToken = "target"
         XCTAssertEqual(a, b)
     }
-    
-    func test_SdfTextFileFormatTokens() {
-        let a: pxr.TfToken = .SdfTextFileFormatTokens.Id
-        let b: pxr.TfToken = "sdf"
-        XCTAssertEqual(a, b)
-    }
-    
+        
     func test_UsdTimeCodeTokens() {
         let a: pxr.TfToken = .UsdTimeCodeTokens.DEFAULT
         let b: pxr.TfToken = "DEFAULT"
