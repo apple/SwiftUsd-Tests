@@ -35,7 +35,7 @@ final class TraversingAStage: TutorialsHelper {
         let sessionLayerIdentifier = Overlay.Dereference(stage.GetSessionLayer()).GetIdentifier()
         let typeName = p.GetTypeName()
         let inactiveString = p.IsActive() ? "" : "inactive "
-        let interpolatedTypeName = typeName == "" ? "" : "'\(typeName)' "
+        let interpolatedTypeName = typeName.IsEmpty() ? "" : "'\(typeName)' "
         let path = p.GetPath()
         return "\(inactiveString)\(interpolatedTypeName)prim <\(path)> on stage with rootLayer @\(rootLayerIdentifier)@, sessionLayer @\(sessionLayerIdentifier)@"
     }

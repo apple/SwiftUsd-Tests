@@ -21,6 +21,7 @@
 import XCTest
 import OpenUSD
 
+#if compiler(<6.3)
 @available(*, deprecated)
 final class DeprecatedTests_Deprecated_Swift_6_1: TemporaryDirectoryHelper {
     func test_SdfLayer_IsMuted() {
@@ -107,3 +108,4 @@ final class DeprecatedTests_Deprecated_Swift_6_1: TemporaryDirectoryHelper {
         XCTAssertEqual(a, c)
     }
 }
+#endif // #if compiler(<6.3)

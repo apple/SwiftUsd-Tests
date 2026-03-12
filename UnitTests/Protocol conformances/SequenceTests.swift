@@ -55,7 +55,7 @@ final class SequenceTests: TemporaryDirectoryHelper {
         let rootLayerIdentifier = Overlay.Dereference(stage.GetRootLayer()).GetIdentifier()
         let sessionLayerIdentifier = Overlay.Dereference(stage.GetSessionLayer()).GetIdentifier()
         let typeName = p.GetTypeName()
-        let interpolatedTypeName = typeName == "" ? " " : "'\(typeName)' "
+        let interpolatedTypeName = typeName.IsEmpty() ? " " : "'\(typeName)' "
         let path = p.GetPath()
         return "\(interpolatedTypeName)prim <\(path)> on stage with rootLayer @\(rootLayerIdentifier)@, sessionLayer @\(sessionLayerIdentifier)@"
     }
