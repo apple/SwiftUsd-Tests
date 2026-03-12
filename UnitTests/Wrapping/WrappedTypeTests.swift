@@ -773,7 +773,9 @@ final class WrappedTypeTests: HydraHelper {
         XCTAssertEqual(fileNames, ["src/a.txt", "src/b.png"])
         
         for file in zipFile {
-            if file.pointee == "src/b.png" { continue }
+            // rdar://158439395 (error: ambiguous use of operator '=='), 6.3 regression
+            // Workaround by using type coercion to eliminate the ambiguity
+            if file.pointee == ("src/b.png" as std.string) { continue }
             
             XCTAssertTrue(file == zipFile.Find("src/a.txt"))
             XCTAssertTrue(file != zipFile.Find("src/b.png"))

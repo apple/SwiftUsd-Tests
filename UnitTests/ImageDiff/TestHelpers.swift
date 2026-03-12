@@ -85,10 +85,10 @@ extension ImageDiffTestHelpers {
         
     func warn(_ message: String, file: StaticString = #file, line: UInt = #line) {
         let context = XCTSourceCodeContext(location: XCTSourceCodeLocation(filePath: file.description, lineNumber: Int(line)))
-        var issue = XCTIssue(type: .assertionFailure, compactDescription: message, sourceCodeContext: context)
-        #if compiler(>=6.2)
-        issue.severity = .warning
-        #endif
+        let issue = XCTIssue(type: .assertionFailure, compactDescription: message, sourceCodeContext: context)
+        // Would be nice to `issue.severity = .warning`, but there doesn't
+        // seem to be a way to do that that doesn't break compilation when
+        // a 6.3 snapshot compiles when Xcode 16.3 is the active Xcode
         record(issue)
     }
 }

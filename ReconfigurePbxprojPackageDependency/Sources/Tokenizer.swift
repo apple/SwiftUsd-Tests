@@ -138,6 +138,13 @@ struct Tokenizer {
                 var foundTerminator = false
                 while indexIsValid() {
                     quotedString.append(currentCharacter()); advance()
+                    if quotedString.last == "\\" {
+                        if indexIsValid() {
+                            quotedString.append(currentCharacter()); advance()
+                            continue
+                        }
+                    }
+
                     if quotedString.count > 1 && quotedString.last == "\"" {
                         result.append(.init(kind: .quotedString(quotedString), startIndex: startIndex, endIndex: index))
                         foundTerminator = true

@@ -140,6 +140,8 @@ struct ReconfigurePbxprojPackageDependency: ParsableCommand {
             transform: URL.init(fileURLWithPath:)) var backup: URL?
     
     mutating func run() throws {
+        try findPbxprojFile()
+
         let tokenizer = try Tokenizer(fileURL: pbxprojFile)
         let tokens = try tokenizer.tokenize()
         let combined = TrivaCombiner().combine(tokens: tokens)
@@ -159,5 +161,32 @@ struct ReconfigurePbxprojPackageDependency: ParsableCommand {
         }
         
         try model.export(to: pbxprojFile)
+    }
+
+    // If the user didn't input a project.pbxproj file, try to find
+    // what they might have meant. 
+    mutating func findPbxprojFile() throws {
+        if pbxprojFile.lastPathComponent == "project.pbxproj" { return }
+        
+        if pbxprojFile.pathExtension == "xcodeproj" {
+            let newFile = pbxprojFile.appending(path: "project.pbxproj")
+            guard FileManager.default.fileExists(atPath: newFile.path(percentEncoded: false)) else {
+                throw ValidationError("Could not find project.pbxproj file under \(pbxprojFile)")
+            }
+            pbxprojFile = newFile
+            return
+        }
+        
+        if let contents = try? FileManager.default.contentsOfDirectory(at: pbxprojFile, includingPropertiesForKeys: nil) {
+            let xcodeprojs = contents.filter { $0.pathExtension == "xcodeproj" }
+            if xcodeprojs.count == 0 {
+                throw ValidationError("Could not find Xcode project under \(pbxprojFile)")
+            }
+            if xcodeprojs.count > 1 {
+                throw ValidationError("Found multiple Xcode projects under \(pbxprojFile): \(xcodeprojs.map(\.lastPathComponent))")
+            }
+            pbxprojFile = xcodeprojs.first!
+            try findPbxprojFile()
+        }
     }
 }
