@@ -610,6 +610,10 @@ final class FRTProtocolsTests: TemporaryDirectoryHelper {
         assertTfRefBaseProtocol(pxr.GlfDrawTarget.self)
         assertTfWeakBaseProtocol(pxr.GlfDrawTarget.self)
     }
+    func test_GlfDrawTarget_Attachment() {
+        assertTfRefBaseProtocol(pxr.GlfDrawTarget.Attachment.self)
+        assertTfWeakBaseProtocol(pxr.GlfDrawTarget.Attachment.self)
+    }
     func test_GlfTexture() {
         assertTfRefBaseProtocol(pxr.GlfTexture.self)
         assertTfWeakBaseProtocol(pxr.GlfTexture.self)

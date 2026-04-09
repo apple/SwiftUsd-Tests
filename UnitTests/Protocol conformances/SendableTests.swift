@@ -775,10 +775,6 @@ final class SendableTests: TemporaryDirectoryHelper {
         assertIsNotSendable(pxr.HdGpGenerativeProceduralPluginRegistry.self)
     }
 
-    // MARK: Hdsi
-    func test_HdsiLegacyDisplayStyleOverrideSceneIndex_OptionalInt() {
-        assertIsSendable(pxr.HdsiLegacyDisplayStyleOverrideSceneIndex.OptionalInt.self)
-    }
     #endif // #if canImport(SwiftUsd_PXR_ENABLE_IMAGING_SUPPORT)
 
     #if canImport(SwiftUsd_PXR_ENABLE_USD_IMAGING_SUPPORT)

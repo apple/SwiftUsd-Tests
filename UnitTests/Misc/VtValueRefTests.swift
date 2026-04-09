@@ -49,7 +49,11 @@ final class VtValueRefTests: TemporaryDirectoryHelper {
             xRef = x.__RefUnsafe()
         }
         let x2: Double = xRef.GetWithDefault(9)
-        XCTAssertEqual(x2, 5)
+        
+        // x2 can be 9, e.g. when compiling in Release with a Swiftly toolchain.
+        // This demonstrates exactly why VtValueRef should be avoided in Swift,
+        // it can be hard to reason about the lifetime and implicit copies        
+        // XCTAssertEqual(x2, 5)
     }
     
     func test_VtValueDotRef_stdstring_yes_dangle() {

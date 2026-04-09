@@ -26,23 +26,33 @@ final class ExpressibleByArrayLiteralTests: TemporaryDirectoryHelper {
     func assertConforms<T>(_ t: T.Type) {
         // rdar://165150073 (Runtime crash during `T.self is any Protocol.Type` with C++ type (Regression))
         //
-        // When using Swift 6.2, cross-compiling, targeting an *OS 26.x platform, in Debug, `T` is a `VtArray<U>` specialization
+        // When cross-compiling, targeting an *OS 26.x platform, in Debug, `T` is a `VtArray<U>` specialization or `std::vector<U>` specialization
         // and `Protocol` is a standard library protocol (not all standard library protocols cause this issue),
         // then `T.self is any Protocol.Type` crashes at runtime.
         // So, avoid the `is` check in that case.
 
         var shouldDoIsCheck = true
-        #if compiler(>=6.2) && compiler(<6.3)
+        #if compiler(>=6.1) && compiler(<6.3)
         #if !os(macOS)
         if #available(iOS 26, visionOS 26, *) {
             #if DEBUG
-            if T.self is any __Overlay.VtArray_WithoutCodableProtocol.Type {
+            if T.self is any __Overlay.VtArray_WithoutCodableProtocol.Type || T.self is any __Overlay.StdVectorProtocol.Type {
                 shouldDoIsCheck = false
             }
             #endif // #if DEBUG
         }
         #endif // #if !os(macOS)
-        #endif // #if compiler(>=6.2) && compiler(<6.3)
+        #endif // #if compiler(>=6.1) && compiler(<6.3)
+
+        // The same issue can also occur using the Swift 6.3 OSS toolchain via Swiftly
+        #if canImport(Darwin)
+        // canImport(Darwin) to scope to Apple platforms for now, but might also affect Linux
+        #if SWIFTUSD_TESTS_SKIP_SWIFTLY_603_CRASHES
+        if T.self is any __Overlay.VtArray_WithoutCodableProtocol.Type || T.self is any __Overlay.StdVectorProtocol.Type {
+            shouldDoIsCheck = false
+        }
+        #endif // #if SWIFTUSD_TESTS_SKIP_SWIFTLY_603_CRASHES
+        #endif // #if canImport(Darwin)
 
         if shouldDoIsCheck {
             XCTAssertTrue(T.self is any ExpressibleByArrayLiteral.Type)
@@ -273,7 +283,10 @@ final class ExpressibleByArrayLiteralTests: TemporaryDirectoryHelper {
     }
     
     // MARK: std.vector specializations
-    func test_StringVector() {
+    func test_StringVector() throws {
+        #if SWIFTUSD_TESTS_SKIP_SWIFTLY_603_CRASHES
+        throw XCTSkip("Skip Swiftly 6.3 crashes")
+        #endif
         let x: Overlay.String_Vector = ["hi"]
         XCTAssertEqual(x.description, "[hi]")
         assertConforms(Overlay.String_Vector.self)
@@ -305,7 +318,10 @@ final class ExpressibleByArrayLiteralTests: TemporaryDirectoryHelper {
         assertConforms(Overlay.UsdRelationship_Vector.self)
     }
     
-    func test_TfTokenVector() {
+    func test_TfTokenVector() throws {
+        #if SWIFTUSD_TESTS_SKIP_SWIFTLY_603_CRASHES
+        throw XCTSkip("Skip Swiftly 6.3 crashes")
+        #endif
         let x: pxr.TfTokenVector = ["hi"]
         XCTAssertEqual(x.description, "[hi]")
         assertConforms(pxr.TfTokenVector.self)
@@ -335,7 +351,7 @@ final class ExpressibleByArrayLiteralTests: TemporaryDirectoryHelper {
         assertConforms(pxr.SdfPropertySpecHandleVector.self)
     }
     
-    func test_SdfPrimSpecHandleVector() throws {
+    func test_SdfPrimSpecHandleVector() {
         let main = Overlay.Dereference(pxr.UsdStage.CreateNew(pathForStage(named: "Main.usda"), .LoadAll))
         main.DefinePrim("/foo", "Sphere")
         main.DefinePrim("/bar", "Sphere")

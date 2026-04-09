@@ -27,23 +27,33 @@ final class SequenceTests: TemporaryDirectoryHelper {
     func assertConforms<T>(_ t: T.Type) {
         // rdar://165150073 (Runtime crash during `T.self is any Protocol.Type` with C++ type (Regression))
         //
-        // When using Swift 6.2, cross-compiling, targeting an *OS 26.x platform, in Debug, `T` is a `VtArray<U>` specialization
+        // When cross-compiling, targeting an *OS 26.x platform, in Debug, `T` is a `VtArray<U>` specialization or `std::vector<U>` specialization
         // and `Protocol` is a standard library protocol (not all standard library protocols cause this issue),
         // then `T.self is any Protocol.Type` crashes at runtime.
         // So, avoid the `is` check in that case.
 
         var shouldDoIsCheck = true
-        #if compiler(>=6.2) && compiler(<6.3)
+        #if compiler(>=6.1) && compiler(<6.3)
         #if !os(macOS)
         if #available(iOS 26, visionOS 26, *) {
             #if DEBUG
-            if T.self is any __Overlay.VtArray_WithoutCodableProtocol.Type {
+            if T.self is any __Overlay.VtArray_WithoutCodableProtocol.Type || T.self is any __Overlay.StdVectorProtocol.Type {
                 shouldDoIsCheck = false
             }
             #endif // #if DEBUG
         }
         #endif // #if !os(macOS)
-        #endif // #if compiler(>=6.2) && compiler(<6.3)
+        #endif // #if compiler(>=6.1) && compiler(<6.3)
+
+        // The same issue can also occur using the Swift 6.3 OSS toolchain via Swiftly
+        #if canImport(Darwin)
+        // canImport(Darwin) to scope to Apple platforms for now, but might also affect Linux
+        #if SWIFTUSD_TESTS_SKIP_SWIFTLY_603_CRASHES
+        if T.self is any __Overlay.VtArray_WithoutCodableProtocol.Type || T.self is any __Overlay.StdVectorProtocol.Type {
+            shouldDoIsCheck = false
+        }
+        #endif // #if SWIFTUSD_TESTS_SKIP_SWIFTLY_603_CRASHES
+        #endif // #if canImport(Darwin)
 
         if shouldDoIsCheck {
             XCTAssertTrue(T.self is any Sequence.Type)
@@ -152,7 +162,7 @@ final class SequenceTests: TemporaryDirectoryHelper {
     func test_SdfListProxyIteratorWrapper_empty() {
         let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
         let layer = Overlay.Dereference(stage.GetRootLayer())
-        let sublayers: [pxr.SdfAssetPath] = Array(layer.GetSubLayerPaths())
+        let sublayers: [std.string] = Array(layer.GetSubLayerPaths())
         XCTAssertEqual(sublayers, [])
         assertConforms(pxr.SdfSubLayerProxy.self)
     }
@@ -161,8 +171,8 @@ final class SequenceTests: TemporaryDirectoryHelper {
         let stage2 = Overlay.Dereference(pxr.UsdStage.CreateNew(pathForStage(named: "HelloWorld.usda"), .LoadAll))
         let layer = Overlay.Dereference(stage.GetRootLayer())
         layer.InsertSubLayerPath(pathForStage(named: "HelloWorld.usda"), -1)
-        let sublayers: [pxr.SdfAssetPath] = Array(layer.GetSubLayerPaths())
-        XCTAssertEqual(sublayers, [pxr.SdfAssetPath(pathForStage(named: "HelloWorld.usda"))])
+        let sublayers: [std.string] = Array(layer.GetSubLayerPaths())
+        XCTAssertEqual(sublayers, [pathForStage(named: "HelloWorld.usda")])
         assertConforms(pxr.SdfSubLayerProxy.self)
         withExtendedLifetime(stage2) {}
     }
@@ -488,7 +498,10 @@ final class SequenceTests: TemporaryDirectoryHelper {
     
     // MARK: std::vector specializations
         
-    func test_StringVector() {
+    func test_StringVector() throws {
+        #if SWIFTUSD_TESTS_SKIP_SWIFTLY_603_CRASHES
+        throw XCTSkip("Skip Swiftly 6.3 crashes")
+        #endif
         let x: Overlay.String_Vector = ["x", "y"]
         XCTAssertEqual(Array(x), x.map { $0 })
         assertConforms(Overlay.String_Vector.self)
@@ -500,7 +513,10 @@ final class SequenceTests: TemporaryDirectoryHelper {
         assertConforms(Overlay.String_Vector.self)
     }
     
-    func test_TfTokenVector() {
+    func test_TfTokenVector() throws {
+        #if SWIFTUSD_TESTS_SKIP_SWIFTLY_603_CRASHES
+        throw XCTSkip("Skip Swiftly 6.3 crashes")
+        #endif
         let x: pxr.TfTokenVector = ["x", "y"]
         XCTAssertEqual(Array(x), x.map { $0 })
         assertConforms(pxr.TfTokenVector.self)
@@ -529,7 +545,7 @@ final class SequenceTests: TemporaryDirectoryHelper {
         assertConforms(pxr.SdfPropertySpecHandleVector.self)
     }
     
-    func test_SdfPrimSpecHandleVector() throws {
+    func test_SdfPrimSpecHandleVector() {
         let main = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
         let layer = Overlay.Dereference(main.GetRootLayer())
         main.DefinePrim("/foo", "Sphere")

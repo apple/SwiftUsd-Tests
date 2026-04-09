@@ -743,7 +743,7 @@ final class Observation_MutateSdfLayer_ReadSdfLayer: ObservationHelper {
         XCTAssertEqual(Array(value), [])
         
         expectingSomeNotifications([token], layer.SetSubLayerPaths([pathForStage(named: "Model.usda")]))
-        XCTAssertEqual(Array(layer.GetSubLayerPaths()), [pxr.SdfAssetPath(pathForStage(named: "Model.usda"))])
+        XCTAssertEqual(Array(layer.GetSubLayerPaths()), [pathForStage(named: "Model.usda")])
     }
     
     func test_SetSubLayerPaths_GetNumSubLayerPaths() {
@@ -803,7 +803,7 @@ final class Observation_MutateSdfLayer_ReadSdfLayer: ObservationHelper {
         
         
         let (token, value) = registerNotification(layer.GetSubLayerPaths())
-        XCTAssertEqual(Array(value), [pxr.SdfAssetPath(pathForStage(named: "Model.usda"))])
+        XCTAssertEqual(Array(value), [pathForStage(named: "Model.usda")])
         
         expectingSomeNotifications([token], layer.RemoveSubLayerPath(0))
         XCTAssertEqual(Array(layer.GetSubLayerPaths()), [])
@@ -1044,7 +1044,10 @@ final class Observation_MutateSdfLayer_ReadSdfLayer: ObservationHelper {
     
     // MARK: RemoveRootPrim
     
-    func test_RemoveRootPrim_GetRootPrims() {
+    func test_RemoveRootPrim_GetRootPrims() throws {
+        #if SWIFTUSD_TESTS_SKIP_SWIFTLY_603_CRASHES
+        throw XCTSkip("Skip Swiftly 6.3 crashes")
+        #endif
         let main = Overlay.Dereference(pxr.UsdStage.CreateNew(pathForStage(named: "Main.usda"), Overlay.UsdStage.LoadAll))
         let layer = Overlay.Dereference(main.GetRootLayer())
         

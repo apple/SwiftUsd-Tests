@@ -29,6 +29,10 @@ final class InspectingAndAuthoringProperties: TutorialsHelper {
     override class var name: String { "InspectingAndAuthoringProperties" }
     
     func testTutorial() throws {
+        #if SWIFTUSD_TESTS_SKIP_SWIFTLY_603_CRASHES
+        throw XCTSkip("Skip Swiftly 6.3 crashes")
+        #endif
+
         let stagePath = try copyResourceToWorkingDirectory(subPath: "Tutorials/InspectingAndAuthoringProperties/1.txt", destName: "HelloWorld.usda")
         
         let stage = Overlay.Dereference(pxr.UsdStage.Open(stagePath, .LoadAll))

@@ -1362,57 +1362,63 @@ final class WrappedEnumTests: TemporaryDirectoryHelper {
         let y: pxr.Usd_PrimFlags = .Usd_PrimDefinedFlag
         XCTAssertEqual(x, y)
     }
+    func test_Usd_PrimHasClassSpecifierFlag() {
+        let x: pxr.Usd_PrimFlags = Overlay.Usd_PrimHasClassSpecifierFlag
+        XCTAssertEqual(x.rawValue, 7)
+        let y: pxr.Usd_PrimFlags = .Usd_PrimHasClassSpecifierFlag
+        XCTAssertEqual(x, y)
+    }
     func test_Usd_PrimHasDefiningSpecifierFlag() {
         let x: pxr.Usd_PrimFlags = Overlay.Usd_PrimHasDefiningSpecifierFlag
-        XCTAssertEqual(x.rawValue, 7)
+        XCTAssertEqual(x.rawValue, 8)
         let y: pxr.Usd_PrimFlags = .Usd_PrimHasDefiningSpecifierFlag
         XCTAssertEqual(x, y)
     }
     func test_Usd_PrimInstanceFlag() {
         let x: pxr.Usd_PrimFlags = Overlay.Usd_PrimInstanceFlag
-        XCTAssertEqual(x.rawValue, 8)
+        XCTAssertEqual(x.rawValue, 9)
         let y: pxr.Usd_PrimFlags = .Usd_PrimInstanceFlag
         XCTAssertEqual(x, y)
     }
     func test_Usd_PrimHasPayloadFlag() {
         let x: pxr.Usd_PrimFlags = Overlay.Usd_PrimHasPayloadFlag
-        XCTAssertEqual(x.rawValue, 9)
+        XCTAssertEqual(x.rawValue, 10)
         let y: pxr.Usd_PrimFlags = .Usd_PrimHasPayloadFlag
         XCTAssertEqual(x, y)
     }
     func test_Usd_PrimClipsFlag() {
         let x: pxr.Usd_PrimFlags = Overlay.Usd_PrimClipsFlag
-        XCTAssertEqual(x.rawValue, 10)
+        XCTAssertEqual(x.rawValue, 11)
         let y: pxr.Usd_PrimFlags = .Usd_PrimClipsFlag
         XCTAssertEqual(x, y)
     }
     func test_Usd_PrimDeadFlag() {
         let x: pxr.Usd_PrimFlags = Overlay.Usd_PrimDeadFlag
-        XCTAssertEqual(x.rawValue, 11)
+        XCTAssertEqual(x.rawValue, 12)
         let y: pxr.Usd_PrimFlags = .Usd_PrimDeadFlag
         XCTAssertEqual(x, y)
     }
     func test_Usd_PrimPrototypeFlag() {
         let x: pxr.Usd_PrimFlags = Overlay.Usd_PrimPrototypeFlag
-        XCTAssertEqual(x.rawValue, 12)
+        XCTAssertEqual(x.rawValue, 13)
         let y: pxr.Usd_PrimFlags = .Usd_PrimPrototypeFlag
         XCTAssertEqual(x, y)
     }
     func test_Usd_PrimInstanceProxyFlag() {
         let x: pxr.Usd_PrimFlags = Overlay.Usd_PrimInstanceProxyFlag
-        XCTAssertEqual(x.rawValue, 13)
+        XCTAssertEqual(x.rawValue, 14)
         let y: pxr.Usd_PrimFlags = .Usd_PrimInstanceProxyFlag
         XCTAssertEqual(x, y)
     }
     func test_Usd_PrimPseudoRootFlag() {
         let x: pxr.Usd_PrimFlags = Overlay.Usd_PrimPseudoRootFlag
-        XCTAssertEqual(x.rawValue, 14)
+        XCTAssertEqual(x.rawValue, 15)
         let y: pxr.Usd_PrimFlags = .Usd_PrimPseudoRootFlag
         XCTAssertEqual(x, y)
     }
     func test_Usd_PrimNumFlags() {
         let x: pxr.Usd_PrimFlags = Overlay.Usd_PrimNumFlags
-        XCTAssertEqual(x.rawValue, 15)
+        XCTAssertEqual(x.rawValue, 16)
         let y: pxr.Usd_PrimFlags = .Usd_PrimNumFlags
         XCTAssertEqual(x, y)
     }
