@@ -205,7 +205,7 @@ fileprivate class Renderer {
 
     func renderToFile(filepath: String, viewSize: pxr.GfVec2i) {
         let colorTexture = drawWithHydra(timeCode: pxr.UsdTimeCode.Default().GetValue(), viewSize: viewSize)
-        if colorTexture.__convertToBool() {
+        if Bool(colorTexture) {
             var buffer = BufferReadbackType()
             let textureSize = readbackTexture(hgi: hgi, textureHandle: colorTexture, buffer: &buffer)
             print(buffer.size())
@@ -223,7 +223,7 @@ fileprivate class Renderer {
     func readbackTexture(hgi: Overlay.HgiWrapper, textureHandle: pxr.HgiTextureHandle, buffer: inout BufferReadbackType) -> pxr.GfVec2i {
         var widthHeight = pxr.GfVec2i()
 
-        if textureHandle.__convertToBool() {
+        if Bool(textureHandle) {
             let textureDesc = Overlay.GetDescriptor(textureHandle)
             let formatByteSize = pxr.HgiGetDataSizeOfFormat(textureDesc.format)
             print(textureDesc.format)

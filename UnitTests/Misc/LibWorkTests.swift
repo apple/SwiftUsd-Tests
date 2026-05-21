@@ -22,6 +22,31 @@ import XCTest
 import OpenUSD
 import Synchronization
 
+fileprivate func assertLessThanSuppressable<T>(
+    _ expression1: @autoclosure () throws -> T,
+    _ expression2: @autoclosure () throws -> T,
+    _ message: @autoclosure () -> String = "",
+    file: StaticString = #filePath,
+    line: UInt = #line
+) where T: Comparable {
+    guard let l = try? expression1() else {
+        XCTFail("assertLessThanSuppressable lhs threw", file: file, line: line)
+        return
+    }
+    guard let r = try? expression2() else {
+        XCTFail("assertLessThanSuppressable rhs threw", file: file, line: line)
+        return
+    }
+
+    #if SWIFTUSD_TESTS_SUPPRESS_PERFORMANCE_FAILURES
+    if !(l < r) {
+        print("(SWIFTUSD_TESTS_SUPPRESS_PERFORMANCE_FAILURES): XCTAssertLessThan failed: \(l), \(r)). \(file):\(line)")
+    }
+    #else
+    XCTAssertLessThan(l, r, message, file: file, line: line)
+    #endif
+}
+
 // Helper class that checks for parallel speedup of some serial work.
 // Tries to look for relative speedups (default 4x) rather than fixed
 // benchmarks
@@ -166,15 +191,8 @@ final fileprivate class ParallelismChecker {
         let maxAllowed = maxFractionOfSerialTime.currentValue * serialDuration
         let fractionOfSerial = elapsedTime / serialDuration
         let msg = "\(self.name).\(name)(\(n)) executed in \(format(elapsedTime))s, \(format(fractionOfSerial))x of \(format(serialDuration))s. max allowed was \(format(maxFractionOfSerialTime.currentValue))x => \(format(maxAllowed))s"
-        
-        #if SWIFTUSD_TESTS_SUPPRESS_PERFORMANCE_FAILURES
-        if fractionOfSerial >= maxFractionOfSerialTime.currentValue {
-            print("(SWIFTUSD_TESTS_SUPPRESS_PERFORMANCE_FAILURES): XCTAssertLessThan failed: \(fractionOfSerial), \(maxFractionOfSerialTime.currentValue)")
-        }
-        #else
-        XCTAssertLessThan(fractionOfSerial, maxFractionOfSerialTime.currentValue, msg, file: file, line: line)
-        #endif
-        
+
+        assertLessThanSuppressable(fractionOfSerial, maxFractionOfSerialTime.currentValue, msg, file: file, line: line)
         print(msg)
         return self
     }
@@ -236,8 +254,8 @@ final class LibWorkTests: TemporaryDirectoryHelper {
         let endDetachedEnd = detachedEnd.withLock { $0 }
         
         XCTAssertEqual(endFlag, 1)
-        XCTAssertLessThan(Swift.abs(endDetachedStart.timeIntervalSince(outerStart)), 0.1)
-        XCTAssertLessThan(Swift.abs(endDetachedEnd.timeIntervalSince(outerStart) - 2), 0.1)
+        assertLessThanSuppressable(Swift.abs(endDetachedStart.timeIntervalSince(outerStart)), 0.1)
+        assertLessThanSuppressable(Swift.abs(endDetachedEnd.timeIntervalSince(outerStart) - 2), 0.1)
     }
     
     func test_loops() async {

@@ -158,7 +158,7 @@ struct RenderConfig {
             
             assert(engine.GetGPUEnabled())
             colorTextureHandle = engine.GetAovTexture(.HdAovTokens.color)
-            if !colorTextureHandle.__convertToBool() {
+            if !Bool(colorTextureHandle) {
                 TF_CODING_ERROR("No color texture to write out.")
             }
         }
@@ -190,11 +190,11 @@ struct RenderConfig {
         }
         
         private func _ValidSource() -> Bool {
-            return colorTextureHandle.__convertToBool()
+            return Bool(colorTextureHandle)
         }
         
         private func _GetWidth() -> Int {
-            if colorTextureHandle.__convertToBool() {
+            if Bool(colorTextureHandle) {
                 return Int(Overlay.GetDescriptor(colorTextureHandle).dimensions[0])
             } else {
                 return 0
@@ -202,7 +202,7 @@ struct RenderConfig {
         }
         
         private func _GetHeight() -> Int {
-            if colorTextureHandle.__convertToBool() {
+            if Bool(colorTextureHandle) {
                 return Int(Overlay.GetDescriptor(colorTextureHandle).dimensions[1])
             } else {
                 return 0
@@ -210,7 +210,7 @@ struct RenderConfig {
         }
         
         private func _GetFormat() -> pxr.HioFormat {
-            if colorTextureHandle.__convertToBool() {
+            if Bool(colorTextureHandle) {
                 return pxr.HdxGetHioFormat(Overlay.GetDescriptor(colorTextureHandle).format)
             } else {
                 return .HioFormatInvalid
@@ -218,7 +218,7 @@ struct RenderConfig {
         }
         
         private func _Map(hgi: Overlay.HgiWrapper) -> UnsafeMutableRawPointer? {
-            if colorTextureHandle.__convertToBool() {
+            if Bool(colorTextureHandle) {
                 var size = 0
                 // Readback into an aligned buffer
                 let alignedBuffer = pxr.HdStTextureUtils.HgiTextureReadback(hgi.__getUnsafe(), colorTextureHandle, &size)
