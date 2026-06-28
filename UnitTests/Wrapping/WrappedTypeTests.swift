@@ -86,7 +86,14 @@ final class WrappedTypeTests: HydraHelper {
         withExtendedLifetime(t) {}
     }
     #endif // #if canImport(SwiftUsd_PXR_ENABLE_IMAGING_SUPPORT)
-    
+
+    #if canImport(SwiftUsd_PXR_ENABLE_IMAGING_SUPPORT)
+    func test_HgiGLWrapper() {
+        let t: Overlay.HgiGLWrapper.Type = Overlay.HgiGLWrapper.self
+        withExtendedLifetime(t) {}
+    }
+    #endif // #if canImport(SwiftUsd_PXR_ENABLE_IMAGING_SUPPORT)
+
     #if canImport(SwiftUsd_PXR_ENABLE_IMAGING_SUPPORT) && canImport(Metal)
     func test_HgiMetalWrapper() {
         let t: Overlay.HgiMetalWrapper.Type = Overlay.HgiMetalWrapper.self
