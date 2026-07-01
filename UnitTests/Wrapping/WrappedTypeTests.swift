@@ -830,5 +830,128 @@ final class WrappedTypeTests: HydraHelper {
         try? assertImagesEqual(urlForResource(subPath: "Wrapping/UsdAppUtilsFrameRecorderWrapper/expected-out.png"), renderUrl, file: #file, line: #line)
     }
     #endif // #if canImport(SwiftUsd_PXR_ENABLE_USD_IMAGING_SUPPORT) && !targetEnvironment(simulator)
+
+    // MARK: ExecUsdSystemWrapper
+
+    func test_ExecUsdSystemWrapper() {
+        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+        stage.DefinePrim("/hello", .UsdGeomTokens.Xform)
+
+        let prim = stage.DefinePrim("/hello/world", .UsdGeomTokens.Sphere)
+
+        var system = Overlay.ExecUsdSystemWrapper(Overlay.TfRefPtr(stage))
+        let key = pxr.ExecUsdValueKey(prim, pxr.TfToken("computeLocalToWorldTransform"))
+
+        let identityMatrix = pxr.GfMatrix4d(
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            0, 0, 0, 1
+        )
+
+        #if compiler(>=6.2)
+        // Swift-Cxx interop only gained rvalue reference support in Swift 6.2;
+        // BuildRequest(consuming:) relies on it.
+        let request = system.BuildRequest(consuming: [key])
+        Overlay.Compute(&system, request) { view in
+            var val = view.Get(0)
+            XCTAssertTrue(val.IsHolding(T: pxr.GfMatrix4d.self))
+            
+            let matrix: pxr.GfMatrix4d = val.UncheckedGet()
+            XCTAssertEqual(matrix, identityMatrix)
+        }
+        #endif // #if compiler(>=6.2)
+    }
+
+    func test_ExecUsdSystemWrapper_ChildRotate_ParentTranslate() {
+        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+
+        // computeLocalToWorldTransform (registered in pxr/exec/execGeom) does
+        // not compose a prim's own xformOpOrder - it reads a single attribute
+        // literally named "xformOp:transform" (what AddTransformOp() authors)
+        // and combines it with the parent's own computed world transform via
+        // NamespaceAncestor: world = local * parentToWorld. So composition
+        // order has to be tested across a parent/child hierarchy, not via
+        // multiple ops (translate/rotate/etc) stacked on a single prim.
+        let parentPrim = stage.DefinePrim("/hello", .UsdGeomTokens.Xform)
+        let parentXformable = pxr.UsdGeomXformable(parentPrim)
+        let translateMatrix = pxr.GfMatrix4d(
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            10, 0, 0, 1
+        )
+        parentXformable.AddTransformOp(.PrecisionDouble, pxr.TfToken(), false).Set(translateMatrix, pxr.UsdTimeCode.Default())
+
+        let prim = stage.DefinePrim("/hello/world", .UsdGeomTokens.Sphere)
+        let xformable = pxr.UsdGeomXformable(prim)
+        let rotation = pxr.GfRotation(pxr.GfVec3d(0, 0, 1), 90)
+        let rotateMatrix = pxr.GfMatrix4d(rotation, pxr.GfVec3d(0, 0, 0))
+        xformable.AddTransformOp(.PrecisionDouble, pxr.TfToken(), false).Set(rotateMatrix, pxr.UsdTimeCode.Default())
+
+        var system = Overlay.ExecUsdSystemWrapper(Overlay.TfRefPtr(stage))
+        let key = pxr.ExecUsdValueKey(prim, pxr.TfToken("computeLocalToWorldTransform"))
+
+        // world = local * parentToWorld = rotateMatrix * translateMatrix.
+        // Matches GfMatrix4d(rotate, translate)'s construction exactly
+        // (SetRotate then SetTranslateOnly - translation unrotated).
+        let expectedMatrix = pxr.GfMatrix4d(rotation, pxr.GfVec3d(10, 0, 0))
+
+        #if compiler(>=6.2)
+        // Swift-Cxx interop only gained rvalue reference support in Swift 6.2;
+        // BuildRequest(consuming:) relies on it.
+        let request = system.BuildRequest(consuming: [key])
+        Overlay.Compute(&system, request) { view in
+            var val = view.Get(0)
+            XCTAssertTrue(val.IsHolding(T: pxr.GfMatrix4d.self))
+            
+            let matrix: pxr.GfMatrix4d = val.UncheckedGet()
+            XCTAssertEqual(matrix, expectedMatrix)
+        }
+        #endif // #if compiler(>=6.2)
+    }
+
+    func test_ExecUsdSystemWrapper_ChildTranslate_ParentRotate() {
+        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+
+        let parentPrim = stage.DefinePrim("/hello", .UsdGeomTokens.Xform)
+        let parentXformable = pxr.UsdGeomXformable(parentPrim)
+        let rotation = pxr.GfRotation(pxr.GfVec3d(0, 0, 1), 90)
+        let rotateMatrix = pxr.GfMatrix4d(rotation, pxr.GfVec3d(0, 0, 0))
+        parentXformable.AddTransformOp(.PrecisionDouble, pxr.TfToken(), false).Set(rotateMatrix, pxr.UsdTimeCode.Default())
+
+        let prim = stage.DefinePrim("/hello/world", .UsdGeomTokens.Sphere)
+        let xformable = pxr.UsdGeomXformable(prim)
+        let translateMatrix = pxr.GfMatrix4d(
+            1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1, 0,
+            10, 0, 0, 1
+        )
+        xformable.AddTransformOp(.PrecisionDouble, pxr.TfToken(), false).Set(translateMatrix, pxr.UsdTimeCode.Default())
+
+        var system = Overlay.ExecUsdSystemWrapper(Overlay.TfRefPtr(stage))
+        let key = pxr.ExecUsdValueKey(prim, pxr.TfToken("computeLocalToWorldTransform"))
+
+        // world = local * parentToWorld = translateMatrix * rotateMatrix.
+        // The translation ends up rotated by the parent's rotation - computed
+        // via Transform().
+        let rotationOnly = pxr.GfMatrix4d(rotation, pxr.GfVec3d(0, 0, 0))
+        let rotatedTranslate = rotationOnly.Transform(pxr.GfVec3d(10, 0, 0))
+        let expectedMatrix = pxr.GfMatrix4d(rotation, rotatedTranslate)
+
+        #if compiler(>=6.2)
+        // Swift-Cxx interop only gained rvalue reference support in Swift 6.2;
+        // BuildRequest(consuming:) relies on it.
+        let request = system.BuildRequest(consuming: [key])
+        Overlay.Compute(&system, request) { view in
+            var val = view.Get(0)
+            XCTAssertTrue(val.IsHolding(T: pxr.GfMatrix4d.self))
+            
+            let matrix: pxr.GfMatrix4d = val.UncheckedGet()
+            XCTAssertEqual(matrix, expectedMatrix)
+        }
+        #endif // #if compiler(>=6.2)
+    }
 }
 
