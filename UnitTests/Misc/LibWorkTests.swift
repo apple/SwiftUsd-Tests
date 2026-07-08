@@ -43,7 +43,7 @@ fileprivate func assertLessThanSuppressable<T>(
         print("(SWIFTUSD_TESTS_SUPPRESS_PERFORMANCE_FAILURES): XCTAssertLessThan failed: \(l), \(r)). \(file):\(line)")
     }
     #else
-    XCTAssertLessThan(l, r, message, file: file, line: line)
+    XCTAssertLessThan(l, r, message(), file: file, line: line)
     #endif
 }
 

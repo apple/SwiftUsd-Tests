@@ -81,7 +81,7 @@ final class TfNoticeTests: TemporaryDirectoryHelper {
             gotNotice += 1
         }
         XCTAssertEqual(gotNotice, 0)
-        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
         XCTAssertEqual(gotNotice, 0)
         stage.SetStartTimeCode(5)
         XCTAssertEqual(gotNotice, 2) // Incremented by two because UsdNotice.StageNotice is a base class with a subclass that fires
@@ -98,8 +98,8 @@ final class TfNoticeTests: TemporaryDirectoryHelper {
     
     func test_RegisterB() {
         let gotNotice = SendableCounter(0)
-        let stage1 = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
-        let stage2 = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+        let stage1 = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
+        let stage2 = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
         
         pxr.TfNotice.Register(stage1) { (notice: pxr.UsdNotice.ObjectsChanged) in
             gotNotice += 1
@@ -125,8 +125,8 @@ final class TfNoticeTests: TemporaryDirectoryHelper {
     
     func test_RegisterC() {
         let gotNotice = SendableCounter(0)
-        nonisolated(unsafe) let stage1 = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
-        let stage2 = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+        nonisolated(unsafe) let stage1 = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
+        let stage2 = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
         
         pxr.TfNotice.Register(stage1) { (notice: pxr.UsdNotice.ObjectsChanged, sender: pxr.UsdStage) in
             gotNotice += 1
@@ -168,7 +168,7 @@ final class TfNoticeTests: TemporaryDirectoryHelper {
             }
         }
         
-        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
         XCTAssertEqual(gotStageContentsChangedNotice, 0)
         XCTAssertEqual(gotObjectsChangedNotice, 0)
         stage.SetStartTimeCode(1)
@@ -194,8 +194,8 @@ final class TfNoticeTests: TemporaryDirectoryHelper {
     func test_RegisterE() {
         let gotStageContentsChangedNotice = SendableCounter(0)
         let gotObjectsChangedNotice = SendableCounter(0)
-        let stage1 = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
-        let stage2 = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+        let stage1 = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
+        let stage2 = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
         
         pxr.TfNotice.Register(stage1) { (notice: pxr.UsdNotice.StageNotice, caster) in
             if let stageContentsChanged = caster(pxr.UsdNotice.StageContentsChanged.self) {
@@ -236,8 +236,8 @@ final class TfNoticeTests: TemporaryDirectoryHelper {
     func test_RegisterF() {
         let gotStageContentsChangedNotice = SendableCounter(0)
         let gotObjectsChangedNotice = SendableCounter(0)
-        nonisolated(unsafe) let stage1 = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
-        let stage2 = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+        nonisolated(unsafe) let stage1 = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
+        let stage2 = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
         
         pxr.TfNotice.Register(stage1) { (notice: pxr.UsdNotice.StageNotice, sender, caster) in
             if let stageContentsChanged = caster(pxr.UsdNotice.StageContentsChanged.self) {
@@ -345,7 +345,7 @@ final class TfNoticeTests: TemporaryDirectoryHelper {
             gotNotice += 1
         }
         XCTAssertEqual(gotNotice, 0)
-        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
         XCTAssertEqual(gotNotice, 0)
         stage.SetStartTimeCode(5)
         XCTAssertEqual(gotNotice, 1)
@@ -359,8 +359,8 @@ final class TfNoticeTests: TemporaryDirectoryHelper {
         let aCtr = SendableCounter(0)
         let bCtr = SendableCounter(0)
         
-        let aStage = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
-        let bStage = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+        let aStage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
+        let bStage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
         
         var keys = pxr.TfNotice.SwiftKeys()
         
@@ -411,7 +411,7 @@ final class TfNoticeTests: TemporaryDirectoryHelper {
             gotNotice += 1
         }
         XCTAssertEqual(gotNotice, 0)
-        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
         XCTAssertEqual(gotNotice, 0)
         stage.SetStartTimeCode(5)
         XCTAssertEqual(gotNotice, 1)
@@ -425,8 +425,8 @@ final class TfNoticeTests: TemporaryDirectoryHelper {
         let aCtr = SendableCounter(0)
         let bCtr = SendableCounter(0)
         
-        let aStage = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
-        let bStage = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+        let aStage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
+        let bStage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
         
         var keys = pxr.TfNotice.SwiftKeys()
         
@@ -472,7 +472,7 @@ final class TfNoticeTests: TemporaryDirectoryHelper {
     }
     
     func test_callbacksAreNonConcurrent() {
-        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
         
         let isCallbackRunning = SendableFlag(false)
         let counter = SendableCounter(0)
@@ -638,7 +638,7 @@ final class TfNoticeTests: TemporaryDirectoryHelper {
         XCTAssertTrue(_xLanguage_TfNotice.test_revokeManyCppKeyViaSwiftUsd())
         
         do {
-            let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+            let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
             let callbackCount = SendableCounter(0)
             let key = pxr.TfNotice.Register(stage, pxr.UsdNotice.StageContentsChanged.self) { _ in
                 callbackCount += 1
@@ -649,8 +649,8 @@ final class TfNoticeTests: TemporaryDirectoryHelper {
         }
         
         do {
-            let stage1 = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
-            let stage2 = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+            let stage1 = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
+            let stage2 = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
             let callbackCount1 = SendableCounter(0)
             let callbackCount2 = SendableCounter(0)
             let key1 = pxr.TfNotice.Register(stage1, pxr.UsdNotice.StageContentsChanged.self) { _ in
@@ -673,7 +673,7 @@ final class TfNoticeTests: TemporaryDirectoryHelper {
             let cppKey = p.first
             let callbackCount = p.second!
             
-            let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+            let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
             XCTAssertTrue(callbackCount() == 0)
             
             stage.SetStartTimeCode(5)
