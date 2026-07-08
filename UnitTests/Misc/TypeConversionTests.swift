@@ -29,6 +29,18 @@ final class TypeConversionTests: TemporaryDirectoryHelper {
         XCTAssertEqual(y, 1.25)
     }
     
+    func test_Double_from_GfHalf() {
+        let x: pxr.GfHalf = pxr.GfHalf(1.25)
+        let y: Double = Double(x)
+        XCTAssertEqual(y, 1.25)
+    }
+    
+    func test_GfHalf_from_Double() {
+        let x: Double = 1.25
+        let y: pxr.GfHalf = pxr.GfHalf(x)
+        XCTAssertEqual(y, 1.25)
+    }
+    
     func test_String_from_TfToken() {
         XCTAssertEqual(String(pxr.TfToken.UsdGeomTokens.Cube), "Cube")
     }

@@ -770,6 +770,67 @@ final class WrappedTypeTests: HydraHelper {
         XCTAssertFalse(resolvedPath.IsEmpty())
     }
     
+    // MARK: ArAssetWrapper
+    
+    func test_ArAssetWrapper_nonexistentFile() {
+        let assetUrl = self.urlForResource(subPath: "Wrapping/ArAssetWrapper/thisfiledoesnotexist.txt")
+        let resolvedPath = pxr.ArResolvedPath(std.string(assetUrl.path(percentEncoded: false)))
+        let assetWrapper: Overlay.ArAssetWrapper = Overlay.ArGetResolver().OpenAsset(resolvedPath)
+        
+        XCTAssertFalse(Bool(assetWrapper))
+    }
+    
+    func test_ArAssetWrapper() {
+        let assetUrl = self.urlForResource(subPath: "Wrapping/ArAssetWrapper/foo.txt")
+        let resolvedPath = pxr.ArResolvedPath(std.string(assetUrl.path(percentEncoded: false)))
+        let assetWrapper: Overlay.ArAssetWrapper = Overlay.ArGetResolver().OpenAsset(resolvedPath)
+        
+        XCTAssertTrue(Bool(assetWrapper))
+        
+        let expectedContents = "Hello, ArAssetWrapper!\n"
+        XCTAssertEqual(assetWrapper.GetSize(), 23)
+        XCTAssertEqual(assetWrapper.GetSize(), expectedContents.count)
+        
+        withExtendedLifetime(assetWrapper) {
+            withExtendedLifetime(assetWrapper.GetBuffer()) { bufSharedPtr in
+                let bufPtr = bufSharedPtr.__getUnsafe()!
+                for i in 0..<min(expectedContents.count, assetWrapper.GetSize()) {
+                    expectedContents.withCString { expectedPtr in
+                        XCTAssertEqual(bufPtr[i], expectedPtr[i])
+                    }
+                }
+            }
+        }
+        
+        var data = Data(count: assetWrapper.GetSize() - 2)
+        let readRetValue = data.withUnsafeMutableBytes {
+            assetWrapper.Read($0.baseAddress, assetWrapper.GetSize() - 2, 2)
+        }
+        XCTAssertEqual(readRetValue, 21)
+        let readString = String(data: data, encoding: .utf8)
+        XCTAssertEqual(readString, "llo, ArAssetWrapper!\n")
+    }
+    
+    // MARK: ArWritableAssetWrapper
+    func test_ArWritableAssetWrapper() {
+        let url = FileManager.default.temporaryDirectory.appending(path: "ArWritableAssetWrapper.txt")
+        let resolvedPath = pxr.ArResolvedPath(std.string(url.path(percentEncoded: false)))
+        var writableAssetWrapper: Overlay.ArWritableAssetWrapper = Overlay.ArGetResolver().OpenAssetForWrite(resolvedPath, .Replace)
+        
+        XCTAssertTrue(Bool(writableAssetWrapper))
+        let s = "Hello, ArWritableAssetWrapper!\n"
+        let writeRetValue = s.withCString {
+            writableAssetWrapper.Write($0, s.count, 0)
+        }
+        XCTAssertEqual(writeRetValue, s.count)
+        
+        XCTAssertTrue(writableAssetWrapper.Close())
+        
+        let contentsWritten = try? String(contentsOf: url, encoding: .utf8)
+        XCTAssertEqual(s, contentsWritten)
+    }
+    // bool Close(), size_t Write(const void* buffer, size_t count, size_t offset)
+    
     // MARK: SdfZipFileIteratorWrapper
     
     func test_SdfZipFileIteratorWrapper() {
@@ -834,7 +895,7 @@ final class WrappedTypeTests: HydraHelper {
     // MARK: ExecUsdSystemWrapper
 
     func test_ExecUsdSystemWrapper() {
-        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
         stage.DefinePrim("/hello", .UsdGeomTokens.Xform)
 
         let prim = stage.DefinePrim("/hello/world", .UsdGeomTokens.Sphere)
@@ -852,7 +913,9 @@ final class WrappedTypeTests: HydraHelper {
         #if compiler(>=6.2)
         // Swift-Cxx interop only gained rvalue reference support in Swift 6.2;
         // BuildRequest(consuming:) relies on it.
-        let request = system.BuildRequest(consuming: [key])
+        var vec = Overlay.ExecUsdValueKey_Vector()
+        vec.push_back(key)
+        let request = system.BuildRequest(consuming: vec)
         Overlay.Compute(&system, request) { view in
             var val = view.Get(0)
             XCTAssertTrue(val.IsHolding(T: pxr.GfMatrix4d.self))
@@ -864,7 +927,7 @@ final class WrappedTypeTests: HydraHelper {
     }
 
     func test_ExecUsdSystemWrapper_ChildRotate_ParentTranslate() {
-        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
 
         // computeLocalToWorldTransform (registered in pxr/exec/execGeom) does
         // not compose a prim's own xformOpOrder - it reads a single attribute
@@ -900,7 +963,9 @@ final class WrappedTypeTests: HydraHelper {
         #if compiler(>=6.2)
         // Swift-Cxx interop only gained rvalue reference support in Swift 6.2;
         // BuildRequest(consuming:) relies on it.
-        let request = system.BuildRequest(consuming: [key])
+        var vec = Overlay.ExecUsdValueKey_Vector()
+        vec.push_back(key)
+        let request = system.BuildRequest(consuming: vec)
         Overlay.Compute(&system, request) { view in
             var val = view.Get(0)
             XCTAssertTrue(val.IsHolding(T: pxr.GfMatrix4d.self))
@@ -912,7 +977,7 @@ final class WrappedTypeTests: HydraHelper {
     }
 
     func test_ExecUsdSystemWrapper_ChildTranslate_ParentRotate() {
-        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory())
+        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
 
         let parentPrim = stage.DefinePrim("/hello", .UsdGeomTokens.Xform)
         let parentXformable = pxr.UsdGeomXformable(parentPrim)
@@ -943,7 +1008,9 @@ final class WrappedTypeTests: HydraHelper {
         #if compiler(>=6.2)
         // Swift-Cxx interop only gained rvalue reference support in Swift 6.2;
         // BuildRequest(consuming:) relies on it.
-        let request = system.BuildRequest(consuming: [key])
+        var vec = Overlay.ExecUsdValueKey_Vector()
+        vec.push_back(key)
+        let request = system.BuildRequest(consuming: vec)
         Overlay.Compute(&system, request) { view in
             var val = view.Get(0)
             XCTAssertTrue(val.IsHolding(T: pxr.GfMatrix4d.self))
