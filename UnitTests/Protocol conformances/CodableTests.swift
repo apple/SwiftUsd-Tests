@@ -837,6 +837,18 @@ final class CodableTests: TemporaryDirectoryHelper {
         assertDecodingFails(pxr.GfSize3.self, #"[4]"#)
         assertDecodingFails(pxr.GfSize3.self, #"[4, ]"#)
     }
+    func test_GfTimeCode() throws {
+        assertConforms(pxr.GfTimeCode.self)
+        let x: pxr.GfTimeCode = pxr.GfTimeCode(5.6)
+        try assertEncodedJsonIsIdentical(x, #"5.6"#)
+        
+        assertDecodingFails(pxr.GfTimeCode.self, #"string without quotes"#)
+        assertDecodingFails(pxr.GfTimeCode.self, #"[]"#)
+        assertDecodingFails(pxr.GfTimeCode.self, #"{}"#)
+        assertDecodingFails(pxr.GfTimeCode.self, #"[1, 2, 3]"#)
+        assertDecodingFails(pxr.GfTimeCode.self, #"[4]"#)
+        assertDecodingFails(pxr.GfTimeCode.self, #"[4, ]"#)
+    }
     func test_GfTransform() throws {
         assertConforms(pxr.GfTransform.self)
         let x: pxr.GfTransform = .init(.init(1, 2, 3), // scale
@@ -1245,18 +1257,6 @@ final class CodableTests: TemporaryDirectoryHelper {
         assertDecodingFails(pxr.SdfPath.self, #"[1, 2, 3]"#)
         assertDecodingFails(pxr.SdfPath.self, #"[4]"#)
         assertDecodingFails(pxr.SdfPath.self, #"[4, ]"#)
-    }
-    func test_SdfTimeCode() throws {
-        assertConforms(pxr.SdfTimeCode.self)
-        let x: pxr.SdfTimeCode = pxr.SdfTimeCode(5.6)
-        try assertEncodedJsonIsIdentical(x, #"5.6"#)
-        
-        assertDecodingFails(pxr.SdfTimeCode.self, #"string without quotes"#)
-        assertDecodingFails(pxr.SdfTimeCode.self, #"[]"#)
-        assertDecodingFails(pxr.SdfTimeCode.self, #"{}"#)
-        assertDecodingFails(pxr.SdfTimeCode.self, #"[1, 2, 3]"#)
-        assertDecodingFails(pxr.SdfTimeCode.self, #"[4]"#)
-        assertDecodingFails(pxr.SdfTimeCode.self, #"[4, ]"#)
     }
     
     // MARK: Usd

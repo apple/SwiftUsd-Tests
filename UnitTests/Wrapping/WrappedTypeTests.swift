@@ -457,8 +457,19 @@ final class WrappedTypeTests: HydraHelper {
         }
     }
     
+    // In v26.08, TfErrorTransport becomes non-copyable, so we need a little more
+    // code to move it in/out of Tasks and Arrays
+    fileprivate class TransportHolder {
+        var value: pxr.TfErrorTransport
+        
+        init(_ value: consuming pxr.TfErrorTransport) {
+            self.value = value
+        }
+    }
+    
     func test_TfErrorMarkWrapper_Transport_1() async {
-        var transports = [pxr.TfErrorTransport]()
+        
+        var transports = [TransportHolder]()
         
         let basePath = String(pathForStage(named: "HelloWorld"))
         
@@ -475,7 +486,7 @@ final class WrappedTypeTests: HydraHelper {
                     XCTAssertFalse(transport.IsEmpty())
                     withExtendedLifetime(stage1) {}
                     withExtendedLifetime(stage2) {}
-                    return transport
+                    return TransportHolder(transport)
                 }
             }.value)
         }
@@ -485,18 +496,16 @@ final class WrappedTypeTests: HydraHelper {
                 try! await Task.sleep(for: .seconds(0.01))
                 Overlay.withTfErrorMark {
                     XCTAssertTrue($0.IsClean())
-                    var t = transport
-                    t.Post()
+                    transport.value.Post()
                     XCTAssertFalse($0.IsClean())
-                    XCTAssertTrue(t.IsEmpty())
-                    XCTAssertFalse(transport.IsEmpty())
+                    XCTAssertTrue(transport.value.IsEmpty())
                 }
             }.value
         }
     }
     
     func test_TfErrorMarkWrapper_TransportTo_1() async {
-        var transports = [pxr.TfErrorTransport]()
+        var transports = [TransportHolder]()
         
         let basePath = String(pathForStage(named: "HelloWorld"))
         
@@ -515,7 +524,7 @@ final class WrappedTypeTests: HydraHelper {
                     $0.TransportTo(&transport)
                     XCTAssertTrue($0.IsClean())
                     XCTAssertFalse(transport.IsEmpty())
-                    return transport
+                    return TransportHolder(transport)
                 }
             }.value)
         }
@@ -525,11 +534,9 @@ final class WrappedTypeTests: HydraHelper {
                 try! await Task.sleep(for: .seconds(0.01))
                 Overlay.withTfErrorMark {
                     XCTAssertTrue($0.IsClean())
-                    var t = transport
-                    t.Post()
+                    transport.value.Post()
                     XCTAssertFalse($0.IsClean())
-                    XCTAssertTrue(t.IsEmpty())
-                    XCTAssertFalse(transport.IsEmpty())
+                    XCTAssertTrue(transport.value.IsEmpty())
                 }
             }.value
         }
@@ -548,9 +555,9 @@ final class WrappedTypeTests: HydraHelper {
             for err in $0.errors {
                 loopCount += 1
                 XCTAssertTrue(String(err.GetSourceFileName()).hasSuffix("/pxr/usd/sdf/layer.cpp"))
-                XCTAssertEqual(err.GetSourceLineNumber(), 600)
+                XCTAssertEqual(err.GetSourceLineNumber(), 665)
                 XCTAssertEqual(String(err.GetCommentary()), "A layer already exists with identifier '\(pathForStage(named: "HelloWorld.usda"))'")
-                XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_26_5__pxrReserved__::SdfLayer::_CreateNew")
+                XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_26_8__pxrReserved__::SdfLayer::_CreateNew")
                 XCTAssertEqual(err.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
                 XCTAssertTrue(err.IsCodingError())
             }
@@ -574,16 +581,16 @@ final class WrappedTypeTests: HydraHelper {
                 loopCount += 1
                 if loopCount == 1 {
                     XCTAssertTrue(String(err.GetSourceFileName()).hasSuffix("/pxr/usd/sdf/layer.cpp"))
-                    XCTAssertEqual(err.GetSourceLineNumber(), 600)
+                    XCTAssertEqual(err.GetSourceLineNumber(), 665)
                     XCTAssertEqual(String(err.GetCommentary()), "A layer already exists with identifier '\(pathForStage(named: "HelloWorld.usda"))'")
-                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_26_5__pxrReserved__::SdfLayer::_CreateNew")
+                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_26_8__pxrReserved__::SdfLayer::_CreateNew")
                     XCTAssertEqual(err.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
                     XCTAssertTrue(err.IsCodingError())
                 } else {
                     XCTAssertTrue(String(err.GetSourceFileName()).hasSuffix("/pxr/usd/usd/stage.cpp"))
-                    XCTAssertEqual(err.GetSourceLineNumber(), 2049)
+                    XCTAssertEqual(err.GetSourceLineNumber(), 2048)
                     XCTAssertEqual(err.GetCommentary(), "Type mismatch for </hello.radius>: expected 'double', got 'VtArray<int>'")
-                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_26_5__pxrReserved__::UsdStage::_SetValue")
+                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_26_8__pxrReserved__::UsdStage::_SetValue")
                     XCTAssertEqual(err.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
                     XCTAssertTrue(err.IsCodingError())
                 }
@@ -621,9 +628,9 @@ final class WrappedTypeTests: HydraHelper {
                 for err in inner.errors {
                     loopCount += 1
                     XCTAssertTrue(String(err.GetSourceFileName()).hasSuffix("/pxr/usd/sdf/layer.cpp"))
-                    XCTAssertEqual(err.GetSourceLineNumber(), 600)
+                    XCTAssertEqual(err.GetSourceLineNumber(), 665)
                     XCTAssertEqual(String(err.GetCommentary()), "A layer already exists with identifier '\(pathForStage(named: "HelloWorld.usda"))'")
-                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_26_5__pxrReserved__::SdfLayer::_CreateNew")
+                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_26_8__pxrReserved__::SdfLayer::_CreateNew")
                     XCTAssertEqual(err.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
                     XCTAssertTrue(err.IsCodingError())
                 }
@@ -633,9 +640,9 @@ final class WrappedTypeTests: HydraHelper {
                 for err in outer.errors {
                     loopCount += 1
                     XCTAssertTrue(String(err.GetSourceFileName()).hasSuffix("/pxr/usd/sdf/layer.cpp"))
-                    XCTAssertEqual(err.GetSourceLineNumber(), 600)
+                    XCTAssertEqual(err.GetSourceLineNumber(), 665)
                     XCTAssertEqual(String(err.GetCommentary()), "A layer already exists with identifier '\(pathForStage(named: "HelloWorld.usda"))'")
-                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_26_5__pxrReserved__::SdfLayer::_CreateNew")
+                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_26_8__pxrReserved__::SdfLayer::_CreateNew")
                     XCTAssertEqual(err.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
                     XCTAssertTrue(err.IsCodingError())
                 }
@@ -646,9 +653,9 @@ final class WrappedTypeTests: HydraHelper {
             for err in outer.errors {
                 loopCount += 1
                 XCTAssertTrue(String(err.GetSourceFileName()).hasSuffix("/pxr/usd/sdf/layer.cpp"))
-                XCTAssertEqual(err.GetSourceLineNumber(), 600)
+                XCTAssertEqual(err.GetSourceLineNumber(), 665)
                 XCTAssertEqual(String(err.GetCommentary()), "A layer already exists with identifier '\(pathForStage(named: "HelloWorld.usda"))'")
-                XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_26_5__pxrReserved__::SdfLayer::_CreateNew")
+                XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_26_8__pxrReserved__::SdfLayer::_CreateNew")
                 XCTAssertEqual(err.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
                 XCTAssertTrue(err.IsCodingError())
             }
@@ -672,9 +679,9 @@ final class WrappedTypeTests: HydraHelper {
                 for err in inner.errors {
                     loopCount += 1
                     XCTAssertTrue(String(err.GetSourceFileName()).hasSuffix("/pxr/usd/sdf/layer.cpp"))
-                    XCTAssertEqual(err.GetSourceLineNumber(), 600)
+                    XCTAssertEqual(err.GetSourceLineNumber(), 665)
                     XCTAssertEqual(String(err.GetCommentary()), "A layer already exists with identifier '\(pathForStage(named: "HelloWorld.usda"))'")
-                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_26_5__pxrReserved__::SdfLayer::_CreateNew")
+                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_26_8__pxrReserved__::SdfLayer::_CreateNew")
                     XCTAssertEqual(err.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
                     XCTAssertTrue(err.IsCodingError())
                 }
@@ -684,9 +691,9 @@ final class WrappedTypeTests: HydraHelper {
                 for err in outer.errors {
                     loopCount += 1
                     XCTAssertTrue(String(err.GetSourceFileName()).hasSuffix("/pxr/usd/sdf/layer.cpp"))
-                    XCTAssertEqual(err.GetSourceLineNumber(), 600)
+                    XCTAssertEqual(err.GetSourceLineNumber(), 665)
                     XCTAssertEqual(String(err.GetCommentary()), "A layer already exists with identifier '\(pathForStage(named: "HelloWorld.usda"))'")
-                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_26_5__pxrReserved__::SdfLayer::_CreateNew")
+                    XCTAssertEqual(err.GetSourceFunction(), "pxrInternal_v0_26_8__pxrReserved__::SdfLayer::_CreateNew")
                     XCTAssertEqual(err.GetDiagnosticCode().GetValue(), pxr.TF_DIAGNOSTIC_CODING_ERROR_TYPE)
                     XCTAssertTrue(err.IsCodingError())
                 }

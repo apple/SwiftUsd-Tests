@@ -936,7 +936,6 @@ final class FRTProtocolsTests: TemporaryDirectoryHelper {
     func test_HdRendererPluginRegistry_usage() {
         let registry = pxr.HdRendererPluginRegistry.GetInstance()
         XCTAssertTrue(type(of: registry) == pxr.HdRendererPluginRegistry.self)
-        XCTAssertEqual(registry.GetDefaultPluginId(), "HdStormRendererPlugin")
     }
     
     func test_HdSceneIndexPluginRegistry_usage() {

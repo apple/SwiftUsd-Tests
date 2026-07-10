@@ -109,8 +109,11 @@ fileprivate class Renderer {
 
         var domeLight = pxr.GlfSimpleLight(pxr.GfVec4f(0, 0, 0, 1))
         domeLight.SetIsDomeLight(true)
-        
-        return [cameraLight, domeLight]
+
+        var result = pxr.GlfSimpleLightVector()
+        result.push_back(cameraLight)
+        result.push_back(domeLight)
+        return result
     }
 
     func initializeEngine() {
