@@ -940,14 +940,14 @@ final class TfNoticeTests: TemporaryDirectoryHelper {
                 XCTAssertEqual(Array(notice.GetResyncedPaths()), [])
                 XCTAssertEqual(Array(notice.GetChangedInfoOnlyPaths()), ["/hello.radius"])
                 XCTAssertEqual(Array(notice.GetResolvedAssetPathsResyncedPaths()), [])
-                XCTAssertEqual(notice.GetChangedFields("/hello.radius"), [])
+                XCTAssertEqual(notice.GetChangedFields("/hello.radius"), ["timeSamples"])
                 
             case 10:
                 // /hello.radius[6] = 10
                 XCTAssertEqual(Array(notice.GetResyncedPaths()), [])
                 XCTAssertEqual(Array(notice.GetChangedInfoOnlyPaths()), ["/hello.radius"])
                 XCTAssertEqual(Array(notice.GetResolvedAssetPathsResyncedPaths()), [])
-                XCTAssertEqual(notice.GetChangedFields("/hello.radius"), [])
+                XCTAssertEqual(notice.GetChangedFields("/hello.radius"), ["timeSamples"])
                 
             default: XCTFail()
             }

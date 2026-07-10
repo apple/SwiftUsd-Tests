@@ -185,14 +185,14 @@ final class EquatableTests: TemporaryDirectoryHelper {
         assertConforms(pxr.SdfLayerHandle.self)
     }
     
-    func test_SdfTimeCode() {
-        let a = pxr.SdfTimeCode(2.718)
-        let b = pxr.SdfTimeCode(3.1415)
-        let c = pxr.SdfTimeCode(2.718)
+    func test_GfTimeCode() {
+        let a = pxr.GfTimeCode(2.718)
+        let b = pxr.GfTimeCode(3.1415)
+        let c = pxr.GfTimeCode(2.718)
         XCTAssertNotEqual(a, b)
         XCTAssertNotEqual(b, c)
         XCTAssertEqual(a, c)
-        assertConforms(pxr.SdfTimeCode.self)
+        assertConforms(pxr.GfTimeCode.self)
     }
     
     func test_TfToken() {
