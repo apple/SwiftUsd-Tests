@@ -484,7 +484,65 @@ final class SequenceTests: TemporaryDirectoryHelper {
         XCTAssertEqual(Array(x), x.map { $0 })
         assertConforms(Overlay.SdfAssetPath_VtArray.self)
     }
-    
+
+    // MARK: VtArray.withUnsafeBufferPointer (zero-copy reads)
+
+    private func _assertBuffer<T: __Overlay.VtArray_WithoutCodableProtocol>(_ x: T, _ expected: [T.Element]) where T.Element == T.ElementType {
+        XCTAssertEqual(x.size(), expected.count)
+        XCTAssertEqual(x.withUnsafeBufferPointer { Array($0) }, expected)
+    }
+
+    func test_VtArray_withUnsafeBufferPointer_int() {
+        let x: pxr.VtIntArray = [3, 1, 4, 1, 5]
+        _assertBuffer(x, [3, 1, 4, 1, 5])
+    }
+
+    func test_VtArray_withUnsafeBufferPointer_float() {
+        let x: pxr.VtFloatArray = [2.5, -1, 0]
+        _assertBuffer(x, [2.5, -1, 0])
+    }
+
+    func test_VtArray_withUnsafeBufferPointer_vec3f() {
+        let x: pxr.VtVec3fArray = [pxr.GfVec3f(1, 2, 3), pxr.GfVec3f(4, 5, 6)]
+        _assertBuffer(x, [pxr.GfVec3f(1, 2, 3), pxr.GfVec3f(4, 5, 6)])
+    }
+
+    func test_VtArray_withUnsafeBufferPointer_string() {
+        let x: pxr.VtStringArray = ["foo", "bar", "baz"]
+        _assertBuffer(x, ["foo", "bar", "baz"])
+    }
+
+    // A fresh, never-filled array hands back an empty buffer rather than a
+    // dangling base pointer.
+    func test_VtArray_withUnsafeBufferPointer_empty() {
+        let x = pxr.VtIntArray()
+        var observedCount = -1
+        x.withUnsafeBufferPointer { observedCount = $0.count }
+        XCTAssertEqual(observedCount, 0)
+        _assertBuffer(x, [])
+    }
+
+    // Filled and then fully emptied reports zero, not a stale count.
+    func test_VtArray_withUnsafeBufferPointer_addedThenCleared() {
+        var x = pxr.VtIntArray()
+        x.push_back(1)
+        x.push_back(2)
+        x.push_back(3)
+        x.clear()
+        var observedCount = -1
+        x.withUnsafeBufferPointer { observedCount = $0.count }
+        XCTAssertEqual(observedCount, 0)
+        _assertBuffer(x, [])
+    }
+
+    func test_VtArray_withUnsafeBufferPointer_varyingSizes() {
+        for n in [1, 2, 7, 128, 1000] {
+            var x = pxr.VtIntArray()
+            for i in 0 ..< n { x.push_back(Int32(i)) }
+            _assertBuffer(x, (0 ..< n).map { Int32($0) })
+        }
+    }
+
     // MARK: std::vector specializations
         
     func test_StringVector() throws {
