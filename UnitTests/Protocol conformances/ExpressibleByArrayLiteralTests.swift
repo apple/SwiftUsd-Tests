@@ -381,4 +381,51 @@ final class ExpressibleByArrayLiteralTests: TemporaryDirectoryHelper {
         XCTAssertEqual(x.description, "[(1, 2, 3, 4)]")
         assertConforms(Overlay.GfVec4f_Vector.self)
     }
+
+    // MARK: VtArray init from a contiguous buffer (single-copy construction)
+
+    func test_VtArray_initFromBuffer_int() {
+        let source: [Int32] = [5, 6, 7, 8]
+        let x = source.withUnsafeBufferPointer { pxr.VtIntArray($0) }
+        XCTAssertEqual(x.description, "[5, 6, 7, 8]")
+        XCTAssertEqual(Array(x), source)
+    }
+
+    func test_VtArray_initFromBuffer_empty() {
+        let source: [Int32] = []
+        let x = source.withUnsafeBufferPointer { pxr.VtIntArray($0) }
+        XCTAssertEqual(x.size(), 0)
+        XCTAssertEqual(x.description, "[]")
+    }
+
+    // A layout-compatible struct bound straight into GfVec3f, with no per-element conversion.
+    func test_VtArray_initFromBuffer_layoutCompatible() {
+        struct MyFloat3 { var x: Float; var y: Float; var z: Float }
+        let view = [MyFloat3(x: 1, y: 2, z: 3), MyFloat3(x: 4, y: 5, z: 6)]
+        let x: pxr.VtVec3fArray = view.withUnsafeBufferPointer { buffer in
+            let vecs = UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(to: pxr.GfVec3f.self)
+            return pxr.VtVec3fArray(UnsafeBufferPointer(start: vecs, count: buffer.count))
+        }
+        XCTAssertEqual(x, [pxr.GfVec3f(1, 2, 3), pxr.GfVec3f(4, 5, 6)])
+    }
+
+    // A buffer-constructed array survives a Set/Get through USDAttribute.
+    func test_VtArray_initFromBuffer_roundTripsThroughUsd() {
+        let source: [Float] = [1, 0, 1, 0, 1, 0]
+        let colors: pxr.VtVec3fArray = source.withUnsafeBufferPointer { buffer in
+            let vecs = UnsafeRawPointer(buffer.baseAddress!).assumingMemoryBound(to: pxr.GfVec3f.self)
+            return pxr.VtVec3fArray(UnsafeBufferPointer(start: vecs, count: buffer.count / 3))
+        }
+        XCTAssertEqual(colors.size(), 2)
+
+        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
+        stage.DefinePrim("/hello/world", "Sphere")
+        let sphere = pxr.UsdGeomSphere.Get(Overlay.TfWeakPtr(stage), "/hello/world")
+        let attr = sphere.GetDisplayColorAttr()
+        XCTAssertTrue(attr.Set(colors, pxr.UsdTimeCode.Default()))
+
+        var readBack = pxr.VtVec3fArray()
+        XCTAssertTrue(attr.Get(&readBack, pxr.UsdTimeCode.Default()))
+        XCTAssertEqual(readBack, colors)
+    }
 }
