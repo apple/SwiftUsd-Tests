@@ -281,8 +281,8 @@ fileprivate class Renderer {
     }
 }
 
-
-#if canImport(SwiftUsd_PXR_ENABLE_EMBREE_SUPPORT)
+// HgiTextureReadback is only supported on physical devices
+#if canImport(SwiftUsd_PXR_ENABLE_EMBREE_SUPPORT) && !targetEnvironment(simulator)
 final class EmbreeTests: HydraHelper {
     @MainActor func testBiplane() {
         let modelUrl = urlForResource(subPath: "Embree/toy_biplane_idle.usdz")
@@ -294,4 +294,4 @@ final class EmbreeTests: HydraHelper {
         try? assertImagesEqual(urlForResource(subPath: "Embree/toy_biplane_idle.png"), renderUrl, file: #file, line: #line)
     }
 }
-#endif // #if canImport(SwiftUsd_PXR_ENABLE_EMBREE_SUPPORT)
+#endif // #if canImport(SwiftUsd_PXR_ENABLE_EMBREE_SUPPORT) && !targetEnvironment(simulator)
