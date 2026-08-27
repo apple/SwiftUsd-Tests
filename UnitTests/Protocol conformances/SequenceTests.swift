@@ -254,6 +254,54 @@ final class SequenceTests: TemporaryDirectoryHelper {
         assertConforms(Overlay.String_Set.self)
     }
     
+    func test_TsKnotMap() {
+        var firstKnot = pxr.TsKnot()
+        firstKnot.SetTime(1)
+        firstKnot.SetValue(pxr.VtValue(5 as Double))
+        
+        var secondKnot = pxr.TsKnot()
+        secondKnot.SetTime(2)
+        secondKnot.SetValue(pxr.VtValue(10 as Double))
+        
+        var x: pxr.TsKnotMap = pxr.TsKnotMap()
+        x.insert(firstKnot)
+        x.insert(secondKnot)
+        
+        var i = 0
+        for knot in x {
+            switch i {
+            case 0:
+                XCTAssertEqual(knot.GetTime(), firstKnot.GetTime())
+                var value = pxr.VtValue()
+                Overlay.GetValue(knot, &value)
+                XCTAssertTrue(value.IsHolding(T: Double.self))
+                var doubleValue: Double = 0
+                XCTAssertTrue(firstKnot.GetValue(&doubleValue))
+                XCTAssertEqual(value.Get() as Double, doubleValue)
+                
+            case 1:
+                XCTAssertEqual(knot.GetTime(), secondKnot.GetTime())
+                var value = pxr.VtValue()
+                Overlay.GetValue(knot, &value)
+                XCTAssertTrue(value.IsHolding(T: Double.self))
+                var doubleValue: Double = 0
+                XCTAssertTrue(secondKnot.GetValue(&doubleValue))
+                XCTAssertEqual(value.Get() as Double, doubleValue)
+                
+            default:
+                XCTFail()
+            }
+            
+            i += 1
+        }
+        XCTAssertEqual(i, 2)
+        assertConforms(pxr.TsKnotMap.self)
+    }
+    
+    func test_SdfTimeSampleMap() {
+        assertConforms(pxr.SdfTimeSampleMap.self)
+    }
+    
     // MARK: VtArray specializations
     
     func test_VtArray_Bool() {
