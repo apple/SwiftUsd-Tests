@@ -590,4 +590,72 @@ final class SWIFT_NAME_copy: TemporaryDirectoryHelper {
         let s: std.string = p.GetString()
         XCTAssertEqual(s, "/foo/bar")
     }
+    
+    func test_SdfUnregisteredValue_GetValue() {
+        func inner(_ x: pxr.SdfUnregisteredValue) {
+            let y: pxr.VtValue = x.GetValue()
+            withExtendedLifetime(y) {}
+        }
+    }
+    
+    func test_SdfReference_methods() {
+        func inner(_ x: pxr.SdfReference) {
+            let a: std.string = x.GetAssetPath()
+            let b: pxr.SdfPath = x.GetPrimPath()
+            let c: pxr.SdfLayerOffset = x.GetLayerOffset()
+            let d: pxr.VtDictionary = x.GetCustomData()
+            withExtendedLifetime((a, b, c, d)) {}
+        }
+    }
+    
+    func test_SdfPayload_methods() {
+        func inner(_ x: pxr.SdfPayload) {
+            let a: std.string = x.GetAssetPath()
+            let b: pxr.SdfPath = x.GetPrimPath()
+            let c: pxr.SdfLayerOffset = x.GetLayerOffset()
+            withExtendedLifetime((a, b, c)) {}
+        }
+    }
+    
+    func test_SdfSpecs_GetSchema() {
+        func inner(_ x: pxr.SdfSpec) {
+            let y: pxr.SdfSchemaBase = x.GetSchema()
+            withExtendedLifetime(y) {}
+        }
+        
+        func inner(_ x: pxr.SdfPropertySpec) {
+            let y: pxr.SdfSchemaBase = x.GetSchema()
+            withExtendedLifetime(y) {}
+        }
+        
+        func inner(_ x: pxr.SdfPrimSpec) {
+            let y: pxr.SdfSchemaBase = x.GetSchema()
+            withExtendedLifetime(y) {}
+        }
+        
+        func inner(_ x: pxr.SdfVariantSetSpec) {
+            let y: pxr.SdfSchemaBase = x.GetSchema()
+            withExtendedLifetime(y) {}
+        }
+        
+        func inner(_ x: pxr.SdfVariantSpec) {
+            let y: pxr.SdfSchemaBase = x.GetSchema()
+            withExtendedLifetime(y) {}
+        }
+        
+        func inner(_ x: pxr.SdfAttributeSpec) {
+            let y: pxr.SdfSchemaBase = x.GetSchema()
+            withExtendedLifetime(y) {}
+        }
+        
+        func inner(_ x: pxr.SdfRelationshipSpec) {
+            let y: pxr.SdfSchemaBase = x.GetSchema()
+            withExtendedLifetime(y) {}
+        }
+        
+        func inner(_ x: pxr.SdfPseudoRootSpec) {
+            let y: pxr.SdfSchemaBase = x.GetSchema()
+            withExtendedLifetime(y) {}
+        }
+    }
 }

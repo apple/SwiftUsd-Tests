@@ -18,14 +18,17 @@
 // SPDX-License-Identifier: Apache-2.0
 //===----------------------------------------------------------------------===//
 
-#ifndef BridgingHeader_h
-#define BridgingHeader_h
+#ifndef StdOstreamWrapperTests_hpp
+#define StdOstreamWrapperTests_hpp
 
-#include "UnitTests/XLanguage/ARC/XLanguageARC_Cpp.hpp"
-#include "UnitTests/TemporaryImplementations/TemporaryImplementations_Cpp.hpp"
-#include "UnitTests/Wrapping/TfNoticeTests.hpp"
-#include "UnitTests/Misc/InternalUtilTests.hpp"
-#include "UnitTests/Misc/OpenEXRUsage.hpp"
-#include "UnitTests/Misc/StdOstreamWrapperTests.hpp"
+#include <stdio.h>
+#include <ostream>
+#include <sstream>
+#include <string>
+#include "swiftUsd/Wrappers/StdOstreamWrapper.h"
 
-#endif /* BridgingHeader_h */
+namespace _xLanguage_StdOstreamWrapper {
+    std::string returnStreamOutput(void (*_Nonnull callback)(Overlay::StdOstreamWrapper const*_Nonnull));
+}
+
+#endif /* StdOstreamWrapperTests_hpp */
