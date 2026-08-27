@@ -183,7 +183,7 @@ final class CodableTests: TemporaryDirectoryHelper {
             if f(nanAwareValue) { return }
         }
         
-        XCTAssertEqual(value, decoded, file: file, line: line)
+        XCTAssertEqual(value, decoded, "assertRoundTripsEqual", file: file, line: line)
     }
     
     // Calls assertRoundTripsEqual and assertEncodedJsonIsEquivalent
@@ -191,7 +191,7 @@ final class CodableTests: TemporaryDirectoryHelper {
                                                               file: StaticString = #filePath, line: UInt = #line) throws {
         let encodedValue = try encoder.encode(value)
         let s = String(data: encodedValue, encoding: .utf8)!
-        XCTAssertEqual(s, expectedJson, file: file, line: line)
+        XCTAssertEqual(s, expectedJson, "assertEncodedJsonIsIdentical", file: file, line: line)
         
         try assertRoundTripsEqual(value, file: file, line: line)
         try assertEncodedJsonIsEquivalent(value, expectedJson, file: file, line: line)
@@ -207,7 +207,7 @@ final class CodableTests: TemporaryDirectoryHelper {
         let reencodedExpectedJson = try encoder.encode(decodedExpectedJson)
         let reencodedExpectedJsonString = String(data: reencodedExpectedJson, encoding: .utf8)!
         
-        XCTAssertEqual(encodedString, reencodedExpectedJsonString, file: file, line: line)
+        XCTAssertEqual(encodedString, reencodedExpectedJsonString, "assertEncodedJsonIsEquivalent", file: file, line: line)
         
         try assertRoundTripsEqual(value, file: file, line: line)
     }
@@ -1257,6 +1257,24 @@ final class CodableTests: TemporaryDirectoryHelper {
         assertDecodingFails(pxr.SdfPath.self, #"[1, 2, 3]"#)
         assertDecodingFails(pxr.SdfPath.self, #"[4]"#)
         assertDecodingFails(pxr.SdfPath.self, #"[4, ]"#)
+    }
+    
+    func test_SdfPathExpression() throws {
+        assertConforms(pxr.SdfPathExpression.self)
+        let x: pxr.SdfPathExpression = pxr.SdfPathExpression("/foo", "")
+        try assertEncodedJsonIsIdentical(x, #""/foo""#)
+        
+        // These are invalid SdfPathExpressions, but decoding shouldn't currently
+        // check for that and error out, because that's application level logic
+        assertDecodingSucceeds(pxr.SdfPathExpression.self, #""quoted string""#)
+        assertDecodingSucceeds(pxr.SdfPathExpression.self, #""/slash quoted string""#)
+
+        assertDecodingFails(pxr.SdfPathExpression.self, #"string without quotes"#)
+        assertDecodingFails(pxr.SdfPathExpression.self, #"[]"#)
+        assertDecodingFails(pxr.SdfPathExpression.self, #"{}"#)
+        assertDecodingFails(pxr.SdfPathExpression.self, #"[1, 2, 3]"#)
+        assertDecodingFails(pxr.SdfPathExpression.self, #"[4]"#)
+        assertDecodingFails(pxr.SdfPathExpression.self, #"[4, ]"#)
     }
     
     // MARK: Usd

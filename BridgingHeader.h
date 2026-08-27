@@ -26,5 +26,6 @@
 #include "UnitTests/Wrapping/TfNoticeTests.hpp"
 #include "UnitTests/Misc/InternalUtilTests.hpp"
 #include "UnitTests/Misc/OpenEXRUsage.hpp"
+#include "UnitTests/Misc/StdOstreamWrapperTests.hpp"
 
 #endif /* BridgingHeader_h */

@@ -142,6 +142,9 @@
 		8EE5A88D2EB95D9D00C84A93 /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE5A88C2EB95D9D00C84A93 /* Types.swift */; };
 		8EE5A8902EBA807700C84A93 /* OpenUSD in Frameworks */ = {isa = PBXBuildFile; productRef = 8EE5A88F2EBA807700C84A93 /* OpenUSD */; };
 		8EE5A9B32ECCFFB200C84A93 /* OpenUSD in Frameworks */ = {isa = PBXBuildFile; productRef = 8EE5A9B22ECCFFB200C84A93 /* OpenUSD */; };
+		8EF1D88A3059E4D0005B0534 /* TsKnotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF1D8893059E4D0005B0534 /* TsKnotTests.swift */; };
+		8EF1D893305CAF0D005B0534 /* StdOstreamWrapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF1D892305CAF0D005B0534 /* StdOstreamWrapperTests.swift */; };
+		8EF1D896305CAF28005B0534 /* StdOstreamWrapperTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8EF1D895305CAF28005B0534 /* StdOstreamWrapperTests.cpp */; };
 		8EF209AB2F3E61D00087B979 /* VtValueRefTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF209AA2F3E61CF0087B979 /* VtValueRefTests.swift */; };
 		8EFA28122B3258BB000BC024 /* TestingObservationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EFA28112B3258BB000BC024 /* TestingObservationTests.swift */; };
 /* End PBXBuildFile section */
@@ -319,6 +322,10 @@
 		8EE5A8882EB95D6200C84A93 /* IO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IO.swift; sourceTree = "<group>"; };
 		8EE5A88A2EB95D8C00C84A93 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		8EE5A88C2EB95D9D00C84A93 /* Types.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
+		8EF1D8893059E4D0005B0534 /* TsKnotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TsKnotTests.swift; sourceTree = "<group>"; };
+		8EF1D892305CAF0D005B0534 /* StdOstreamWrapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StdOstreamWrapperTests.swift; sourceTree = "<group>"; };
+		8EF1D894305CAF28005B0534 /* StdOstreamWrapperTests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StdOstreamWrapperTests.hpp; sourceTree = "<group>"; };
+		8EF1D895305CAF28005B0534 /* StdOstreamWrapperTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StdOstreamWrapperTests.cpp; sourceTree = "<group>"; };
 		8EF209AA2F3E61CF0087B979 /* VtValueRefTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VtValueRefTests.swift; sourceTree = "<group>"; };
 		8EFA28112B3258BB000BC024 /* TestingObservationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingObservationTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -547,8 +554,12 @@
 				8E19215E2DEE0F6C00AE46B9 /* TypedefTests.swift */,
 				8E19217F2DEF79C500AE46B9 /* SdfSpecHandleTests.swift */,
 				8E859DA42E21B3E6004C2B09 /* AlembicTests.swift */,
+				8EF1D8893059E4D0005B0534 /* TsKnotTests.swift */,
 				8EAA8CB82E579ADF00F87233 /* InternalUtilTests.swift */,
 				8EAA8CBA2E57A4B500F87233 /* LibWorkTests.swift */,
+				8EF1D892305CAF0D005B0534 /* StdOstreamWrapperTests.swift */,
+				8EF1D894305CAF28005B0534 /* StdOstreamWrapperTests.hpp */,
+				8EF1D895305CAF28005B0534 /* StdOstreamWrapperTests.cpp */,
 				8EAA8CB52E579ACF00F87233 /* InternalUtilTests.hpp */,
 				8E06558D2E5F6D8400689847 /* OpenEXRUsage.hpp */,
 				8E06558E2E5F6D8400689847 /* OpenEXRUsage.mm */,
@@ -894,6 +905,7 @@
 				8E33E7242B214AD600630CB4 /* StageTests.swift in Sources */,
 				8E6D426B2B48C96100509859 /* Observation_MutateSdfLayer_ReadUsdStage.swift in Sources */,
 				8E6D428C2B509FD100509859 /* Observation_MutateUsdPrim_ReadUsdSchemaBase.swift in Sources */,
+				8EF1D896305CAF28005B0534 /* StdOstreamWrapperTests.cpp in Sources */,
 				8E6D41B72B460DB000509859 /* Observation_MutateUsdStage_ReadUsdObject.swift in Sources */,
 				8E45849C2B30F48C0048D0C8 /* HelloSwiftUsdTests.swift in Sources */,
 				8EF209AB2F3E61D00087B979 /* VtValueRefTests.swift in Sources */,
@@ -910,6 +922,7 @@
 				8E2D7DA42D023BBF00B11495 /* FRTProtocolsTests.swift in Sources */,
 				8E33E7102B213E5400630CB4 /* HelloWorldRedux.swift in Sources */,
 				8E33E7912B2B9E3900630CB4 /* OverlayGetPrimTests.swift in Sources */,
+				8EF1D893305CAF0D005B0534 /* StdOstreamWrapperTests.swift in Sources */,
 				8E7FD4F82B6462A30004B86B /* ExpressibleByDictionaryLiteralTests.swift in Sources */,
 				8E19215F2DEE0F6C00AE46B9 /* TypedefTests.swift in Sources */,
 				8E6D42B12B5AEC6000509859 /* Observation_MutateUsdAttribute_ReadSdfLayer.swift in Sources */,
@@ -943,6 +956,7 @@
 				8E4584982B30E68D0048D0C8 /* TemporaryImplementations_Cpp.mm in Sources */,
 				8E33E72A2B2285FA00630CB4 /* XLanguageARC_Swift.swift in Sources */,
 				8E33E7712B291E6F00630CB4 /* OverlayTfPtr.swift in Sources */,
+				8EF1D88A3059E4D0005B0534 /* TsKnotTests.swift in Sources */,
 				8E6D428F2B56F64000509859 /* Observation_MutateUsdObject_ReadUsdStage.swift in Sources */,
 				8EE5A8872EB95C0F00C84A93 /* Algorithm.swift in Sources */,
 				8E6D42B52B5AF1BC00509859 /* Observation_MutateUsdAttribute_ReadUsdAttribute.swift in Sources */,

@@ -60,4 +60,22 @@ final class CxxDictionaryTests: TemporaryDirectoryHelper {
         XCTAssertTrue(y["e"] == pxr.VtValue("f" as std.string))
         XCTAssertEqual(y.size(), 3)
     }
+    
+    func test_SdfTimeSampleMap() {
+        var x = pxr.SdfTimeSampleMap()
+        x[0] = pxr.VtValue("a" as std.string)
+        x[1] = pxr.VtValue("b" as std.string)
+        x[2] = pxr.VtValue("c" as std.string)
+        
+        var y = pxr.SdfTimeSampleMap()
+        for kvPair in x {
+            y[kvPair.first] = kvPair.second
+        }
+        XCTAssertTrue(y[0] == pxr.VtValue("a" as std.string))
+        XCTAssertTrue(y[1] == pxr.VtValue("b" as std.string))
+        XCTAssertTrue(y[2] == pxr.VtValue("c" as std.string))
+        XCTAssertEqual(y.size(), 3)
+        
+        assertConforms(pxr.SdfTimeSampleMap.self)
+    }
 }

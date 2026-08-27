@@ -22,6 +22,8 @@ import XCTest
 import OpenUSD
 
 final class SdfSpecHandleTests: TemporaryDirectoryHelper {
+    // MARK: SdfSpecHandle.pointee
+    
     func test_SdfSpecHandle_pointee() {
         var stage: pxr.UsdStage! = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
         var layer: pxr.SdfLayer! = Overlay.Dereference(stage.GetRootLayer())
@@ -167,4 +169,257 @@ final class SdfSpecHandleTests: TemporaryDirectoryHelper {
             withExtendedLifetime(spec) {}
         }
     }
+    
+    // MARK: SdfSpec upcasting/downcasting
+    
+    fileprivate func _stageForSpecCasting() -> pxr.UsdStage {
+        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
+        let p = stage.DefinePrim("/myPrim", "")
+        p.CreateAttribute("myAttribute", .Bool, true, .SdfVariabilityVarying)
+        p.CreateRelationship("myRelationship", true)
+        var variantSet = p.GetVariantSet("myVariantSet")
+        variantSet.AddVariant("myVariant", .UsdListPositionBackOfPrependList)
+        variantSet.SetVariantSelection("myVariant")
+        
+        Overlay.withUsdEditContext(variantSet.GetVariantEditContext(pxr.SdfLayerHandle())) {
+            p.CreateAttribute("myVariantedAttribute", .Double, true, .SdfVariabilityVarying)
+        }
+        
+        return stage
+    }
+    
+    func test_SdfSpec_to_SdfPropertySpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let shouldSucceed: pxr.SdfSpec = layer.GetObjectAtPath("/myPrim.myAttribute").pointee
+            let castedShouldSucceed: pxr.SdfPropertySpec? = pxr.SdfPropertySpec(shouldSucceed)
+            XCTAssertNotNil(castedShouldSucceed)
+            
+            let shouldFail: pxr.SdfSpec = layer.GetObjectAtPath("/myPrim").pointee
+            let castedShouldFail: pxr.SdfPropertySpec? = pxr.SdfPropertySpec(shouldFail)
+            XCTAssertNil(castedShouldFail)
+        }
+    }
+    
+    func test_SdfSpec_to_SdfPrimSpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let shouldSucceed: pxr.SdfSpec = layer.GetObjectAtPath("/myPrim").pointee
+            let castedShouldSucceed: pxr.SdfPrimSpec? = pxr.SdfPrimSpec(shouldSucceed)
+            XCTAssertNotNil(castedShouldSucceed)
+            
+            let shouldFail: pxr.SdfSpec = layer.GetObjectAtPath("/myPrim.myAttribute").pointee
+            let castedShouldFail: pxr.SdfPrimSpec? = pxr.SdfPrimSpec(shouldFail)
+            XCTAssertNil(castedShouldFail)
+        }
+    }
+    
+    func test_SdfSpec_to_SdfVariantSetSpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let variantSets = layer.GetPrimAtPath("/myPrim").pointee.GetVariantSets()
+            let shouldSucceed: pxr.SdfSpec = pxr.SdfSpec(variantSets.items()["myVariantSet"]!.pointee)
+            let castedShouldSucceed: pxr.SdfVariantSetSpec? = pxr.SdfVariantSetSpec(shouldSucceed)
+            XCTAssertNotNil(castedShouldSucceed)
+            
+            let shouldFail: pxr.SdfSpec = layer.GetObjectAtPath("/myPrim.myAttribute").pointee
+            let castedShouldFail: pxr.SdfVariantSetSpec? = pxr.SdfVariantSetSpec(shouldFail)
+            XCTAssertNil(castedShouldFail)
+        }
+    }
+    
+    func test_SdfSpec_to_SdfVariantSpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let variantSets = layer.GetPrimAtPath("/myPrim").pointee.GetVariantSets()
+            let variant: pxr.SdfVariantSpec = variantSets.items()["myVariantSet"]!.pointee.GetVariants()[0].pointee
+            let shouldSucceed: pxr.SdfSpec = pxr.SdfSpec(variant)
+            let castedShouldSucceed: pxr.SdfVariantSpec? = pxr.SdfVariantSpec(shouldSucceed)
+            XCTAssertNotNil(castedShouldSucceed)
+            
+            let shouldFail: pxr.SdfSpec = layer.GetObjectAtPath("/myPrim.myAttribute").pointee
+            let castedShouldFail: pxr.SdfVariantSpec? = pxr.SdfVariantSpec(shouldFail)
+            XCTAssertNil(castedShouldFail)
+        }
+    }
+    
+    func test_SdfSpec_to_SdfAttributeSpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let shouldSucceed: pxr.SdfSpec = layer.GetObjectAtPath("/myPrim.myAttribute").pointee
+            let castedShouldSucceed: pxr.SdfAttributeSpec? = pxr.SdfAttributeSpec(shouldSucceed)
+            XCTAssertNotNil(castedShouldSucceed)
+            
+            let shouldFail: pxr.SdfSpec = layer.GetObjectAtPath("/myPrim").pointee
+            let castedShouldFail: pxr.SdfAttributeSpec? = pxr.SdfAttributeSpec(shouldFail)
+            XCTAssertNil(castedShouldFail)
+        }
+    }
+    
+    func test_SdfSpec_to_SdfRelationshipSpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let shouldSucceed: pxr.SdfSpec = layer.GetObjectAtPath("/myPrim.myRelationship").pointee
+            let castedShouldSucceed: pxr.SdfRelationshipSpec? = pxr.SdfRelationshipSpec(shouldSucceed)
+            XCTAssertNotNil(castedShouldSucceed)
+            
+            let shouldFail: pxr.SdfSpec = layer.GetObjectAtPath("/myPrim").pointee
+            let castedShouldFail: pxr.SdfRelationshipSpec? = pxr.SdfRelationshipSpec(shouldFail)
+            XCTAssertNil(castedShouldFail)
+        }
+    }
+    
+    func test_SdfSpec_to_SdfPseudoRootSpecSpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let shouldSucceed: pxr.SdfSpec = layer.GetObjectAtPath("/").pointee
+            let castedShouldSucceed: pxr.SdfPseudoRootSpec? = pxr.SdfPseudoRootSpec(shouldSucceed)
+            XCTAssertNotNil(castedShouldSucceed)
+            
+            let shouldFail: pxr.SdfSpec = layer.GetObjectAtPath("/myPrim").pointee
+            let castedShouldFail: pxr.SdfPseudoRootSpec? = pxr.SdfPseudoRootSpec(shouldFail)
+            XCTAssertNil(castedShouldFail)
+        }
+    }
+    
+    func test_SdfPropertySpec_to_SdfSpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let shouldSucceed: pxr.SdfPropertySpec = pxr.SdfPropertySpec(layer.GetObjectAtPath("/myPrim.myAttribute").pointee)!
+            let castedShouldSucceed: pxr.SdfSpec = pxr.SdfSpec(shouldSucceed)
+            withExtendedLifetime(castedShouldSucceed) {}
+        }
+    }
+    
+    func test_SdfPropertySpec_to_SdfAttributeSpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let shouldSucceed: pxr.SdfPropertySpec = pxr.SdfPropertySpec(layer.GetObjectAtPath("/myPrim.myAttribute").pointee)!
+            let castedShouldSucceed: pxr.SdfAttributeSpec? = pxr.SdfAttributeSpec(shouldSucceed)
+            XCTAssertNotNil(castedShouldSucceed)
+            
+            let shouldFail: pxr.SdfPropertySpec = pxr.SdfPropertySpec(layer.GetObjectAtPath("/myPrim.myRelationship").pointee)!
+            let castedShouldFail: pxr.SdfAttributeSpec? = pxr.SdfAttributeSpec(shouldFail)
+            XCTAssertNil(castedShouldFail)
+        }
+    }
+
+    func test_SdfPropertySpec_to_SdfRelationshipSpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let shouldSucceed: pxr.SdfPropertySpec = pxr.SdfPropertySpec(layer.GetObjectAtPath("/myPrim.myRelationship").pointee)!
+            let castedShouldSucceed: pxr.SdfRelationshipSpec? = pxr.SdfRelationshipSpec(shouldSucceed)
+            XCTAssertNotNil(castedShouldSucceed)
+            
+            let shouldFail: pxr.SdfPropertySpec = pxr.SdfPropertySpec(layer.GetObjectAtPath("/myPrim.myAttribute").pointee)!
+            let castedShouldFail: pxr.SdfRelationshipSpec? = pxr.SdfRelationshipSpec(shouldFail)
+            XCTAssertNil(castedShouldFail)
+        }
+    }
+    
+    func test_SdfPrimSpec_to_SdfSpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let shouldSucceed: pxr.SdfPrimSpec = layer.GetPrimAtPath("/myPrim").pointee
+            let castedShouldSucceed: pxr.SdfSpec = pxr.SdfSpec(shouldSucceed)
+            withExtendedLifetime(castedShouldSucceed) {}
+        }
+    }
+
+    func test_SdfPrimSpec_to_SdfPseudoRootSpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let shouldSucceed: pxr.SdfPrimSpec = layer.GetPrimAtPath("/").pointee
+            let castedShouldSucceed: pxr.SdfPseudoRootSpec? = pxr.SdfPseudoRootSpec(shouldSucceed)
+            XCTAssertNotNil(castedShouldSucceed)
+            
+            let shouldFail: pxr.SdfPrimSpec = layer.GetPrimAtPath("/myPrim").pointee
+            let castedShouldFail: pxr.SdfPseudoRootSpec? = pxr.SdfPseudoRootSpec(shouldFail)
+            XCTAssertNil(castedShouldFail)
+        }
+    }
+
+    func test_SdfVariantSetSpec_to_SdfSpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let variantSets = layer.GetPrimAtPath("/myPrim").pointee.GetVariantSets()
+            let shouldSucceed: pxr.SdfVariantSetSpec = variantSets.items()["myVariantSet"]!.pointee
+            let castedShouldSucceed: pxr.SdfSpec = pxr.SdfSpec(shouldSucceed)
+            withExtendedLifetime(castedShouldSucceed) {}
+        }
+    }
+
+    func test_SdfVariantSpec_to_SdfSpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let variantSets = layer.GetPrimAtPath("/myPrim").pointee.GetVariantSets()
+            let shouldSucceed: pxr.SdfVariantSpec = variantSets.items()["myVariantSet"]!.pointee.GetVariants()[0].pointee
+            let castedShouldSuceed: pxr.SdfSpec = pxr.SdfSpec(shouldSucceed)
+        }
+    }
+
+    func test_SdfAttributeSpec_to_SdfSpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let shouldSucceed: pxr.SdfAttributeSpec = pxr.SdfAttributeSpec(layer.GetObjectAtPath("/myPrim.myAttribute").pointee)!
+            let castedShouldSucceed: pxr.SdfSpec = pxr.SdfSpec(shouldSucceed)
+            withExtendedLifetime(castedShouldSucceed) {}
+        }
+    }
+
+    func test_SdfAttributeSpec_to_SdfPropertySpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let shouldSucceed: pxr.SdfAttributeSpec = pxr.SdfAttributeSpec(layer.GetObjectAtPath("/myPrim.myAttribute").pointee)!
+            let castedShouldSucceed: pxr.SdfPropertySpec = pxr.SdfPropertySpec(shouldSucceed)
+            withExtendedLifetime(castedShouldSucceed) {}
+        }
+    }
+    
+    func test_SdfRelationshipSpec_to_SdfSpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let shouldSucceed: pxr.SdfRelationshipSpec = pxr.SdfRelationshipSpec(layer.GetObjectAtPath("/myPrim.myRelationship").pointee)!
+            let castedShouldSucceed: pxr.SdfSpec = pxr.SdfSpec(shouldSucceed)
+            withExtendedLifetime(castedShouldSucceed) {}
+        }
+    }
+
+    func test_SdfRelationshipSpec_to_SdfPropertySpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let shouldSucceed: pxr.SdfRelationshipSpec = pxr.SdfRelationshipSpec(layer.GetObjectAtPath("/myPrim.myRelationship").pointee)!
+            let castedShouldSucceed: pxr.SdfPropertySpec = pxr.SdfPropertySpec(shouldSucceed)
+            withExtendedLifetime(castedShouldSucceed) {}
+        }
+    }
+    
+    func test_SdfPseudoRootSpec_to_SdfSpec() {
+        let stage = _stageForSpecCasting()
+        let layer = Overlay.Dereference(stage.GetRootLayer())
+        withExtendedLifetime(layer) {
+            let shouldSucceed: pxr.SdfPseudoRootSpec = pxr.SdfPseudoRootSpec(layer.GetPseudoRoot().pointee)!
+            let castedShouldSucceed: pxr.SdfSpec = pxr.SdfSpec(shouldSucceed)
+            withExtendedLifetime(castedShouldSucceed) {}
+        }
+    }
 }
+

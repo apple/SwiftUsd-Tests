@@ -180,6 +180,59 @@ final class RegressionTests: TemporaryDirectoryHelper {
         XCTAssertFalse(attr.Get(&success, .Default()))
     }
     
+    func test_GfMatrix2d_Int_subscript() {
+        let x = pxr.GfMatrix2d(1, 2, 3, 4)
+        XCTAssertEqual(x[0][0], 1)
+        XCTAssertEqual(x[0][1], 2)
+        XCTAssertEqual(x[1][0], 3)
+        XCTAssertEqual(x[1][1], 4)
+        
+        var y: pxr.GfMatrix2d = x
+        for r in 0..<2 {
+            for c in 0..<2 {
+                y[r][c] *= y[r][c]
+            }
+        }
+        
+        XCTAssertEqual(y[0][0], 1)
+        XCTAssertEqual(y[0][1], 4)
+        XCTAssertEqual(y[1][0], 9)
+        XCTAssertEqual(y[1][1], 16)
+    }
+    
+    func test_GfMatrix3d_Int_subscript() {
+        let x = pxr.GfMatrix3d(1, 2, 3, 4, 5, 6, 7, 8, 9)
+        XCTAssertEqual(x[0][0], 1)
+        XCTAssertEqual(x[0][1], 2)
+        XCTAssertEqual(x[0][2], 3)
+        XCTAssertEqual(x[1][0], 4)
+        XCTAssertEqual(x[1][1], 5)
+        XCTAssertEqual(x[1][2], 6)
+        XCTAssertEqual(x[2][0], 7)
+        XCTAssertEqual(x[2][1], 8)
+        XCTAssertEqual(x[2][2], 9)
+
+
+        
+        var y: pxr.GfMatrix3d = x
+        for r in 0..<3 {
+            for c in 0..<3 {
+                y[r][c] = -y[r][c]
+            }
+        }
+        
+        XCTAssertEqual(y[0][0], -1)
+        XCTAssertEqual(y[0][1], -2)
+        XCTAssertEqual(y[0][2], -3)
+        XCTAssertEqual(y[1][0], -4)
+        XCTAssertEqual(y[1][1], -5)
+        XCTAssertEqual(y[1][2], -6)
+        XCTAssertEqual(y[2][0], -7)
+        XCTAssertEqual(y[2][1], -8)
+        XCTAssertEqual(y[2][2], -9)
+    }
+
+    
     func test_GfMatrix4d_Int_subscript() {
         let x = pxr.GfMatrix4d(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
         XCTAssertEqual(x[0][0], 1)
@@ -198,6 +251,31 @@ final class RegressionTests: TemporaryDirectoryHelper {
         XCTAssertEqual(x[3][1], 14)
         XCTAssertEqual(x[3][2], 15)
         XCTAssertEqual(x[3][3], 16)
+        
+        var y: pxr.GfMatrix4d = x
+        for r in 0..<4 {
+            for c in 0..<4 {
+                y[r][c] = 17
+            }
+        }
+        
+        XCTAssertEqual(y[0][0], 17)
+        XCTAssertEqual(y[0][1], 17)
+        XCTAssertEqual(y[0][2], 17)
+        XCTAssertEqual(y[0][3], 17)
+        XCTAssertEqual(y[1][0], 17)
+        XCTAssertEqual(y[1][1], 17)
+        XCTAssertEqual(y[1][2], 17)
+        XCTAssertEqual(y[1][3], 17)
+        XCTAssertEqual(y[2][0], 17)
+        XCTAssertEqual(y[2][1], 17)
+        XCTAssertEqual(y[2][2], 17)
+        XCTAssertEqual(y[2][3], 17)
+        XCTAssertEqual(y[3][0], 17)
+        XCTAssertEqual(y[3][1], 17)
+        XCTAssertEqual(y[3][2], 17)
+        XCTAssertEqual(y[3][3], 17)
+
     }
     
     // SwiftUsd 5.0.x didn't include the OpenEXR dylibs despite building them,

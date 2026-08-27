@@ -210,6 +210,52 @@ final class BoolInitTests: TemporaryDirectoryHelper {
         XCTAssertFalse(Bool(pxr.SdfZipFile.Open("/this/path/doesnt/exist.usdz")))
     }
     
+    func test_SdfValueTypeName() {
+        XCTAssertTrue(Bool(pxr.SdfValueTypeName.String))
+        XCTAssertFalse(Bool(pxr.SdfValueTypeName()))
+    }
+    
+    func test_SdfVariantSetsProxy() {
+        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
+        let p = stage.DefinePrim("/myPrim", "")
+        stage.DefinePrim("/p2", "")
+        var variantSet = p.GetVariantSet("myVariantSet")
+        variantSet.AddVariant("myVariant", .UsdListPositionBackOfPrependList)
+        variantSet.SetVariantSelection("myVariant")
+        
+        Overlay.withUsdEditContext(variantSet.GetVariantEditContext(pxr.SdfLayerHandle())) {
+            p.CreateAttribute("myVariantedAttribute", .Double, true, .SdfVariabilityVarying)
+        }
+        
+        withExtendedLifetime(Overlay.Dereference(stage.GetRootLayer())) { layer in
+            let shouldBeValid: pxr.SdfVariantSetsProxy = layer.GetPrimAtPath("/myPrim").pointee.GetVariantSets()
+            let shouldBeInvalid: pxr.SdfVariantSetsProxy = .init()
+            XCTAssertTrue(Bool(shouldBeValid))
+            XCTAssertFalse(Bool(shouldBeInvalid))
+        }
+    }
+    
+    func test_SdfVariantSelectionProxy() {
+        let stage = Overlay.Dereference(pxr.UsdStage.CreateInMemory(.LoadAll))
+        let p = stage.DefinePrim("/myPrim", "")
+        stage.DefinePrim("/p2", "")
+        var variantSet = p.GetVariantSet("myVariantSet")
+        variantSet.AddVariant("myVariant", .UsdListPositionBackOfPrependList)
+        variantSet.SetVariantSelection("myVariant")
+        
+        Overlay.withUsdEditContext(variantSet.GetVariantEditContext(pxr.SdfLayerHandle())) {
+            p.CreateAttribute("myVariantedAttribute", .Double, true, .SdfVariabilityVarying)
+        }
+        
+        withExtendedLifetime(Overlay.Dereference(stage.GetRootLayer())) { layer in
+            let shouldBeValid: pxr.SdfVariantSelectionProxy = layer.GetPrimAtPath("/myPrim").pointee.GetVariantSelections()
+            let shouldBeInvalid: pxr.SdfVariantSelectionProxy = .init()
+            XCTAssertTrue(Bool(shouldBeValid))
+            XCTAssertFalse(Bool(shouldBeInvalid))
+        }
+    }
+
+    
     // MARK: Schemas
     
     // Usd schemas
