@@ -34,6 +34,14 @@ IMATH_PATH_SUFFIX=SwiftUsd/swift-package/Sources/_OpenUSD_SwiftBindingHelpers/in
 // Local, then remote
 HEADER_SEARCH_PATHS=$(IMATH_PATH_SUFFIX) $(SYMROOT)/../../SourcePackages/checkouts/$(IMATH_PATH_SUFFIX)
 
+// Similarly, OpenEXR assumes that "OpenEXR" will be part of the system header search path.
+// We want to support both local dependencies on SwiftUsd and
+// remote dependencies, which put the include directories for C++ headers
+// in different places
+OPENEXR_PATH_SUFFIX=SwiftUsd/swift-package/Sources/_OpenUSD_SwiftBindingHelpers/include/OpenEXR
+// Local, then remote
+SYSTEM_HEADER_SEARCH_PATHS=$(OPENEXR_PATH_SUFFIX) $(SYMROOT)/../../SourcePackages/checkouts/$(OPENEXR_PATH_SUFFIX)
+
 // iOS testing requires a test host, but adding a test host for macOS
 // means the test suite also requires a Development Team for codesigning,
 // and we'd like to not require that
