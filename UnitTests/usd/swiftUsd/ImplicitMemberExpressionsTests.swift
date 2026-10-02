@@ -170,15 +170,7 @@ final class ImplicitMemberExpressionsTests: TemporaryDirectoryHelper {
         XCTAssertEqual(a, b)
     }
     #endif // #if canImport(SwiftUsd_PXR_ENABLE_MATERIALX_SUPPORT)
-    
-    #if canImport(SwiftUsd_PXR_ENABLE_IMAGING_SUPPORT)
-    func test_GlfTextureTokens() {
-        let a: pxr.TfToken = .GlfTextureTokens.texels
-        let b: pxr.TfToken = "texels"
-        XCTAssertEqual(a, b)
-    }
-    #endif // #if canImport(SwiftUsd_PXR_ENABLE_IMAGING_SUPPORT)
-    
+        
     #if canImport(SwiftUsd_PXR_ENABLE_USD_IMAGING_SUPPORT)
     func test_UsdImagingTokens() {
         let a: pxr.TfToken = .UsdImagingTokens.primvarsNormals

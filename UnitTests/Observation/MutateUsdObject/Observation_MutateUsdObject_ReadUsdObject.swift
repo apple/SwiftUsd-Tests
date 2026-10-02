@@ -308,11 +308,11 @@ final class Observation_MutateUsdObject_ReadUsdObject: ObservationHelper {
         let p = main.DefinePrim("/foo", "Sphere")
         
         let (token, value) = registerNotification(p.GetCustomData())
-        XCTAssertEqual(value, ["userDocBrief" : pxr.VtValue("Defines a primitive sphere centered at the origin." as std.string)])
+        XCTAssertEqual(value, ["userDocBrief" : pxr.VtValue("A spherical primitive centered at the origin." as std.string)])
         
         expectingSomeNotifications([token], p.SetCustomData(["fizz" : pxr.VtValue("buzz" as pxr.TfToken)]))
         XCTAssertEqual(p.GetCustomData(), ["fizz" : pxr.VtValue("buzz" as pxr.TfToken),
-                                           "userDocBrief" : pxr.VtValue("Defines a primitive sphere centered at the origin." as std.string)])
+                                           "userDocBrief" : pxr.VtValue("A spherical primitive centered at the origin." as std.string)])
     }
     
     func test_SetCustomData_HasCustomData() {

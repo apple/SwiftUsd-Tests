@@ -113,9 +113,6 @@ final class FRTProtocolsTests: TemporaryDirectoryHelper {
         
         inner(pxr.UsdStage.self)
         inner(pxr.SdfLayer.self)
-        #if canImport(SwiftUsd_PXR_ENABLE_IMAGING_SUPPORT)
-        inner(pxr.GlfDrawTarget.self)
-        #endif // #if canImport(SwiftUsd_PXR_ENABLE_IMAGING_SUPPORT)
         inner(pxr.SdfLayerTree.self)
         inner(pxr.SdfAbstractData.self)
         inner(pxr.PcpLayerStack.self)
@@ -598,25 +595,9 @@ final class FRTProtocolsTests: TemporaryDirectoryHelper {
         assertImmortalReferenceTypeProtocol(pxr.HioImageRegistry.self)
         assertNotTfWeakBaseProtocol(pxr.HioImageRegistry.self)
     }
-    func test_GlfBindingMap() {
-        assertTfRefBaseProtocol(pxr.GlfBindingMap.self)
-        assertTfWeakBaseProtocol(pxr.GlfBindingMap.self)
-    }
     func test_GlfContextCaps() {
         assertImmortalReferenceTypeProtocol(pxr.GlfContextCaps.self)
         assertNotTfWeakBaseProtocol(pxr.GlfContextCaps.self)
-    }
-    func test_GlfDrawTarget() {
-        assertTfRefBaseProtocol(pxr.GlfDrawTarget.self)
-        assertTfWeakBaseProtocol(pxr.GlfDrawTarget.self)
-    }
-    func test_GlfDrawTarget_Attachment() {
-        assertTfRefBaseProtocol(pxr.GlfDrawTarget.Attachment.self)
-        assertTfWeakBaseProtocol(pxr.GlfDrawTarget.Attachment.self)
-    }
-    func test_GlfTexture() {
-        assertTfRefBaseProtocol(pxr.GlfTexture.self)
-        assertTfWeakBaseProtocol(pxr.GlfTexture.self)
     }
     func test_GlfSimpleLightingContext() {
         assertTfRefBaseProtocol(pxr.GlfSimpleLightingContext.self)
@@ -625,10 +606,6 @@ final class FRTProtocolsTests: TemporaryDirectoryHelper {
     func test_GlfSimpleShadowArray() {
         assertTfRefBaseProtocol(pxr.GlfSimpleShadowArray.self)
         assertTfWeakBaseProtocol(pxr.GlfSimpleShadowArray.self)
-    }
-    func test_GlfUniformBlock() {
-        assertTfRefBaseProtocol(pxr.GlfUniformBlock.self)
-        assertTfWeakBaseProtocol(pxr.GlfUniformBlock.self)
     }
     func test_HdSceneIndexBase() {
         assertTfRefBaseProtocol(pxr.HdSceneIndexBase.self)

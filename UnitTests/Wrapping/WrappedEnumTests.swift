@@ -4804,104 +4804,11 @@ final class WrappedEnumTests: TemporaryDirectoryHelper {
         let y: pxr.HdDepthPriority = .HdDepthPriorityCount
         XCTAssertEqual(x, y)
     }
-    // MARK: HdField.DirtyBits
-    func test_HdField_Clean() {
-        let x: pxr.HdField.DirtyBits = Overlay.HdField.Clean
-        XCTAssertEqual(x.rawValue, 0)
-        let y: pxr.HdField.DirtyBits = .Clean
-        XCTAssertEqual(x, y)
-    }
-    func test_HdField_DirtyTransform() {
-        let x: pxr.HdField.DirtyBits = Overlay.HdField.DirtyTransform
-        XCTAssertEqual(x.rawValue, 1)
-        let y: pxr.HdField.DirtyBits = .DirtyTransform
-        XCTAssertEqual(x, y)
-    }
-    func test_HdField_DirtyParams() {
-        let x: pxr.HdField.DirtyBits = Overlay.HdField.DirtyParams
-        XCTAssertEqual(x.rawValue, 2)
-        let y: pxr.HdField.DirtyBits = .DirtyParams
-        XCTAssertEqual(x, y)
-    }
-    func test_HdField_AllDirty() {
-        let x: pxr.HdField.DirtyBits = Overlay.HdField.AllDirty
-        XCTAssertEqual(x.rawValue, 3)
-        let y: pxr.HdField.DirtyBits = .AllDirty
-        XCTAssertEqual(x, y)
-    }
     // MARK: HdGeomSubset.Type
     func test_HdGeomSubset_TypeFaceSet() {
         let x: pxr.HdGeomSubset.`Type` = Overlay.HdGeomSubset.TypeFaceSet
         XCTAssertEqual(x.rawValue, 0)
         let y: pxr.HdGeomSubset.`Type` = .TypeFaceSet
-        XCTAssertEqual(x, y)
-    }
-    // MARK: HdLight.DirtyBits
-    func test_HdLight_Clean() {
-        let x: pxr.HdLight.DirtyBits = Overlay.HdLight.Clean
-        XCTAssertEqual(x.rawValue, 0)
-        let y: pxr.HdLight.DirtyBits = .Clean
-        XCTAssertEqual(x, y)
-    }
-    func test_HdLight_DirtyTransform() {
-        let x: pxr.HdLight.DirtyBits = Overlay.HdLight.DirtyTransform
-        XCTAssertEqual(x.rawValue, 1)
-        let y: pxr.HdLight.DirtyBits = .DirtyTransform
-        XCTAssertEqual(x, y)
-    }
-    func test_HdLight_DirtyParams() {
-        let x: pxr.HdLight.DirtyBits = Overlay.HdLight.DirtyParams
-        XCTAssertEqual(x.rawValue, 2)
-        let y: pxr.HdLight.DirtyBits = .DirtyParams
-        XCTAssertEqual(x, y)
-    }
-    func test_HdLight_DirtyShadowParams() {
-        let x: pxr.HdLight.DirtyBits = Overlay.HdLight.DirtyShadowParams
-        XCTAssertEqual(x.rawValue, 4)
-        let y: pxr.HdLight.DirtyBits = .DirtyShadowParams
-        XCTAssertEqual(x, y)
-    }
-    func test_HdLight_DirtyCollection() {
-        let x: pxr.HdLight.DirtyBits = Overlay.HdLight.DirtyCollection
-        XCTAssertEqual(x.rawValue, 8)
-        let y: pxr.HdLight.DirtyBits = .DirtyCollection
-        XCTAssertEqual(x, y)
-    }
-    func test_HdLight_DirtyResource() {
-        let x: pxr.HdLight.DirtyBits = Overlay.HdLight.DirtyResource
-        XCTAssertEqual(x.rawValue, 16)
-        let y: pxr.HdLight.DirtyBits = .DirtyResource
-        XCTAssertEqual(x, y)
-    }
-    func test_HdLight_DirtyInstancer() {
-        let x: pxr.HdLight.DirtyBits = Overlay.HdLight.DirtyInstancer
-        XCTAssertEqual(x.rawValue, 65536)
-        let y: pxr.HdLight.DirtyBits = .DirtyInstancer
-        XCTAssertEqual(x, y)
-    }
-    func test_HdLight_AllDirty() {
-        let x: pxr.HdLight.DirtyBits = Overlay.HdLight.AllDirty
-        XCTAssertEqual(x.rawValue, 65567)
-        let y: pxr.HdLight.DirtyBits = .AllDirty
-        XCTAssertEqual(x, y)
-    }
-    // MARK: HdRenderBuffer.DirtyBits
-    func test_HdRenderBuffer_Clean() {
-        let x: pxr.HdRenderBuffer.DirtyBits = Overlay.HdRenderBuffer.Clean
-        XCTAssertEqual(x.rawValue, 0)
-        let y: pxr.HdRenderBuffer.DirtyBits = .Clean
-        XCTAssertEqual(x, y)
-    }
-    func test_HdRenderBuffer_DirtyDescription() {
-        let x: pxr.HdRenderBuffer.DirtyBits = Overlay.HdRenderBuffer.DirtyDescription
-        XCTAssertEqual(x.rawValue, 1)
-        let y: pxr.HdRenderBuffer.DirtyBits = .DirtyDescription
-        XCTAssertEqual(x, y)
-    }
-    func test_HdRenderBuffer_AllDirty() {
-        let x: pxr.HdRenderBuffer.DirtyBits = Overlay.HdRenderBuffer.AllDirty
-        XCTAssertEqual(x.rawValue, 1)
-        let y: pxr.HdRenderBuffer.DirtyBits = .AllDirty
         XCTAssertEqual(x, y)
     }
     // MARK: HdRenderPassState.ColorMask
@@ -5449,56 +5356,12 @@ final class WrappedEnumTests: TemporaryDirectoryHelper {
     
     // MARK: HdGp
     
-    // MARK: HdGpGenerativeProcedural.AsyncState
-    func test_HdGpGenerativeProcedural_Continuing() {
-        let x: pxr.HdGpGenerativeProcedural.AsyncState = Overlay.HdGpGenerativeProcedural.Continuing
-        XCTAssertEqual(x.rawValue, 0)
-        let y: pxr.HdGpGenerativeProcedural.AsyncState = .Continuing
-        XCTAssertEqual(x, y)
-    }
-    func test_HdGpGenerativeProcedural_Finished() {
-        let x: pxr.HdGpGenerativeProcedural.AsyncState = Overlay.HdGpGenerativeProcedural.Finished
-        XCTAssertEqual(x.rawValue, 1)
-        let y: pxr.HdGpGenerativeProcedural.AsyncState = .Finished
-        XCTAssertEqual(x, y)
-    }
-    func test_HdGpGenerativeProcedural_ContinuingWithNewChanges() {
-        let x: pxr.HdGpGenerativeProcedural.AsyncState = Overlay.HdGpGenerativeProcedural.ContinuingWithNewChanges
-        XCTAssertEqual(x.rawValue, 2)
-        let y: pxr.HdGpGenerativeProcedural.AsyncState = .ContinuingWithNewChanges
-        XCTAssertEqual(x, y)
-    }
-    func test_HdGpGenerativeProcedural_FinishedWithNewChanges() {
-        let x: pxr.HdGpGenerativeProcedural.AsyncState = Overlay.HdGpGenerativeProcedural.FinishedWithNewChanges
-        XCTAssertEqual(x.rawValue, 3)
-        let y: pxr.HdGpGenerativeProcedural.AsyncState = .FinishedWithNewChanges
-        XCTAssertEqual(x, y)
-    }
     #endif // #if canImport(SwiftUsd_PXR_ENABLE_IMAGING_SUPPORT)
     
     #if canImport(SwiftUsd_PXR_ENABLE_USD_IMAGING_SUPPORT)
     
     // MARK: UsdImaging
     
-    // MARK: UsdImagingPrimAdapter.PopulationMode
-    func test_UsdImagingPrimAdapter_RepresentsSelf() {
-        let x: pxr.UsdImagingPrimAdapter.PopulationMode = Overlay.UsdImagingPrimAdapter.RepresentsSelf
-        XCTAssertEqual(x.rawValue, 0)
-        let y: pxr.UsdImagingPrimAdapter.PopulationMode = .RepresentsSelf
-        XCTAssertEqual(x, y)
-    }
-    func test_UsdImagingPrimAdapter_RepresentsSelfAndDescendents() {
-        let x: pxr.UsdImagingPrimAdapter.PopulationMode = Overlay.UsdImagingPrimAdapter.RepresentsSelfAndDescendents
-        XCTAssertEqual(x.rawValue, 1)
-        let y: pxr.UsdImagingPrimAdapter.PopulationMode = .RepresentsSelfAndDescendents
-        XCTAssertEqual(x, y)
-    }
-    func test_UsdImagingPrimAdapter_RepresentedByAncestor() {
-        let x: pxr.UsdImagingPrimAdapter.PopulationMode = Overlay.UsdImagingPrimAdapter.RepresentedByAncestor
-        XCTAssertEqual(x.rawValue, 2)
-        let y: pxr.UsdImagingPrimAdapter.PopulationMode = .RepresentedByAncestor
-        XCTAssertEqual(x, y)
-    }
     // MARK: UsdImagingPropertyInvalidationType
     func test_UsdImagingPropertyInvalidationType_Update() {
         let x: pxr.UsdImagingPropertyInvalidationType = Overlay.UsdImagingPropertyInvalidationType.Update
